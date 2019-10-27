@@ -8,6 +8,8 @@ public class BoyFactory : MonoBehaviour
     public GameObject BoySpawningPlace;
     public GameObject BoyPrefab;
 
+    public List<GameObject> Boys = new List<GameObject>();
+
     void Start()
     {
         for (int i = 0; i < BoyAmount; i++)
@@ -18,6 +20,8 @@ public class BoyFactory : MonoBehaviour
 
     public void CreateBoy(GameObject spawnLocation)
     {
-        Instantiate(BoyPrefab, spawnLocation.transform.position, new Quaternion(), null);
+        GameObject boy = Instantiate(BoyPrefab, spawnLocation.transform.position, new Quaternion(), null);
+
+        Boys.Add(boy);
     }
 }

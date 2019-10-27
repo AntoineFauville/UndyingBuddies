@@ -23,12 +23,9 @@ public class Survive : MonoBehaviour
     public BoyNeedState boyNeedState;
     public bool bushAround;
     public GameObject NeirbyBush;
-
-
+    
     void Start()
     {
-        food = MaxFood;
-
         foodLoss = Random.Range(foodLossPerTicMin, foodLossPerTicMax);
 
         foodFeedingSpeed = 5 * foodLoss;
@@ -79,6 +76,27 @@ public class Survive : MonoBehaviour
         Dead.SetActive(true);
 
         MovingBoy.Dead = true;
+
+        GameObject.Find("GameController").GetComponent<BoyFactory>().Boys.Remove(this.gameObject);
+    }
+
+    public bool LookAroundForOtherBoys()
+    {
+        bool aBoyAround = false;
+
+        foreach (var boy in GameObject.FindGameObjectsWithTag("Boy"))
+        {
+            if ((this.transform.position - boy.transform.position).magnitude < 2)
+            {
+                if(boyNeedState == BoyNeedState.EnoughtOfEverything && boy.GetComponent<Survive>().boyNeedState == BoyNeedState.EnoughtOfEverything)
+                {
+                    aBoyAround = true;
+                    return aBoyAround;
+                }
+            }
+        }
+
+        return aBoyAround;
     }
 
     IEnumerator waitToDie()

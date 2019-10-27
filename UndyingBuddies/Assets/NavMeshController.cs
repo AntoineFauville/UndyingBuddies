@@ -20,7 +20,7 @@ public class NavMeshController : MonoBehaviour
     IEnumerator BuildNavMeshEnsurer()
     {
         _navMeshSurface.BuildNavMesh();
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
         StartCoroutine(BuildNavMeshEnsurer());
     }
 }
