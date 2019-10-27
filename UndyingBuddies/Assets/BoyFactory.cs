@@ -9,6 +9,7 @@ public class BoyFactory : MonoBehaviour
     public GameObject BoyPrefab;
 
     public List<GameObject> Boys = new List<GameObject>();
+    private int boyName;
 
     void Start()
     {
@@ -21,6 +22,9 @@ public class BoyFactory : MonoBehaviour
     public void CreateBoy(GameObject spawnLocation)
     {
         GameObject boy = Instantiate(BoyPrefab, spawnLocation.transform.position, new Quaternion(), null);
+
+        boy.name = "Boy " + boyName;
+        boyName++;
 
         Boys.Add(boy);
     }

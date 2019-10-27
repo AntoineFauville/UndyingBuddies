@@ -13,6 +13,9 @@ public class BushFactory : MonoBehaviour
     [SerializeField] private float radius = 2;
     [SerializeField] private int MaxBushOnMap = 10;
 
+    [SerializeField] private float BushSpawnTimeMinimum = 1f;
+    [SerializeField] private float BushSpawnTimeMaxium = 2f;
+
     void Start()
     {
         for (int i = 0; i < BushLocation.Length; i++)
@@ -38,7 +41,7 @@ public class BushFactory : MonoBehaviour
 
     IEnumerator randomLifeCreator()
     {
-        yield return new WaitForSeconds(Random.Range(2, 5));
+        yield return new WaitForSeconds(Random.Range(BushSpawnTimeMinimum, BushSpawnTimeMaxium));
         if (Usables.Bush.Count < MaxBushOnMap)
         {
             CreateBush(Random.Range(0, BushLocation.Length));

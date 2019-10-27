@@ -23,6 +23,8 @@ public class Survive : MonoBehaviour
     public BoyNeedState boyNeedState;
     public bool bushAround;
     public GameObject NeirbyBush;
+
+    public List<GameObject> BoyList = new List<GameObject>();
     
     void Start()
     {
@@ -88,10 +90,13 @@ public class Survive : MonoBehaviour
         {
             if ((this.transform.position - boy.transform.position).magnitude < 2)
             {
-                if(boyNeedState == BoyNeedState.EnoughtOfEverything && boy.GetComponent<Survive>().boyNeedState == BoyNeedState.EnoughtOfEverything)
+                if (boy != this.gameObject)
                 {
-                    aBoyAround = true;
-                    return aBoyAround;
+                    if (boyNeedState == BoyNeedState.EnoughtOfEverything && boy.GetComponent<Survive>().boyNeedState == BoyNeedState.EnoughtOfEverything)
+                    {
+                        aBoyAround = true;
+                        return aBoyAround;
+                    }
                 }
             }
         }
@@ -99,8 +104,23 @@ public class Survive : MonoBehaviour
         return aBoyAround;
     }
 
+    void DebugLookAroundBoys()
+    {
+        BoyList.Clear();
+
+        foreach (var boy in GameObject.FindGameObjectsWithTag("Boy"))
+        {
+            if (boy != this.gameObject)
+            {
+                BoyList.Add(boy);
+            }
+        }
+    }
+
     IEnumerator waitToDie()
     {
+        DebugLookAroundBoys();
+
         if (!dieded)
         {
             food -= foodLoss;
@@ -124,13 +144,11 @@ public class Survive : MonoBehaviour
                         boyNeedState = BoyNeedState.EnoughtOfEverything;
                     else
                     {
-                        if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 2f)
+                        if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 4f)
                         {
                             Eat();
                         }
                     }
-
-
                     break;
             }
         }

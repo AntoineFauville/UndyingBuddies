@@ -727,7 +727,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -756,14 +756,15 @@ MonoBehaviour:
   Dead: {fileID: 5648652049489062822}
   dieded: 0
   MaxFood: 100
-  food: 50
-  foodLossPerTicMin: 0.5
+  food: 100
+  foodLossPerTicMin: 1
   foodLossPerTicMax: 3
-  FoodBoySated: 60
-  foodEatedEnoughState: 90
+  FoodBoySated: 50
+  foodEatedEnoughState: 70
   boyNeedState: 0
   bushAround: 0
   NeirbyBush: {fileID: 0}
+  BoyList: []
 --- !u!114 &5648652049483453633
 MonoBehaviour:
   m_ObjectHideFlags: 0
