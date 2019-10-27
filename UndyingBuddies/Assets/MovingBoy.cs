@@ -16,6 +16,8 @@ public class MovingBoy : MonoBehaviour
 
     public GameObject destinationToObjectif;
 
+    public bool RunAwayFromFire;
+
     void Start()
     {
         StartCoroutine(CheckWhatTheClosestAroundYouIs());
@@ -91,6 +93,35 @@ public class MovingBoy : MonoBehaviour
 
                 case BoyState.StandingStill:
                     anim.Play("ArmsNotMoving");
+                    break;
+
+                case BoyState.RunAway:
+                    //find a random spot 30 min max away
+                    if (!RunAwayFromFire)
+                    {
+                        RunAwayFromFire = true;
+
+                        GameObject destination = new GameObject();
+
+                        destination.transform.position = RandomNavmeshLocation(100);
+
+                        destinationToObjectif = destination;
+                    }
+                    
+                    anim.Play("Arms");
+
+
+                    if (destinationToObjectif != null)
+                    {
+                        if (Vector3.Distance(destinationToObjectif.transform.position, this.transform.position) > 2)
+                        {
+                            NavMeshAgent.SetDestination(destinationToObjectif.transform.position);
+                        }
+                        else
+                        {
+                            RunAwayFromFire = false;
+                        }
+                    }
                     break;
 
                 default:

@@ -31,6 +31,12 @@ public class PlaceWallPlayer : MonoBehaviour
                 {
                     StartCoroutine(CreateWallThenWait(hit.point, cubeOrientation));
                 }
+
+                if (hit.transform.tag == "Boy")
+                {
+                    StartCoroutine(SetBoyOnFire());
+                    hit.transform.GetComponent<Survive>().boyNeedState = BoyNeedState.RunToSurviveFire;
+                }
             }
         }
 
@@ -66,6 +72,15 @@ public class PlaceWallPlayer : MonoBehaviour
         _wallFactory.CreateWall(hit, cubeOrientation);
         cubeObject.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 100, 0.1f);
         yield return new WaitForSeconds(2f);
+        ableToSpawnAgain = false;
+        cubeObject.GetComponent<MeshRenderer>().material.color = new Color(0, 100, 0, 0.5f);
+    }
+
+    IEnumerator SetBoyOnFire()
+    {
+        ableToSpawnAgain = true;
+        cubeObject.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 100, 0.1f);
+        yield return new WaitForSeconds(4f);
         ableToSpawnAgain = false;
         cubeObject.GetComponent<MeshRenderer>().material.color = new Color(0, 100, 0, 0.5f);
     }

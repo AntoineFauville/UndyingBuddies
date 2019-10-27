@@ -199,7 +199,7 @@ GameObject:
   m_Layer: 0
   m_Name: BushLocations (4)
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -229,7 +229,7 @@ GameObject:
   m_Layer: 0
   m_Name: BoyLocation
   m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -445,6 +445,8 @@ MonoBehaviour:
     type: 3}
   radius: 10
   MaxBushOnMap: 30
+  BushSpawnTimeMinimum: 1
+  BushSpawnTimeMaxium: 2
 --- !u!114 &557333934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,6 +477,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boyFactory: {fileID: 557333934}
+  ReproductionSpeedMin: 1
+  ReproductionSpeedMax: 4
 --- !u!114 &557333936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,7 +587,7 @@ GameObject:
   m_Layer: 0
   m_Name: BushLocations (3)
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -766,7 +770,7 @@ GameObject:
   m_Layer: 0
   m_Name: BushLocations
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1096,7 +1100,7 @@ GameObject:
   m_Layer: 0
   m_Name: BushLocations (1)
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1450,7 +1454,7 @@ GameObject:
   m_Layer: 0
   m_Name: BushLocations (2)
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

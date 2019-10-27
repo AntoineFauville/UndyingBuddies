@@ -25,6 +25,9 @@ public class Survive : MonoBehaviour
     public GameObject NeirbyBush;
 
     public List<GameObject> BoyList = new List<GameObject>();
+
+    [SerializeField] private GameObject Fire;
+    [SerializeField] private bool fireActivation;
     
     void Start()
     {
@@ -35,6 +38,8 @@ public class Survive : MonoBehaviour
         StartCoroutine(waitToDie());
 
         MovingBoy.BoyState = BoyState.Idle;
+
+        Fire.SetActive(false);
 
         StartCoroutine(DebugCheckRestart());
     }
@@ -129,7 +134,7 @@ public class Survive : MonoBehaviour
             {
                 case BoyNeedState.EnoughtOfEverything:
                     MovingBoy.BoyState = BoyState.Idle;
-                    if (food < FoodBoySated)
+                    if (food < FoodBoySated && !fireActivation)
                     {
                         FindFood();
                     }
@@ -150,6 +155,17 @@ public class Survive : MonoBehaviour
                         }
                     }
                     break;
+
+                case BoyNeedState.RunToSurviveFire:
+                    MovingBoy.BoyState = BoyState.RunAway;
+                    food = 20;
+                    if (!fireActivation)
+                    {
+                        fireActivation = true;
+                        
+                        StartCoroutine(SetOnFireDispatch());
+                    }
+                    break;
             }
         }
 
@@ -164,12 +180,38 @@ public class Survive : MonoBehaviour
         StartCoroutine(waitToDie());
     }
 
+    void BurnAway()
+    {
+
+    }
+
     IEnumerator DebugCheckRestart()
     {
         MovingBoy.BoyState = BoyState.Idle;
         boyNeedState = BoyNeedState.EnoughtOfEverything;
 
         yield return new WaitForSeconds(10f);
+
+        //stop fire too
+        Fire.SetActive(false);
+
+        MovingBoy.BoyState = BoyState.Idle;
+        boyNeedState = BoyNeedState.EnoughtOfEverything;
+
+        fireActivation = false;
+
         StartCoroutine(DebugCheckRestart());
+    }
+
+    IEnumerator SetOnFireDispatch()
+    {
+        Fire.SetActive(true);
+        yield return new WaitForSeconds(7f);
+        Fire.SetActive(false);
+
+        MovingBoy.BoyState = BoyState.Idle;
+        boyNeedState = BoyNeedState.EnoughtOfEverything;
+
+        fireActivation = false;
     }
 }
