@@ -14,12 +14,18 @@ public class MovingBoy : MonoBehaviour
 
     public BoyState BoyState;
 
-    public GameObject destinationToObjectif;
+    [SerializeField] public GameObject destinationToObjectif;
 
     public bool RunAwayFromFire;
 
+    public UsableType typeOfUsableImLookingFor;
+
     void Start()
     {
+        FindClosestUsable(UsableType.Bush);
+        FindClosestUsable(UsableType.House);
+        FindClosestUsable(UsableType.Tree);
+
         StartCoroutine(CheckWhatTheClosestAroundYouIs());
     }
 
@@ -36,12 +42,23 @@ public class MovingBoy : MonoBehaviour
         return finalPosition;
     }
 
-    public void FindClosestUsable()
+    public void FindClosestUsable(UsableType usableType)
     {
         GameObject bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
-        foreach (GameObject potentialTarget in GameObject.Find("GameController").GetComponent<Usables>().Bush)
+        
+        List<GameObject> listToCheck;
+
+        if (usableType == UsableType.Bush)
+            listToCheck = GameObject.Find("GameController").GetComponent<Usables>().Bush;
+        else if (usableType == UsableType.House)
+            listToCheck = GameObject.Find("GameController").GetComponent<Usables>().House;
+        else 
+            listToCheck = GameObject.Find("GameController").GetComponent<Usables>().Tree;
+
+
+        foreach (GameObject potentialTarget in listToCheck)
         {
             Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
             float dSqrToTarget = directionToTarget.sqrMagnitude;
@@ -51,6 +68,13 @@ public class MovingBoy : MonoBehaviour
                 bestTarget = potentialTarget;
             }
         }
+
+        if (usableType == UsableType.Bush)
+            Survive.NeirbyBush = bestTarget;
+        else if (usableType == UsableType.House)
+            Survive.NeirbyHouse = bestTarget;
+        else
+            Survive.NeirbyTree = bestTarget;
 
         destinationToObjectif = bestTarget;
     }
@@ -136,7 +160,9 @@ public class MovingBoy : MonoBehaviour
 
     IEnumerator CheckWhatTheClosestAroundYouIs()
     {
-        FindClosestUsable();
+        FindClosestUsable(UsableType.Bush);
+        FindClosestUsable(UsableType.House);
+        FindClosestUsable(UsableType.Tree);
         yield return new WaitForSeconds(1f);
         StartCoroutine(CheckWhatTheClosestAroundYouIs());
     }

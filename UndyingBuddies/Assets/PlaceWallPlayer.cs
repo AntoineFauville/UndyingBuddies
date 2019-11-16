@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlaceWallPlayer : MonoBehaviour
 {
     [SerializeField] private WallFactory _wallFactory;
-    [SerializeField] private GameObject _cubePreviewPrefab;
+    [SerializeField] SettingsData _settingsData;
 
     private GameObject cubeObject;
     private Quaternion cubeOrientation;
@@ -14,7 +14,7 @@ public class PlaceWallPlayer : MonoBehaviour
 
     void Start()
     {
-        cubeObject = Instantiate(_cubePreviewPrefab);
+        cubeObject = Instantiate(_settingsData._cubePreviewPrefab);
         cubeObject.GetComponent<MeshRenderer>().material.color = new Color(0,100,0,0.5f);
     }
 

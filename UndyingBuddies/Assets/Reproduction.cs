@@ -12,9 +12,8 @@ public class Reproduction : MonoBehaviour
     //reproduce!
 
     [SerializeField] private BoyFactory _boyFactory;
-
-    [SerializeField] private float ReproductionSpeedMin = 1f;
-    [SerializeField] private float ReproductionSpeedMax = 4f;
+    
+    [SerializeField] SettingsData _settingsData;
 
     void Start()
     {
@@ -23,7 +22,7 @@ public class Reproduction : MonoBehaviour
 
     IEnumerator Reproduce()
     {
-        yield return new WaitForSeconds(Random.Range(ReproductionSpeedMin, ReproductionSpeedMax));
+        yield return new WaitForSeconds(Random.Range(_settingsData.ReproductionSpeedMin, _settingsData.ReproductionSpeedMax));
 
         GameObject randomBoy = _boyFactory.Boys[Random.Range(0, _boyFactory.Boys.Count)].gameObject;
 

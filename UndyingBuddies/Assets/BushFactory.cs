@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class BushFactory : MonoBehaviour
 {
+    [SerializeField] SettingsData _settingsData;
 
     [SerializeField] private GameObject[] BushLocation;
     [SerializeField] private Usables Usables;
-
-    [SerializeField] private BushLife BushlifePrefab;
-
-    [SerializeField] private float radius = 2;
-    [SerializeField] private int MaxBushOnMap = 10;
-
-    [SerializeField] private float BushSpawnTimeMinimum = 1f;
-    [SerializeField] private float BushSpawnTimeMaxium = 2f;
-
+    
     void Start()
     {
         for (int i = 0; i < BushLocation.Length; i++)
@@ -28,21 +21,21 @@ public class BushFactory : MonoBehaviour
 
     public BushLife CreateBush(int i)
     {
-        Vector3 randomAreaAroundPoint = new Vector3(Random.Range(0, radius), 0,Random.Range(0, radius));
+        Vector3 randomAreaAroundPoint = new Vector3(Random.Range(0, _settingsData.radius), 0,Random.Range(0, _settingsData.radius));
 
-        BushLife bushlif = Instantiate(BushlifePrefab, BushLocation[i].transform.position + randomAreaAroundPoint, new Quaternion(),null);
+        BushLife bushlif = Instantiate(_settingsData.BushlifePrefab, BushLocation[i].transform.position + randomAreaAroundPoint, new Quaternion(),null);
 
         Usables.Bush.Add(bushlif.gameObject);
 
-        bushlif.Setup(Usables);
+        bushlif.Setup(Usables, _settingsData.BushHealth);
 
         return bushlif;
     }
 
     IEnumerator randomLifeCreator()
     {
-        yield return new WaitForSeconds(Random.Range(BushSpawnTimeMinimum, BushSpawnTimeMaxium));
-        if (Usables.Bush.Count < MaxBushOnMap)
+        yield return new WaitForSeconds(Random.Range(_settingsData.BushSpawnTimeMinimum, _settingsData.BushSpawnTimeMaxium));
+        if (Usables.Bush.Count < _settingsData.MaxBushOnMap)
         {
             CreateBush(Random.Range(0, BushLocation.Length));
         }

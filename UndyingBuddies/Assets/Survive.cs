@@ -28,6 +28,12 @@ public class Survive : MonoBehaviour
 
     [SerializeField] private GameObject Fire;
     [SerializeField] private bool fireActivation;
+    public GameObject NeirbyHouse;
+    public GameObject NeirbyTree;
+    public int AmountOfWoodCarriedMax = 5;
+
+    [SerializeField] private int _woodAmount;
+    [SerializeField] private GameObject _woodLogBackPack;
     
     void Start()
     {
@@ -41,13 +47,22 @@ public class Survive : MonoBehaviour
 
         Fire.SetActive(false);
 
+        //SetupTreeAndHouse();
+
         StartCoroutine(DebugCheckRestart());
+    }
+
+    void SetupTreeAndHouse()
+    {
+        NeirbyHouse = GameObject.Find("GameController").GetComponent<Usables>().House[0];
+        NeirbyTree = GameObject.Find("GameController").GetComponent<Usables>().Tree[0];
     }
 
     void FindFood()
     {
         if (!dieded)
         {
+            MovingBoy.anim.Play("Arms");
             MovingBoy.BoyState = BoyState.FindingFood;
             boyNeedState = BoyNeedState.NeedFood;
         }
@@ -71,6 +86,61 @@ public class Survive : MonoBehaviour
             if (food >= MaxFood)
             {
                 food = MaxFood;
+            }
+        }
+    }
+
+    void VisualWood()
+    {
+        if (_woodAmount > 0)
+        {
+            _woodLogBackPack.SetActive(true);
+        }
+        else
+        {
+            _woodLogBackPack.SetActive(false);
+        }
+    }
+
+    void GetWood()
+    {
+        if (!dieded)
+        {
+            if (_woodAmount < AmountOfWoodCarriedMax)
+            {
+                _woodAmount++;
+            }
+            else
+            {
+                boyNeedState = BoyNeedState.EnoughtOfEverything;
+                MovingBoy.BoyState = BoyState.Idle;
+            }
+
+            if (_woodAmount >= AmountOfWoodCarriedMax)
+            {
+                _woodAmount = AmountOfWoodCarriedMax;
+            }
+        }
+    }
+
+    void GiveWood()
+    {
+        if (!dieded)
+        {
+            if (_woodAmount > 0)
+            {
+                _woodAmount--;
+                NeirbyHouse.GetComponent<House>().AddWoodToBuilding(1);
+            }
+            else
+            {
+                boyNeedState = BoyNeedState.EnoughtOfEverything;
+                MovingBoy.BoyState = BoyState.Idle;
+            }
+
+            if (_woodAmount <= 0)
+            {
+                _woodAmount = 0;
             }
         }
     }
@@ -124,6 +194,10 @@ public class Survive : MonoBehaviour
 
     IEnumerator waitToDie()
     {
+        VisualWood();
+
+        yield return new WaitForSeconds(0.1f);
+
         DebugLookAroundBoys();
 
         if (!dieded)
@@ -133,23 +207,71 @@ public class Survive : MonoBehaviour
             switch (boyNeedState)
             {
                 case BoyNeedState.EnoughtOfEverything:
-                    MovingBoy.BoyState = BoyState.Idle;
+                    
                     if (food < FoodBoySated && !fireActivation)
                     {
                         FindFood();
                     }
+
+                    //build a house
+                    //find nearest wood, if not null
+                    //get wood
+                    //when enough wood,
+                    //go to house and deposit
+                    //loop if 
+
+                    if (GameObject.Find("GameController").GetComponent<Usables>().House.Count == 0)
+                    {
+                        MovingBoy.BoyState = BoyState.Idle;
+                        yield return 0;
+                        break;
+                    }
+                    else
+                    {
+                        if (_woodAmount < AmountOfWoodCarriedMax)
+                        {
+                            MovingBoy.destinationToObjectif = NeirbyTree;
+                            MovingBoy.BoyState = BoyState.WalkingToObjectif;
+                            MovingBoy.typeOfUsableImLookingFor = UsableType.Tree;
+
+                            if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 5f)
+                            {
+                                GetWood();
+                            }
+
+                            break;
+                        }
+
+                        if (_woodAmount >= AmountOfWoodCarriedMax)
+                        {
+                            MovingBoy.destinationToObjectif = NeirbyHouse;
+                            MovingBoy.BoyState = BoyState.WalkingToObjectif;
+                            MovingBoy.typeOfUsableImLookingFor = UsableType.House;
+
+                            if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 5f)
+                            {
+                                GiveWood();
+                            }
+
+                            break;
+                        }
+                    }
+
                     break;
 
                 case BoyNeedState.NeedFood:
                     //eat if available bush around him
                     //then when enought go back to idle and wondering around
-                    NeirbyBush = MovingBoy.destinationToObjectif;
+                    MovingBoy.typeOfUsableImLookingFor = UsableType.Bush;
+                    MovingBoy.destinationToObjectif = NeirbyBush;
+                    MovingBoy.BoyState = BoyState.WalkingToObjectif;
+                    
 
                     if (NeirbyBush == null || MovingBoy.destinationToObjectif == null)
                         boyNeedState = BoyNeedState.EnoughtOfEverything;
                     else
                     {
-                        if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 4f)
+                        if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 2f)
                         {
                             Eat();
                         }
@@ -166,6 +288,7 @@ public class Survive : MonoBehaviour
                         StartCoroutine(SetOnFireDispatch());
                     }
                     break;
+                    
             }
         }
 

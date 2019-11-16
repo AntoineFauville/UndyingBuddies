@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class BushLife : MonoBehaviour
 {
-    [SerializeField] private float health = 50;
+    [SerializeField] private float health;
 
     private Usables usables;
 
-    public void Setup(Usables usable)
+    public void Setup(Usables usable, float bushHealth)
     {
         usables = usable;
+
+        health = bushHealth;
     }
 
     public void ReduceLife(float amount)

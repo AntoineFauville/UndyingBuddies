@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class BoyFactory : MonoBehaviour
 {
-    public int BoyAmount = 5;
+    [SerializeField] SettingsData _settingsData;
     public GameObject BoySpawningPlace;
-    public GameObject BoyPrefab;
 
     public List<GameObject> Boys = new List<GameObject>();
     private int boyName;
 
     void Start()
     {
-        for (int i = 0; i < BoyAmount; i++)
+        for (int i = 0; i < _settingsData.BoyAmount; i++)
         {
             CreateBoy(BoySpawningPlace);
         }
@@ -21,7 +20,7 @@ public class BoyFactory : MonoBehaviour
 
     public void CreateBoy(GameObject spawnLocation)
     {
-        GameObject boy = Instantiate(BoyPrefab, spawnLocation.transform.position, new Quaternion(), null);
+        GameObject boy = Instantiate(_settingsData.BoyPrefab, spawnLocation.transform.position, new Quaternion(), null);
 
         boy.name = "Boy " + boyName;
         boyName++;
