@@ -61,7 +61,7 @@ public class PlaceWallPlayer : MonoBehaviour
             }
         }
 
-        cubeObject.transform.Rotate(new Vector3(0,-1,0));
+        //cubeObject.transform.Rotate(new Vector3(0,-1,0));
 
         cubeOrientation = cubeObject.transform.rotation;
     }

@@ -154,7 +154,14 @@ public class Survive : MonoBehaviour
 
         MovingBoy.Dead = true;
 
+        _woodAmount = 0;
+
         GameObject.Find("GameController").GetComponent<BoyFactory>().Boys.Remove(this.gameObject);
+
+        MovingBoy.enabled = false;
+        this.enabled = false;
+
+        this.GetComponent<CapsuleCollider>().isTrigger = true;
     }
 
     public bool LookAroundForOtherBoys()

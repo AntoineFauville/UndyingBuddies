@@ -12,26 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9667cbb91c2dd84468c65e6c62c1f84c, type: 3}
   m_Name: Settings Data
   m_EditorClassIdentifier: 
-  BoyAmount: 5
+  BoyAmount: 10
   BoyPrefab: {fileID: 5648652049483453636, guid: 1205bf39e80b7d5408d88c8161029c55,
     type: 3}
   BushlifePrefab: {fileID: 4538332670230476320, guid: 2fa4f390efbeeab4a994410a04d3e1cb,
     type: 3}
-  BushHealth: 50
-  radius: 0.2
-  MaxBushOnMap: 10
+  BushHealth: 200
+  radius: 10
+  MaxBushOnMap: 20
   BushSpawnTimeMinimum: 1
   BushSpawnTimeMaxium: 2
   BoyAmountToLoose: 30
   ReproductionSpeedMin: 1
-  ReproductionSpeedMax: 4
-  PrefabWall: {fileID: 4711305008127796432, guid: 9b85203649b343548b3f17177186c2cd,
+  ReproductionSpeedMax: 2
+  PrefabWall: {fileID: 6348886312986534583, guid: 14a5602658540f7488d7eb3ca1c25425,
     type: 3}
-  _cubePreviewPrefab: {fileID: 3504427400074103751, guid: f688c258a60459b44bf8ad91c9ad3b22,
+  _cubePreviewPrefab: {fileID: 5924142983344496631, guid: fccf759084a675e4c8f3cd696d6a61d8,
     type: 3}
   WoodHouse: {fileID: 2169265290850326029, guid: 20157465b7797e24b869804fb2dedbd9,
     type: 3}
-  woodNeedToFinishHouse: 50
+  woodNeedToFinishHouse: 200
   woodGetSpeed: 1
   woodForFirstStateOfHouse: 10
   woodForSecondStateOfHouse: 20
