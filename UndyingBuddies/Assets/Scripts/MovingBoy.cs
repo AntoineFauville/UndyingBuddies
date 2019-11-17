@@ -15,6 +15,7 @@ public class MovingBoy : MonoBehaviour
     public BoyState BoyState;
 
     [SerializeField] public GameObject destinationToObjectif;
+    GameObject destinationToRunAwayFromFireTo;
 
     public bool RunAwayFromFire;
 
@@ -121,17 +122,22 @@ public class MovingBoy : MonoBehaviour
 
                 case BoyState.RunAway:
                     //find a random spot 30 min max away
+
+
+
                     if (!RunAwayFromFire)
                     {
                         RunAwayFromFire = true;
 
-                        GameObject destination = new GameObject();
+                        GameObject newPosGameObject = new GameObject();
 
-                        destination.transform.position = RandomNavmeshLocation(100);
+                        newPosGameObject.transform.position = RandomNavmeshLocation(30);
 
-                        destinationToObjectif = destination;
+                        destinationToRunAwayFromFireTo = newPosGameObject;
                     }
-                    
+
+                    destinationToObjectif = destinationToRunAwayFromFireTo;
+
                     anim.Play("Arms");
 
 

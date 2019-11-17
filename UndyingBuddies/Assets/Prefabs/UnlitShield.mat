@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PreviewWAll
+  m_Name: UnlitShield
   m_Shader: {fileID: 4800000, guid: 5faadfe925ad93f4e8096979aae6433f, type: 3}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -57,35 +57,28 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _ColorMask: 15
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _Distort: 1
-    - _DstBlend: 10
-    - _Fresnel: 1
-    - _FresnelWidth: 3
+    - _Distort: 0
+    - _DstBlend: 0
+    - _Fresnel: 3.9
+    - _FresnelWidth: 0.26
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _IntersectionThreshold: 0.09
+    - _IntersectionThreshold: 0
     - _Metallic: 0
-    - _Mode: 3
+    - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ScrollSpeedU: 2
-    - _ScrollSpeedV: 0
+    - _ScrollSpeedU: 5.63
+    - _ScrollSpeedV: 7.06
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
     - _UVSec: 0
-    - _UseUIAlphaClip: 0
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.42745098, b: 0, a: 0.42745098}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 0.7264151, g: 0.68872374, b: 0.68872374, a: 1}
+    - _MainColor: {r: 0.13510145, g: 0.40366283, b: 0.41509432, a: 1}

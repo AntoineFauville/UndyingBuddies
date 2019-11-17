@@ -32,7 +32,7 @@ public class Survive : MonoBehaviour
     public GameObject NeirbyTree;
     public int AmountOfWoodCarriedMax = 5;
 
-    [SerializeField] private int _woodAmount;
+    public int WoodAmount;
     [SerializeField] private GameObject _woodLogBackPack;
     
     void Start()
@@ -92,7 +92,7 @@ public class Survive : MonoBehaviour
 
     void VisualWood()
     {
-        if (_woodAmount > 0)
+        if (WoodAmount > 0)
         {
             _woodLogBackPack.SetActive(true);
         }
@@ -106,9 +106,9 @@ public class Survive : MonoBehaviour
     {
         if (!dieded)
         {
-            if (_woodAmount < AmountOfWoodCarriedMax)
+            if (WoodAmount < AmountOfWoodCarriedMax)
             {
-                _woodAmount++;
+                WoodAmount++;
             }
             else
             {
@@ -116,9 +116,9 @@ public class Survive : MonoBehaviour
                 MovingBoy.BoyState = BoyState.Idle;
             }
 
-            if (_woodAmount >= AmountOfWoodCarriedMax)
+            if (WoodAmount >= AmountOfWoodCarriedMax)
             {
-                _woodAmount = AmountOfWoodCarriedMax;
+                WoodAmount = AmountOfWoodCarriedMax;
             }
         }
     }
@@ -127,9 +127,9 @@ public class Survive : MonoBehaviour
     {
         if (!dieded)
         {
-            if (_woodAmount > 0)
+            if (WoodAmount > 0)
             {
-                _woodAmount--;
+                WoodAmount--;
                 NeirbyHouse.GetComponent<House>().AddWoodToBuilding(1);
             }
             else
@@ -138,9 +138,9 @@ public class Survive : MonoBehaviour
                 MovingBoy.BoyState = BoyState.Idle;
             }
 
-            if (_woodAmount <= 0)
+            if (WoodAmount <= 0)
             {
-                _woodAmount = 0;
+                WoodAmount = 0;
             }
         }
     }
@@ -154,14 +154,16 @@ public class Survive : MonoBehaviour
 
         MovingBoy.Dead = true;
 
-        _woodAmount = 0;
+        WoodAmount = 0;
 
-        GameObject.Find("GameController").GetComponent<BoyFactory>().Boys.Remove(this.gameObject);
+        GameObject.Find("GameController").GetComponent<BoyFactory>().TotalOfTheBoys.Remove(this.gameObject);
 
         MovingBoy.enabled = false;
         this.enabled = false;
 
         this.GetComponent<CapsuleCollider>().isTrigger = true;
+        this.GetComponent<NavMeshController>().enabled = false;
+        this.GetComponent<Rigidbody>().isKinematic = false;
     }
 
     public bool LookAroundForOtherBoys()
@@ -196,6 +198,15 @@ public class Survive : MonoBehaviour
             {
                 BoyList.Add(boy);
             }
+        }
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.tag == "FireZone")
+        {
+            print("in fire zone");
+            boyNeedState = BoyNeedState.RunToSurviveFire;
         }
     }
 
@@ -235,7 +246,7 @@ public class Survive : MonoBehaviour
                     }
                     else
                     {
-                        if (_woodAmount < AmountOfWoodCarriedMax)
+                        if (WoodAmount < AmountOfWoodCarriedMax)
                         {
                             MovingBoy.destinationToObjectif = NeirbyTree;
                             MovingBoy.BoyState = BoyState.WalkingToObjectif;
@@ -249,7 +260,7 @@ public class Survive : MonoBehaviour
                             break;
                         }
 
-                        if (_woodAmount >= AmountOfWoodCarriedMax)
+                        if (WoodAmount >= AmountOfWoodCarriedMax)
                         {
                             MovingBoy.destinationToObjectif = NeirbyHouse;
                             MovingBoy.BoyState = BoyState.WalkingToObjectif;
@@ -336,7 +347,7 @@ public class Survive : MonoBehaviour
     IEnumerator SetOnFireDispatch()
     {
         Fire.SetActive(true);
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(5f);
         Fire.SetActive(false);
 
         MovingBoy.BoyState = BoyState.Idle;

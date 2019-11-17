@@ -21,9 +21,13 @@ public class SettingsData : ScriptableObject
 
     public float ReproductionSpeedMin = 1f;
     public float ReproductionSpeedMax = 4f;
+    public float ReproductionByDefaultTime = 5f;
 
     public Wall PrefabWall;
     public GameObject _cubePreviewPrefab;
+    public GameObject _BlackStainsPrefab;
+    public GameObject DeamonPreview;
+    public GameObject Deamon;
 
     public GameObject WoodHouse;
     public int woodNeedToFinishHouse;
@@ -32,4 +36,6 @@ public class SettingsData : ScriptableObject
     public int woodForFirstStateOfHouse = 10;
     public int woodForSecondStateOfHouse = 20;
     public int woodForThirdStateOfHouse = 30;
+
+    public int houseNeededToWin = 1;
 }

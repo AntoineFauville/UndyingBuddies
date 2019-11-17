@@ -23,16 +23,23 @@ MonoBehaviour:
   BushSpawnTimeMinimum: 1
   BushSpawnTimeMaxium: 2
   BoyAmountToLoose: 30
-  ReproductionSpeedMin: 1
-  ReproductionSpeedMax: 2
+  ReproductionSpeedMin: 0.2
+  ReproductionSpeedMax: 1
+  ReproductionByDefaultTime: 3
   PrefabWall: {fileID: 6348886312986534583, guid: 14a5602658540f7488d7eb3ca1c25425,
     type: 3}
   _cubePreviewPrefab: {fileID: 5924142983344496631, guid: fccf759084a675e4c8f3cd696d6a61d8,
     type: 3}
+  _BlackStainsPrefab: {fileID: 5161013285335528946, guid: 14cf7b230ce44914984c10662325de8e,
+    type: 3}
+  DeamonPreview: {fileID: 8017536168314748677, guid: 33d581ad567734e4d838c8aa3a0a829b,
+    type: 3}
+  Deamon: {fileID: 6454765321162035730, guid: b11f0eaaa40b4e8479569eef31d05ba9, type: 3}
   WoodHouse: {fileID: 2169265290850326029, guid: 20157465b7797e24b869804fb2dedbd9,
     type: 3}
-  woodNeedToFinishHouse: 200
+  woodNeedToFinishHouse: 50
   woodGetSpeed: 1
   woodForFirstStateOfHouse: 10
   woodForSecondStateOfHouse: 20
   woodForThirdStateOfHouse: 30
+  houseNeededToWin: 1

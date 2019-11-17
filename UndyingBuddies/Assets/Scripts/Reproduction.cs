@@ -18,13 +18,14 @@ public class Reproduction : MonoBehaviour
     void Start()
     {
         StartCoroutine(Reproduce());
+        StartCoroutine(DefaultGeneration());
     }
 
     IEnumerator Reproduce()
     {
         yield return new WaitForSeconds(Random.Range(_settingsData.ReproductionSpeedMin, _settingsData.ReproductionSpeedMax));
 
-        GameObject randomBoy = _boyFactory.Boys[Random.Range(0, _boyFactory.Boys.Count)].gameObject;
+        GameObject randomBoy = _boyFactory.TotalOfTheBoys[Random.Range(0, _boyFactory.TotalOfTheBoys.Count)].gameObject;
 
         if (randomBoy.GetComponent<Survive>().LookAroundForOtherBoys() == true)
         {
@@ -32,5 +33,14 @@ public class Reproduction : MonoBehaviour
         }
         
         StartCoroutine(Reproduce());
+    }
+
+    IEnumerator DefaultGeneration()
+    {
+        yield return new WaitForSeconds(_settingsData.ReproductionByDefaultTime);
+
+        _boyFactory.CreateBoy(GameObject.FindGameObjectWithTag("House"));
+
+        StartCoroutine(DefaultGeneration());
     }
 }

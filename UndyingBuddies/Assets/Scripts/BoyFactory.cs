@@ -5,16 +5,16 @@ using UnityEngine;
 public class BoyFactory : MonoBehaviour
 {
     [SerializeField] SettingsData _settingsData;
-    public GameObject BoySpawningPlace;
+    public GameObject[] BoySpawningPlace;
 
-    public List<GameObject> Boys = new List<GameObject>();
+    public List<GameObject> TotalOfTheBoys = new List<GameObject>();
     private int boyName;
 
     void Start()
     {
         for (int i = 0; i < _settingsData.BoyAmount; i++)
         {
-            CreateBoy(BoySpawningPlace);
+            CreateBoy(BoySpawningPlace[Random.Range(0,BoySpawningPlace.Length)]);
         }
     }
 
@@ -25,6 +25,6 @@ public class BoyFactory : MonoBehaviour
         boy.name = "Boy " + boyName;
         boyName++;
 
-        Boys.Add(boy);
+        TotalOfTheBoys.Add(boy);
     }
 }
