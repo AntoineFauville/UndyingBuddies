@@ -125,12 +125,14 @@ public class PlaceWallPlayer : MonoBehaviour
         firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 100, 0.1f);
         firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 100, 0.1f);
 
-        for (float i = 0; i < 5; i++) // 5 sec
+        for (float i = 0; i < 3; i++) // 3 sec
         {
             yield return new WaitForSeconds(1f);//1 each time
-            debugToShowCoolDownOfSpell.fillAmount = 1 - (float)i / 5;
+            debugToShowCoolDownOfSpell.fillAmount = 1 - (float)i / 3;
         }
         debugToShowCoolDownOfSpell.fillAmount = 0;
+
+        anim.Play("hand anim cooldownn recover");
 
         ableToSpawnAgain = false;
         firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 100, 0, 0.5f);
