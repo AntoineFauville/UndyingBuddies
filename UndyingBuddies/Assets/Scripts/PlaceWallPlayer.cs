@@ -18,6 +18,8 @@ public class PlaceWallPlayer : MonoBehaviour
 
     [SerializeField] private Image debugToShowCoolDownOfSpell;
 
+    [SerializeField] private Animator anim;
+
     void Start()
     {
         firePreview = Instantiate(_settingsData._cubePreviewPrefab);
@@ -113,11 +115,11 @@ public class PlaceWallPlayer : MonoBehaviour
 
         if (state == 0)
         {
-            _wallFactory.CreateFire(hit, cubeOrientation);
+            StartCoroutine(waitforFire(hit));
         }
         else if (state == 1)
         {
-            _wallFactory.CreateDeamon(hit, cubeOrientation);
+            StartCoroutine(waitforInvoke(hit));
         }
 
         firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 100, 0.1f);
@@ -145,4 +147,19 @@ public class PlaceWallPlayer : MonoBehaviour
     //    firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 100, 0, 0.5f);
     //    firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 100, 0.1f);
     //}
+
+    IEnumerator waitforFire(Vector3 hit)
+    {
+        anim.Play("hand anim fire");
+        yield return new WaitForSeconds(0.2f);
+        _wallFactory.CreateFire(hit, cubeOrientation);
+    }
+
+    IEnumerator waitforInvoke(Vector3 hit)
+    {
+        anim.Play("hand anim invoke");
+        yield return new WaitForSeconds(0.3f);
+         _wallFactory.CreateDeamon(hit, cubeOrientation);
+        
+    }
 }

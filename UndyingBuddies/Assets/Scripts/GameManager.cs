@@ -32,12 +32,12 @@ public class GameManager : MonoBehaviour
 
         countdownText.text = timeRemaining.ToString();
 
-        TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count + " / " + _settingsData.BoyAmountToLoose;
+        TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
     }
 
     void Update()
     {
-        TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count + " / " + _settingsData.BoyAmountToLoose;
+        TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
 
         countdownText.text = timeRemaining.ToString();
 
