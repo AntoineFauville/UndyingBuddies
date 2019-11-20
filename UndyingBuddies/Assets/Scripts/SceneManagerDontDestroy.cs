@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneManagerDontDestroy : MonoBehaviour
 {
+    [SerializeField] private Text textSceneDebug;
+
     int scene;
 
     void Start()
@@ -12,11 +15,15 @@ public class SceneManagerDontDestroy : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         LoadScene();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        
+        textSceneDebug.text = SceneManager.GetActiveScene().name;
+
+        if (Input.GetButtonDown("Cancel"))
+        {
+            Application.Quit();
+        }
     }
 
     public void LoadScene()
