@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Survive : MonoBehaviour
 {
@@ -162,7 +163,7 @@ public class Survive : MonoBehaviour
         this.enabled = false;
 
         this.GetComponent<CapsuleCollider>().isTrigger = true;
-        this.GetComponent<NavMeshController>().enabled = false;
+        this.GetComponent<NavMeshAgent>().enabled = false;
         this.GetComponent<Rigidbody>().isKinematic = false;
     }
 
@@ -205,7 +206,7 @@ public class Survive : MonoBehaviour
     {
         if (collider.gameObject.tag == "FireZone")
         {
-            print("in fire zone");
+            //print("in fire zone");
             boyNeedState = BoyNeedState.RunToSurviveFire;
         }
     }
@@ -252,9 +253,14 @@ public class Survive : MonoBehaviour
                             MovingBoy.BoyState = BoyState.WalkingToObjectif;
                             MovingBoy.typeOfUsableImLookingFor = UsableType.Tree;
 
-                            if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 5f)
+                            if (NeirbyTree == null || MovingBoy.destinationToObjectif == null)
+                                boyNeedState = BoyNeedState.EnoughtOfEverything;
+                            else
                             {
-                                GetWood();
+                                if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 5f)
+                                {
+                                    GetWood();
+                                }
                             }
 
                             break;
@@ -266,9 +272,14 @@ public class Survive : MonoBehaviour
                             MovingBoy.BoyState = BoyState.WalkingToObjectif;
                             MovingBoy.typeOfUsableImLookingFor = UsableType.House;
 
-                            if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 5f)
+                            if (NeirbyHouse == null || MovingBoy.destinationToObjectif == null)
+                                boyNeedState = BoyNeedState.EnoughtOfEverything;
+                            else
                             {
-                                GiveWood();
+                                if (Vector3.Distance(MovingBoy.destinationToObjectif.transform.position, this.transform.position) <= 5f)
+                                {
+                                    GiveWood();
+                                }
                             }
 
                             break;

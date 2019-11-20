@@ -37,5 +37,5 @@ public class SettingsData : ScriptableObject
     public int woodForSecondStateOfHouse = 20;
     public int woodForThirdStateOfHouse = 30;
 
-    public int houseNeededToWin = 1;
+    //public int houseNeededToWin = 1;
 }

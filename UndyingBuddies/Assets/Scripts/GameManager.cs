@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -23,8 +23,15 @@ public class GameManager : MonoBehaviour
     public bool isCountingDown = false;
     [SerializeField] private Text countdownText;
 
+    [SerializeField] private int houseNeededToWinTheGame;
+    public int BoyAmount;
+
+    private SceneManagerDontDestroy SceneManagerDontDestroy;
+
     void Start()
     {
+        SceneManagerDontDestroy = GameObject.Find("SceneManager").GetComponent<SceneManagerDontDestroy>();
+
         LoosePanel.SetActive(false);
         WinPanel.SetActive(false);
 
@@ -39,7 +46,7 @@ public class GameManager : MonoBehaviour
     {
         TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
 
-        countdownText.text = timeRemaining.ToString();
+        countdownText.text = "Time to win : " + timeRemaining.ToString();
 
         //CheckWinOrLooseWithAmountOfBoys();
         CheckWinOrLooseWithHouseBuildinng();
@@ -63,7 +70,7 @@ public class GameManager : MonoBehaviour
 
     void CheckWinOrLooseWithHouseBuildinng()
     {
-        if (amountOfFinishedHouse == _settingsData.houseNeededToWin)
+        if (amountOfFinishedHouse == houseNeededToWinTheGame)
         {
             LoosePanel.SetActive(true);
             StartCoroutine(waitToLaunchAgain());
@@ -111,6 +118,6 @@ public class GameManager : MonoBehaviour
     IEnumerator waitToLaunchAgain()
     {
         yield return new WaitForSeconds(4f);
-        SceneManager.LoadScene(0);
+        SceneManagerDontDestroy.LoadScene();
     }
 }

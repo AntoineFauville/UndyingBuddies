@@ -57,7 +57,7 @@ public class MovingBoy : MonoBehaviour
             listToCheck = GameObject.Find("GameController").GetComponent<Usables>().House;
         else 
             listToCheck = GameObject.Find("GameController").GetComponent<Usables>().Tree;
-
+        
 
         foreach (GameObject potentialTarget in listToCheck)
         {
@@ -86,6 +86,16 @@ public class MovingBoy : MonoBehaviour
         if (!Dead)
         {
             if (GameObject.Find("GameController").GetComponent<Usables>().Bush.Count <= 0)
+            {
+                BoyState = BoyState.Idle;
+            }
+
+            if (GameObject.Find("GameController").GetComponent<Usables>().Tree.Count <= 0)
+            {
+                BoyState = BoyState.Idle;
+            }
+
+            if (GameObject.Find("GameController").GetComponent<Usables>().House.Count <= 0)
             {
                 BoyState = BoyState.Idle;
             }

@@ -13,24 +13,23 @@ public class PlaceWallPlayer : MonoBehaviour
     private Quaternion cubeOrientation;
 
     private bool ableToSpawnAgain;
+    private bool canPlayF;
 
     private int state;
 
-    [SerializeField] private Image debugToShowCoolDownOfSpell;
+    //[SerializeField] private Image debugToShowCoolDownOfSpell;
 
     [SerializeField] private Animator anim;
 
     void Start()
     {
         firePreview = Instantiate(_settingsData._cubePreviewPrefab);
-        firePreview.GetComponent<MeshRenderer>().material.color = new Color(0,100,0,0.5f);
         firePreview.SetActive(false);
 
         deamonPreview = Instantiate(_settingsData.DeamonPreview);
-        deamonPreview.GetComponent<MeshRenderer>().material.color = new Color(0, 100, 0, 0.5f);
         deamonPreview.SetActive(false);
 
-        debugToShowCoolDownOfSpell.fillAmount = 0;
+        //debugToShowCoolDownOfSpell.fillAmount = 0;
     }
 
     public void SwitchState(int states)
@@ -50,6 +49,10 @@ public class PlaceWallPlayer : MonoBehaviour
                 break;
         }
 
+        if (Input.GetMouseButtonDown(0) && canPlayF)
+        {
+            anim.Play("hand anim whilecooldown F");
+        }
 
         if (Input.GetMouseButtonDown(0) && !ableToSpawnAgain)
         {
@@ -109,7 +112,7 @@ public class PlaceWallPlayer : MonoBehaviour
 
     IEnumerator CreateWallThenWait(Vector3 hit, Quaternion cubeOrientation)
     {
-        debugToShowCoolDownOfSpell.fillAmount = 1;
+        //debugToShowCoolDownOfSpell.fillAmount = 1;
 
         ableToSpawnAgain = true;
 
@@ -121,22 +124,21 @@ public class PlaceWallPlayer : MonoBehaviour
         {
             StartCoroutine(waitforInvoke(hit));
         }
+        
+        yield return new WaitForSeconds(1f);
 
-        firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 100, 0.1f);
-        firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 100, 0.1f);
+        canPlayF = true;
 
-        for (float i = 0; i < 3; i++) // 3 sec
-        {
-            yield return new WaitForSeconds(1f);//1 each time
-            debugToShowCoolDownOfSpell.fillAmount = 1 - (float)i / 3;
-        }
-        debugToShowCoolDownOfSpell.fillAmount = 0;
+        yield return new WaitForSeconds(1f);
+
+        canPlayF = false;
+
+        yield return new WaitForSeconds(1f);
 
         anim.Play("hand anim cooldownn recover");
 
         ableToSpawnAgain = false;
-        firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 100, 0, 0.5f);
-        firePreview.GetComponent<MeshRenderer>().material.color = new Color(0, 0, 100, 0.1f);
+       
     }
 
     //IEnumerator SetBoyOnFire()
