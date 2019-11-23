@@ -17,12 +17,25 @@ public class PlaceWallPlayer : MonoBehaviour
 
     private int state;
 
+    private bool _stateOfHoldingMouse;
+    private bool _launchOnceCoroutine;
+    [SerializeField] private Canvas HideShowPanel;
+    private bool _holding;
+
+    [SerializeField] private GameObject ImageSpell0;
+    [SerializeField] private GameObject ImageSpell1;
+
     //[SerializeField] private Image debugToShowCoolDownOfSpell;
 
     [SerializeField] private Animator anim;
+    [SerializeField] private Animator animCamera;
 
     void Start()
     {
+        animCamera.Play("camMovementDEZoom");
+
+        HideShowPanel.enabled = false;
+
         firePreview = Instantiate(_settingsData._cubePreviewPrefab);
         firePreview.SetActive(false);
 
@@ -43,18 +56,22 @@ public class PlaceWallPlayer : MonoBehaviour
         {
             case 0: // invoke fire
                 ShowCube(0);
+                ImageSpell0.SetActive(true);
+                ImageSpell1.SetActive(false);
                 break;
             case 1: // invoke deamon
                 ShowCube(1);
+                ImageSpell0.SetActive(false);
+                ImageSpell1.SetActive(true);
                 break;
         }
 
-        if (Input.GetMouseButtonDown(0) && canPlayF)
+        if (Input.GetMouseButtonUp(0) && canPlayF && !_stateOfHoldingMouse)
         {
             anim.Play("hand anim whilecooldown F");
         }
 
-        if (Input.GetMouseButtonDown(0) && !ableToSpawnAgain)
+        if (Input.GetMouseButtonUp(0) && !ableToSpawnAgain && !_stateOfHoldingMouse)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -74,7 +91,34 @@ public class PlaceWallPlayer : MonoBehaviour
             }
         }
 
-       
+        if (Input.GetMouseButtonUp(0))
+        {
+            StartCoroutine(removePanel());
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            _holding = true;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            if (!_launchOnceCoroutine)
+            {
+                _launchOnceCoroutine = true;
+                StartCoroutine(holdingLongEnough());
+            }
+        }
+
+        if (_stateOfHoldingMouse)
+        {
+            HideShowPanel.enabled = true;
+        }
+        else if (!_stateOfHoldingMouse)
+        {
+            HideShowPanel.enabled = false;
+        }
+
     }
 
     void ShowCube(int show)
@@ -84,7 +128,7 @@ public class PlaceWallPlayer : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.transform.tag == "Floor")
+            if (hit.transform.tag == "Floor" && !_stateOfHoldingMouse)
             {
                 if (show == 0)
                 {
@@ -165,5 +209,29 @@ public class PlaceWallPlayer : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
          _wallFactory.CreateDeamon(hit, cubeOrientation);
         
+    }
+
+    IEnumerator holdingLongEnough()
+    {
+        yield return new WaitForSeconds(0.35f);
+        if (_holding)
+        {
+            _stateOfHoldingMouse = true;
+            animCamera.Play("camMovementZoom");
+            yield return new WaitForSeconds(0.15f);
+            Time.timeScale = 0.3f;
+        }
+    }
+
+    IEnumerator removePanel()
+    {
+        Time.timeScale = 1f;
+        animCamera.Play("camMovementDEZoom");
+
+        yield return new WaitForSeconds(0.05f);
+
+        _holding = false;
+        _launchOnceCoroutine = false;
+        _stateOfHoldingMouse = false;
     }
 }
