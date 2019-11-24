@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     public int duration = 5;
     public int timeRemaining;
+    private int timeRemainingAtStart;
     public bool isCountingDown = false;
     [SerializeField] private Text countdownText;
 
@@ -27,6 +28,9 @@ public class GameManager : MonoBehaviour
     public int BoyAmount;
 
     private SceneManagerDontDestroy SceneManagerDontDestroy;
+
+    [SerializeField] private Image[] _pentacle;
+    [SerializeField] private Image _pentacleUI;
 
     void Start()
     {
@@ -40,10 +44,18 @@ public class GameManager : MonoBehaviour
         countdownText.text = timeRemaining.ToString();
 
         TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
+
+        for (int i = 0; i < _pentacle.Length; i++)
+        {
+            _pentacle[i].fillAmount = 0;
+        }
+        _pentacleUI.fillAmount = 0;
     }
 
     void Update()
     {
+        
+
         TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
 
         countdownText.text = "Time to win : " + timeRemaining.ToString();
@@ -89,6 +101,9 @@ public class GameManager : MonoBehaviour
         {
             isCountingDown = true;
             timeRemaining = duration;
+
+            timeRemainingAtStart = timeRemaining;
+
             Invoke("_tick", 1f);
         }
     }
@@ -98,6 +113,12 @@ public class GameManager : MonoBehaviour
         timeRemaining--;
         if (timeRemaining > 0)
         {
+            for (int i = 0; i < _pentacle.Length; i++)
+            {
+                _pentacle[i].fillAmount = 1 - (float)((float)timeRemaining / (float)timeRemainingAtStart);
+            }
+            _pentacleUI.fillAmount = 1 - (float)((float)timeRemaining / (float)timeRemainingAtStart);
+
             Invoke("_tick", 1f);
         }
         else

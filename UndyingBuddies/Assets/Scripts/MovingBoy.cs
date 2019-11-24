@@ -108,7 +108,7 @@ public class MovingBoy : MonoBehaviour
                     break;
 
                 case BoyState.FindingFood:
-                    anim.Play("Arms");
+                    anim.Play("ArmsFeed");
                     BoyState = BoyState.WalkingToObjectif;
                     break;
 

@@ -63,7 +63,7 @@ public class Survive : MonoBehaviour
     {
         if (!dieded)
         {
-            MovingBoy.anim.Play("Arms");
+            MovingBoy.anim.Play("ArmsFeed");
             MovingBoy.BoyState = BoyState.FindingFood;
             boyNeedState = BoyNeedState.NeedFood;
         }
@@ -77,6 +77,7 @@ public class Survive : MonoBehaviour
             {
                 food += foodFeedingSpeed;
                 NeirbyBush.GetComponent<BushLife>().ReduceLife(foodFeedingSpeed);
+                MovingBoy.anim.Play("ArmsEating");
             }
             else
             {

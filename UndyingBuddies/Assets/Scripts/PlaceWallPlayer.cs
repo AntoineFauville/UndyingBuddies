@@ -219,13 +219,13 @@ public class PlaceWallPlayer : MonoBehaviour
             _stateOfHoldingMouse = true;
             animCamera.Play("camMovementZoom");
             yield return new WaitForSeconds(0.15f);
-            Time.timeScale = 0.3f;
+            //Time.timeScale = 0.3f;
         }
     }
 
     IEnumerator removePanel()
     {
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
         animCamera.Play("camMovementDEZoom");
 
         yield return new WaitForSeconds(0.05f);

@@ -51,6 +51,9 @@ public class Tree : MonoBehaviour
             GameObject.Find("GameController").GetComponent<Usables>().Tree.Remove(this.gameObject);
         }
         yield return new WaitForSeconds(10f);
+
+        this.transform.position = new Vector3(this.transform.position.x + Random.Range(-2f,2f), this.transform.position.y, this.transform.position.z + Random.Range(-2f, 2f));
+
         flamesObject.SetActive(false);
         this.gameObject.tag = "Tree";
 

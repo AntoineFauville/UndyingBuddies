@@ -23,12 +23,17 @@ public class Deamon : MonoBehaviour
     public bool CanIStart;
     public Animator anim;
 
+    [SerializeField]
+    private GameObject particleEffectBlood;
+
     void Start()
     {
         anim.Play("deamonApparition");
 
         StartCoroutine(waittoDie());
         StartCoroutine(waitToStart());
+
+        particleEffectBlood.SetActive(false);
     }
 
     void Update()
@@ -61,12 +66,17 @@ public class Deamon : MonoBehaviour
 
                     anim.Play("deamonGrabing");
 
+                    particleEffectBlood.SetActive(true);
+
                     StartCoroutine(waitToKillBoy());
                     break;
                 case 2: //kill boy
                     destinationToObjectif.GetComponent<Survive>().food = 0;
                     destinationToObjectif.GetComponent<Survive>().dieded = true;
                     state = 0;
+
+                    particleEffectBlood.SetActive(false);
+
                     break;
             }
         }
