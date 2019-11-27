@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 
@@ -32,6 +33,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image[] _pentacle;
     [SerializeField] private Image _pentacleUI;
 
+    [SerializeField] List<GameObject> particleSystemDeadAnim = new List<GameObject>();
+    [SerializeField] List<GameObject> AnimDemonFinAnim = new List<GameObject>();
+
     void Start()
     {
         SceneManagerDontDestroy = GameObject.Find("SceneManager").GetComponent<SceneManagerDontDestroy>();
@@ -50,12 +54,20 @@ public class GameManager : MonoBehaviour
             _pentacle[i].fillAmount = 0;
         }
         _pentacleUI.fillAmount = 0;
+
+        foreach (var gameobject in GameObject.FindGameObjectsWithTag("VillageDeadAnimation"))
+        {
+            particleSystemDeadAnim.Add(gameobject);
+        }
+
+        foreach (var gameobject in GameObject.FindGameObjectsWithTag("VillageDead"))
+        {
+            AnimDemonFinAnim.Add(gameobject);
+        }
     }
 
     void Update()
     {
-        
-
         TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
 
         countdownText.text = "Time to win : " + timeRemaining.ToString();
@@ -92,6 +104,29 @@ public class GameManager : MonoBehaviour
         {
             WinPanel.SetActive(true);
             StartCoroutine(waitToLaunchAgain());
+
+            LaunchWinAnimation();
+        }
+    }
+
+    void LaunchWinAnimation()
+    {
+        for (int i = 0; i < particleSystemDeadAnim.Count; i++)
+        {
+            particleSystemDeadAnim[i].GetComponent<ParticleSystem>().Play();
+        }
+
+        for (int i = 0; i < AnimDemonFinAnim.Count; i++)
+        {
+            AnimDemonFinAnim[i].GetComponent<Animator>().Play("InvokeChtulhu");
+        }
+
+        for (int i = 0; i < _boyFactory.TotalOfTheBoys.Count; i++)
+        {
+            _boyFactory.TotalOfTheBoys[i].GetComponent<NavMeshAgent>().enabled = false;
+            _boyFactory.TotalOfTheBoys[i].GetComponent<Survive>().food = 0;
+            _boyFactory.TotalOfTheBoys[i].GetComponent<Survive>().WoodAmount = 0;
+            _boyFactory.TotalOfTheBoys[i].GetComponent<Survive>().dieded = true;
         }
     }
 
@@ -123,6 +158,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            for (int i = 0; i < _pentacle.Length; i++)
+            {
+                _pentacle[i].fillAmount = 1;
+            }
+
             isCountingDown = false;
         }
     }
@@ -133,6 +173,8 @@ public class GameManager : MonoBehaviour
         {
             WinPanel.SetActive(true);
             StartCoroutine(waitToLaunchAgain());
+
+            LaunchWinAnimation();
         }
     }
 

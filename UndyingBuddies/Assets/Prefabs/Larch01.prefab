@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1108367420366069190}
   - component: {fileID: 3763668847809024139}
   - component: {fileID: 1311157377857346977}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Larch01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,6 +173,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Magic fire 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1537593200154216, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4832750714773668, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -243,6 +247,18 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1230380500995054, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601297128568620, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1522294441258966, guid: 25093a0593dc83043a7bc17ebba0e95d, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 198318467894892708, guid: 25093a0593dc83043a7bc17ebba0e95d,
         type: 3}

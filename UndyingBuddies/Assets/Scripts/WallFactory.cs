@@ -6,18 +6,18 @@ public class WallFactory : MonoBehaviour
 {
     [SerializeField] SettingsData _settingsData;
 
-    public Wall CreateFire(Vector3 hit, Quaternion cubeOrientation)
+    public Wall CreateFire(Vector3 hit)
     {
-        Wall newPrefab = Instantiate(_settingsData.PrefabWall, hit, cubeOrientation);
+        Wall newPrefab = Instantiate(_settingsData.PrefabWall, hit, new Quaternion());
         
-        GameObject stainsBlack = Instantiate(_settingsData._BlackStainsPrefab, hit, cubeOrientation);
+        GameObject stainsBlack = Instantiate(_settingsData._BlackStainsPrefab, hit, new Quaternion());
 
         return newPrefab;
     }
 
-    public GameObject CreateDeamon(Vector3 hit, Quaternion cubeOrientation)
+    public GameObject CreateDeamon(Vector3 hit)
     {
-        GameObject deamon = Instantiate(_settingsData.Deamon, hit, cubeOrientation);
+        GameObject deamon = Instantiate(_settingsData.Deamon, hit, new Quaternion());
 
         return deamon;
     }

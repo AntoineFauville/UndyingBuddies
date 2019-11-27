@@ -30,7 +30,7 @@ public class SceneManagerDontDestroy : MonoBehaviour
     {
         scene++;
 
-        if (scene > 3)
+        if (scene > 4)
         {
             scene = 1;
         }
