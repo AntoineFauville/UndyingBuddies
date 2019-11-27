@@ -66,6 +66,15 @@ public class PlaceWallPlayer : MonoBehaviour
                 break;
         }
 
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f) // forward
+        {
+            state = 0;
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backwards
+        {
+            state = 1;
+        }
+
         if (Input.GetMouseButtonUp(0) && canPlayF && !_stateOfHoldingMouse)
         {
             anim.Play("hand anim whilecooldown F");
@@ -78,7 +87,7 @@ public class PlaceWallPlayer : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.transform.tag == "Floor")
+                if (hit.transform.tag == "Floor" || hit.transform.tag == "Boy" || hit.transform.tag == "Tree")
                 {
                     StartCoroutine(CreateWallThenWait(hit.point, cubeOrientation));
                 }
@@ -91,33 +100,33 @@ public class PlaceWallPlayer : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            StartCoroutine(removePanel());
-        }
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    StartCoroutine(removePanel());
+        //}
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            _holding = true;
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    _holding = true;
+        //}
 
-        if (Input.GetMouseButton(0))
-        {
-            if (!_launchOnceCoroutine)
-            {
-                _launchOnceCoroutine = true;
-                StartCoroutine(holdingLongEnough());
-            }
-        }
+        //if (Input.GetMouseButton(0))
+        //{
+        //    if (!_launchOnceCoroutine)
+        //    {
+        //        _launchOnceCoroutine = true;
+        //        StartCoroutine(holdingLongEnough());
+        //    }
+        //}
 
-        if (_stateOfHoldingMouse)
-        {
-            HideShowPanel.enabled = true;
-        }
-        else if (!_stateOfHoldingMouse)
-        {
-            HideShowPanel.enabled = false;
-        }
+        //if (_stateOfHoldingMouse)
+        //{
+        //    HideShowPanel.enabled = true;
+        //}
+        //else if (!_stateOfHoldingMouse)
+        //{
+        //    HideShowPanel.enabled = false;
+        //}
 
     }
 
@@ -158,6 +167,8 @@ public class PlaceWallPlayer : MonoBehaviour
     {
         //debugToShowCoolDownOfSpell.fillAmount = 1;
 
+        _stateOfHoldingMouse = true;
+
         ableToSpawnAgain = true;
 
         if (state == 0)
@@ -182,7 +193,9 @@ public class PlaceWallPlayer : MonoBehaviour
         anim.Play("hand anim cooldownn recover");
 
         ableToSpawnAgain = false;
-       
+
+        _stateOfHoldingMouse = false;
+
     }
 
     //IEnumerator SetBoyOnFire()
