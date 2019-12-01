@@ -15,10 +15,14 @@ public class Reproduction : MonoBehaviour
     
     [SerializeField] SettingsData _settingsData;
 
+    [SerializeField] private GameObject[] _houses;
+
     void Start()
     {
         StartCoroutine(Reproduce());
         StartCoroutine(DefaultGeneration());
+
+        _houses = GameObject.FindGameObjectsWithTag("House");
     }
 
     IEnumerator Reproduce()
@@ -29,7 +33,7 @@ public class Reproduction : MonoBehaviour
 
         if (randomBoy.GetComponent<Survive>().LookAroundForOtherBoys() == true)
         {
-            _boyFactory.CreateBoy(randomBoy);
+            _boyFactory.CreateBoy(randomBoy, 2);
         }
         
         StartCoroutine(Reproduce());
@@ -38,8 +42,8 @@ public class Reproduction : MonoBehaviour
     IEnumerator DefaultGeneration()
     {
         yield return new WaitForSeconds(_settingsData.ReproductionByDefaultTime);
-
-        _boyFactory.CreateBoy(GameObject.FindGameObjectWithTag("House"));
+        
+        _boyFactory.CreateBoy(_houses[Random.Range(0,_houses.Length)], 10);
 
         StartCoroutine(DefaultGeneration());
     }

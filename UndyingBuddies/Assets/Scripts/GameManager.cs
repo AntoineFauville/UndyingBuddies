@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
 
         countdownText.text = timeRemaining.ToString();
 
-        TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
+        //TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
 
         for (int i = 0; i < _pentacle.Length; i++)
         {

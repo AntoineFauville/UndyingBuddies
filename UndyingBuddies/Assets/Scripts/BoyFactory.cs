@@ -15,13 +15,17 @@ public class BoyFactory : MonoBehaviour
     {
         for (int i = 0; i < _gameManager.BoyAmount; i++)
         {
-            CreateBoy(BoySpawningPlace[Random.Range(0,BoySpawningPlace.Length)]);
+            CreateBoy(BoySpawningPlace[Random.Range(0,BoySpawningPlace.Length)], 3);
         }
     }
 
-    public void CreateBoy(GameObject spawnLocation)
+    public void CreateBoy(GameObject spawnLocation, float Radius)
     {
-        GameObject boy = Instantiate(_settingsData.BoyPrefab, spawnLocation.transform.position, new Quaternion(), null);
+        Vector3 spawnLocationOfBoy = new Vector3(spawnLocation.transform.position.x + Random.Range(-Radius, +Radius),
+            spawnLocation.transform.position.y,
+            spawnLocation.transform.position.z + Random.Range(-Radius, +Radius));
+
+        GameObject boy = Instantiate(_settingsData.BoyPrefab, spawnLocationOfBoy, new Quaternion(), null);
 
         boy.name = "Boy " + boyName;
         boyName++;
