@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject WinPanel;
 
     [SerializeField] private Text TextBoyDisplay;
+    public int score;
 
     [SerializeField] private SettingsData _settingsData;
 
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour
 
         countdownText.text = timeRemaining.ToString();
 
-        //TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
+        TextBoyDisplay.text = score.ToString();
 
         for (int i = 0; i < _pentacle.Length; i++)
         {
@@ -68,7 +69,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        TextBoyDisplay.text = _boyFactory.TotalOfTheBoys.Count.ToString();
+        TextBoyDisplay.text = score.ToString();
 
         countdownText.text = "Time to win : " + timeRemaining.ToString();
 

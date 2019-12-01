@@ -159,6 +159,7 @@ public class Survive : MonoBehaviour
         WoodAmount = 0;
 
         GameObject.Find("GameController").GetComponent<BoyFactory>().TotalOfTheBoys.Remove(this.gameObject);
+        GameObject.Find("GameController").GetComponent<GameManager>().score++;
 
         MovingBoy.enabled = false;
         this.enabled = false;

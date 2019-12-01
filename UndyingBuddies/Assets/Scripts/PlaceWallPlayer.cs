@@ -24,24 +24,40 @@ public class PlaceWallPlayer : MonoBehaviour
 
     private bool rollMouseWheel;
 
+    public float spellValue = 1;
+    public int UpgradeSpellValue = 100;
+    public int upgradeMAx = 3;
+
     void Start()
     {
         firePreview = Instantiate(_settingsData._cubePreviewPrefab);
+        firePreview.transform.localScale = new Vector3(spellValue, spellValue, spellValue);
         firePreview.SetActive(false);
 
         deamonPreview = Instantiate(_settingsData.DeamonPreview);
+        //deamonPreview.transform.localScale = new Vector3(spellValue, spellValue, spellValue);
         deamonPreview.SetActive(false);
     }
 
     public void SwitchState(int states)
     {
         state = states;
+    }
 
-       
+    public void UpdateSpell()
+    {
+        if (GameObject.Find("GameController").GetComponent<GameManager>().score >= UpgradeSpellValue && spellValue <= upgradeMAx)
+        {
+            spellValue += 0.5f;
+            GameObject.Find("GameController").GetComponent<GameManager>().score -= UpgradeSpellValue;
+        }
     }
 
     void Update()
     {
+        firePreview.transform.localScale = new Vector3(spellValue, spellValue, spellValue);
+        //deamonPreview.transform.localScale = new Vector3(spellValue, spellValue, spellValue);
+
         switch (state)
         {
             case 0: // invoke fire
@@ -149,14 +165,14 @@ public class PlaceWallPlayer : MonoBehaviour
     {
         animRightHand.Play("hand anim fire");
         yield return new WaitForSeconds(0.2f);
-        _wallFactory.CreateFire(hit);
+        _wallFactory.CreateFire(hit, spellValue);
     }
 
     IEnumerator waitforInvoke(Vector3 hit)
     {
         animRightHand.Play("hand anim invoke");
         yield return new WaitForSeconds(0.3f);
-         _wallFactory.CreateDeamon(hit);
+         _wallFactory.CreateDeamon(hit, spellValue);
     }
 
     IEnumerator waitToMouseScroll(int localState, bool operation)
