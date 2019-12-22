@@ -1327,12 +1327,12 @@ MonoBehaviour:
   _settingsData: {fileID: 11400000, guid: 33aa0385ca0f4934d842b7c0b67a50ee, type: 2}
   _house: {fileID: 933523958}
   amountOfFinishedHouse: 0
-  duration: 40
+  duration: 80
   timeRemaining: 0
   isCountingDown: 0
   countdownText: {fileID: 1268240152}
   houseNeededToWinTheGame: 1
-  BoyAmount: 5
+  BoyAmount: 10
   _pentacle:
   - {fileID: 255229091}
   _pentacleUI: {fileID: 961373454}
@@ -4615,15 +4615,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7194184396987214740, guid: 1f48410fcea3606469fe5746645179e8,
-        type: 3}
-      propertyPath: m_Name
-      value: Fire
-      objectReference: {fileID: 0}
     - target: {fileID: 4838589110372567540, guid: 1f48410fcea3606469fe5746645179e8,
         type: 3}
       propertyPath: m_Name
       value: Demon
+      objectReference: {fileID: 0}
+    - target: {fileID: 7194184396987214740, guid: 1f48410fcea3606469fe5746645179e8,
+        type: 3}
+      propertyPath: m_Name
+      value: Fire
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f48410fcea3606469fe5746645179e8, type: 3}

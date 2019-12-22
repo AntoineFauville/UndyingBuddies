@@ -15,7 +15,7 @@ public class BushLife : MonoBehaviour
 
     void Update()
     {
-        amoutLeftDisplay.text = health.ToString();
+        amoutLeftDisplay.text = health.ToString("F0");
     }
 
     public void Setup(Usables usable, float bushHealth)

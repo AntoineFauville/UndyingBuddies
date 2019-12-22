@@ -5580,7 +5580,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -5610,10 +5610,10 @@ MonoBehaviour:
   dieded: 0
   MaxFood: 100
   food: 100
-  foodLossPerTicMin: 1
-  foodLossPerTicMax: 3
-  FoodBoySated: 50
-  foodEatedEnoughState: 70
+  foodLossPerTicMin: 0.5
+  foodLossPerTicMax: 1
+  FoodBoySated: 40
+  foodEatedEnoughState: 60
   boyNeedState: 0
   bushAround: 0
   NeirbyBush: {fileID: 0}
@@ -5781,26 +5781,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5648652049483453639}
     m_Modifications:
-    - target: {fileID: 5201370764608031664, guid: 141632f1c1093d94a93601ef0e74afe2,
-        type: 3}
-      propertyPath: m_Name
-      value: DedBoy
-      objectReference: {fileID: 0}
-    - target: {fileID: 5201370764608031664, guid: 141632f1c1093d94a93601ef0e74afe2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5201370764608031664, guid: 141632f1c1093d94a93601ef0e74afe2,
-        type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 5201370764608031664, guid: 141632f1c1093d94a93601ef0e74afe2,
-        type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5201370764608031665, guid: 141632f1c1093d94a93601ef0e74afe2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5856,12 +5836,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5201370766068456048, guid: 141632f1c1093d94a93601ef0e74afe2,
+    - target: {fileID: 5201370764608031664, guid: 141632f1c1093d94a93601ef0e74afe2,
         type: 3}
-      propertyPath: m_Layer
-      value: 2
+      propertyPath: m_Name
+      value: DedBoy
       objectReference: {fileID: 0}
-    - target: {fileID: 5201370764596737538, guid: 141632f1c1093d94a93601ef0e74afe2,
+    - target: {fileID: 5201370764608031664, guid: 141632f1c1093d94a93601ef0e74afe2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5201370764608031664, guid: 141632f1c1093d94a93601ef0e74afe2,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 5201370764608031664, guid: 141632f1c1093d94a93601ef0e74afe2,
         type: 3}
       propertyPath: m_Layer
       value: 2
@@ -5876,6 +5866,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5201370766068456048, guid: 141632f1c1093d94a93601ef0e74afe2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5201370764596737538, guid: 141632f1c1093d94a93601ef0e74afe2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 141632f1c1093d94a93601ef0e74afe2, type: 3}
 --- !u!1001 &987008005012318235
@@ -5885,6 +5885,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5648652048818677378}
     m_Modifications:
+    - target: {fileID: 1826234429394770, guid: ea10774542693594183ed8bc58125543, type: 3}
+      propertyPath: m_Name
+      value: Boletus_edulis01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1826234429394770, guid: ea10774542693594183ed8bc58125543, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1826234429394770, guid: ea10774542693594183ed8bc58125543, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4014698561187972, guid: ea10774542693594183ed8bc58125543, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.67
@@ -5940,18 +5952,6 @@ PrefabInstance:
     - target: {fileID: 4014698561187972, guid: ea10774542693594183ed8bc58125543, type: 3}
       propertyPath: m_LocalScale.z
       value: 1.3664292
-      objectReference: {fileID: 0}
-    - target: {fileID: 1826234429394770, guid: ea10774542693594183ed8bc58125543, type: 3}
-      propertyPath: m_Name
-      value: Boletus_edulis01
-      objectReference: {fileID: 0}
-    - target: {fileID: 1826234429394770, guid: ea10774542693594183ed8bc58125543, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1826234429394770, guid: ea10774542693594183ed8bc58125543, type: 3}
-      propertyPath: m_Layer
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea10774542693594183ed8bc58125543, type: 3}
