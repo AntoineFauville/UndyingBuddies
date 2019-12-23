@@ -2365,6 +2365,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpellSelectionUpgrade
       objectReference: {fileID: 0}
+    - target: {fileID: 5141132008822227091, guid: 49962c6154bc02640b71a78fdf330c52,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2782806455486447320, guid: 49962c6154bc02640b71a78fdf330c52,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4615,15 +4620,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4838589110372567540, guid: 1f48410fcea3606469fe5746645179e8,
-        type: 3}
-      propertyPath: m_Name
-      value: Demon
-      objectReference: {fileID: 0}
     - target: {fileID: 7194184396987214740, guid: 1f48410fcea3606469fe5746645179e8,
         type: 3}
       propertyPath: m_Name
       value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 4838589110372567540, guid: 1f48410fcea3606469fe5746645179e8,
+        type: 3}
+      propertyPath: m_Name
+      value: Demon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f48410fcea3606469fe5746645179e8, type: 3}
