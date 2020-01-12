@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9667cbb91c2dd84468c65e6c62c1f84c, type: 3}
+  m_Name: Settings Data Turorial
+  m_EditorClassIdentifier: 
+  BoyAmount: 10
+  BoyPrefab: {fileID: 5648652049483453636, guid: 1205bf39e80b7d5408d88c8161029c55,
+    type: 3}
+  BushlifePrefab: {fileID: 4538332670230476320, guid: 2fa4f390efbeeab4a994410a04d3e1cb,
+    type: 3}
+  BushHealth: 75
+  radius: 5
+  MaxBushOnMap: 8
+  BushSpawnTimeMinimum: 1
+  BushSpawnTimeMaxium: 2
+  BoyAmountToLoose: 30
+  ReproductionSpeedMin: 0.5
+  ReproductionSpeedMax: 0.5
+  ReproductionByDefaultTime: 0.5
+  PrefabWall: {fileID: 6348886312986534583, guid: 14a5602658540f7488d7eb3ca1c25425,
+    type: 3}
+  _cubePreviewPrefab: {fileID: 5924142983344496631, guid: fccf759084a675e4c8f3cd696d6a61d8,
+    type: 3}
+  _BlackStainsPrefab: {fileID: 5161013285335528946, guid: 14cf7b230ce44914984c10662325de8e,
+    type: 3}
+  DeamonPreview: {fileID: 6454765321162035730, guid: 79be32ba535bdb34380e2a665b41d8da,
+    type: 3}
+  Deamon: {fileID: 6454765321162035730, guid: b11f0eaaa40b4e8479569eef31d05ba9, type: 3}
+  WoodHouse: {fileID: 2169265290850326029, guid: 20157465b7797e24b869804fb2dedbd9,
+    type: 3}
+  woodNeedToFinishHouse: 50
+  woodGetSpeed: 1
+  woodForFirstStateOfHouse: 10
+  woodForSecondStateOfHouse: 20
+  woodForThirdStateOfHouse: 30
