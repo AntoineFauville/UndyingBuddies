@@ -104,11 +104,11 @@ public class MovingBoy : MonoBehaviour
             {
                 case BoyState.Idle:
                     NavMeshAgent.SetDestination(RandomNavmeshLocation(6f));
-                    anim.Play("ArmsWalking");
+                    //anim.Play("ArmsWalking");
                     break;
 
                 case BoyState.FindingFood:
-                    anim.Play("ArmsFeed");
+                    //anim.Play("ArmsFeed");
                     BoyState = BoyState.WalkingToObjectif;
                     break;
 
@@ -127,7 +127,7 @@ public class MovingBoy : MonoBehaviour
                     break;
 
                 case BoyState.StandingStill:
-                    anim.Play("ArmsNotMoving");
+                    //anim.Play("ArmsNotMoving");
                     break;
 
                 case BoyState.RunAway:
@@ -148,7 +148,7 @@ public class MovingBoy : MonoBehaviour
 
                     destinationToObjectif = destinationToRunAwayFromFireTo;
 
-                    anim.Play("Arms");
+                    //anim.Play("Arms");
 
 
                     if (destinationToObjectif != null)

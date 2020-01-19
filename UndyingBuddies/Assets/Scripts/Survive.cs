@@ -77,12 +77,13 @@ public class Survive : MonoBehaviour
             {
                 food += foodFeedingSpeed;
                 NeirbyBush.GetComponent<BushLife>().ReduceLife(foodFeedingSpeed);
-                MovingBoy.anim.Play("ArmsEating");
+                //MovingBoy.anim.Play("ArmsEating");
             }
             else
             {
                 boyNeedState = BoyNeedState.EnoughtOfEverything;
                 MovingBoy.BoyState = BoyState.Idle;
+                MovingBoy.anim.Play("Idle");
             }
 
             if (food >= MaxFood)
