@@ -21,6 +21,8 @@ public class AIDemons : MonoBehaviour
 
     bool AbleToPerformAction;
 
+    Animator animatorDemon;
+
     public void Setup(string name, JobType initialJobtype, int initiallife, int demonRangeOfDetection, int demonRangeOfAttack)
     {
         myName = name;
@@ -28,6 +30,8 @@ public class AIDemons : MonoBehaviour
         life = initiallife;
         _demonRangeOfDetection = demonRangeOfDetection;
         _demonRangeOfCloseBy = demonRangeOfAttack;
+
+        animatorDemon = this.GetComponent<Animator>();
     }
 
     public void SwitchJob(JobType newJobtype)
@@ -38,7 +42,8 @@ public class AIDemons : MonoBehaviour
     //actions
     public void Attack()
     {
-        Debug.Log("attack");
+        //Debug.Log("attack");
+        animatorDemon.Play("Attack");
         NavMeshAgent.isStopped = true;
 
         if (!AbleToPerformAction)
@@ -56,15 +61,18 @@ public class AIDemons : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("die");
+        //Debug.Log("die");
+        animatorDemon.Play("Die");
         NavMeshAgent.isStopped = true;
+        NavMeshAgent.enabled = false;
         StartCoroutine(WaitToDie());
     }
 
     public void Walk()
     {
-        Debug.Log("walk");
-        
+        //Debug.Log("walk");
+        animatorDemon.Play("Walk");
+
         if (Vector3.Distance(TargetToGoTo.transform.position, this.transform.position) > 4)
         {
             NavMeshAgent.isStopped = false;
@@ -78,7 +86,9 @@ public class AIDemons : MonoBehaviour
 
     public void Gather(ResourceType resourceToGather)
     {
-        Debug.Log("gather");
+        //Debug.Log("gather");
+        animatorDemon.Play("Gather");
+
         NavMeshAgent.isStopped = true;
 
         if (!AbleToPerformAction)
@@ -100,13 +110,15 @@ public class AIDemons : MonoBehaviour
 
     public void Idle()
     {
-        Debug.Log("idle");
+        //Debug.Log("idle");
+        animatorDemon.Play("Idle");
         NavMeshAgent.isStopped = true;
     }
 
     public void Place()
     {
-        Debug.Log("place");
+        //Debug.Log("place");
+        animatorDemon.Play("Place");
         NavMeshAgent.isStopped = true;
 
         GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += woodAmount;
@@ -118,7 +130,8 @@ public class AIDemons : MonoBehaviour
 
     public void Build()
     {
-        Debug.Log("build");
+        //Debug.Log("build");
+        animatorDemon.Play("Build");
         NavMeshAgent.isStopped = true;
         if (!AbleToPerformAction)
         {
@@ -316,7 +329,7 @@ public class AIDemons : MonoBehaviour
 
     IEnumerator WaitToDie()
     {
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(2);
 
         DestroyImmediate(this.gameObject);
     }

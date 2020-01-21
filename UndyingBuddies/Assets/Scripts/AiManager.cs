@@ -118,20 +118,15 @@ public class AiManager : MonoBehaviour
 
     IEnumerator SlowUpdate()
     {
-        foreach (var demon in Demons)
+        for (int i = 0; i < Demons.Count; i++)
         {
             JobType demonJobType;
             AIDemons currentAiDemon;
 
-            currentAiDemon = demon.GetComponent<AIDemons>();
+            currentAiDemon = Demons[i].GetComponent<AIDemons>();
             demonJobType = currentAiDemon.JobType;
 
-            if (currentAiDemon.life <= 0)
-            {
-                Demons.Remove(demon);
-                currentAiDemon.Die();
-            }
-            else
+            if (currentAiDemon.life > 0)
             {
                 switch (demonJobType)
                 {
@@ -282,6 +277,11 @@ public class AiManager : MonoBehaviour
                         }
                         break;
                 }
+            }
+            else
+            {
+                currentAiDemon.Die();
+                Demons.Remove(Demons[i]);
             }
         }
 
