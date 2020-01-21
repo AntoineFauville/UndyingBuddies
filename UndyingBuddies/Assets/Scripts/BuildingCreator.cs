@@ -78,13 +78,19 @@ public class BuildingCreator : MonoBehaviour
     {
         GameObject newObj = Instantiate(gameObject);
 
-        GameObject.Find("Main Camera").GetComponent<Grab>().grabbedItem = newObj;
-        GameObject.Find("Main Camera").GetComponent<Grab>().grabbing = true;
-
-
         newObj.GetComponent<Building>().PreGround.SetActive(true);
         newObj.GetComponent<Building>().Ground.SetActive(false);
 
         GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Add(newObj);
+
+        StartCoroutine(waitForFeedback(newObj));        
+    }
+
+    IEnumerator waitForFeedback(GameObject newObj)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        GameObject.Find("Main Camera").GetComponent<Grab>().grabbedItem = newObj;
+        GameObject.Find("Main Camera").GetComponent<Grab>().grabbing = true;
     }
 }

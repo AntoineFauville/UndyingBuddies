@@ -17,6 +17,8 @@ public class AiManager : MonoBehaviour
     public List<GameObject> Foods = new List<GameObject>();
 
     public List<GameObject> Buildables = new List<GameObject>();
+    public List<GameObject> Buildings = new List<GameObject>();
+    public bool AreBuildingShowned;
 
     public GameObject FlagToFollow;
     int nameID;
@@ -287,5 +289,16 @@ public class AiManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.7f);
         StartCoroutine(SlowUpdate());
+    }
+
+    //debug
+    public void HideBuildings()
+    {
+        AreBuildingShowned = !AreBuildingShowned;
+
+        for (int i = 0; i < Buildings.Count; i++)
+        {
+            Buildings[i].SetActive(AreBuildingShowned);
+        }
     }
 }

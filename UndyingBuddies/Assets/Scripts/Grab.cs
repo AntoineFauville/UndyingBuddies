@@ -56,7 +56,7 @@ public class Grab : MonoBehaviour
         {
             handAnim.Play("hand anim hold");
             grabbedItem.GetComponent<Grabable>().grabbed = true;
-            grabbedItem.transform.position = posCurrentObject + new Vector3 (0,10,0);
+            grabbedItem.transform.position = posCurrentObject + new Vector3 (0,7,0);
             grabbedItem.layer = 2;
             HoldingAnything.SetActive(true);
             HoldingAnything.transform.position = posCurrentObject;

@@ -28,6 +28,8 @@ public class Building : MonoBehaviour
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingHealth;
 
         this.gameObject.GetComponent<CharacterTypeTagger>().characterType = CharacterType.neutral;
+
+        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
     }
 
     void Update()
