@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Grab : MonoBehaviour
 {
-    bool grabbing;
-    [SerializeField] private GameObject grabbedItem;
+    public bool grabbing;
+    public GameObject grabbedItem;
     [SerializeField] Vector3 posCurrentObject;
     [SerializeField] GameObject HoldingAnything;
     [SerializeField] Animator handAnim;
@@ -56,8 +56,9 @@ public class Grab : MonoBehaviour
         {
             handAnim.Play("hand anim hold");
             grabbedItem.GetComponent<Grabable>().grabbed = true;
-            grabbedItem.transform.position = posCurrentObject + new Vector3 (0,5,0);
+            grabbedItem.transform.position = posCurrentObject + new Vector3 (0,10,0);
             grabbedItem.layer = 2;
+            HoldingAnything.SetActive(true);
             HoldingAnything.transform.position = posCurrentObject;
         }
 
@@ -81,7 +82,7 @@ public class Grab : MonoBehaviour
                 if (grabbedItem.transform.GetComponent<AIDemons>() != null && hitWhenRelease.collider.tag == "switchJobArea" && hitWhenRelease.collider.GetComponent<jobSwitcher>() != null)
                 {
                     grabbedItem.transform.GetComponent<AIDemons>().SwitchJob(hitWhenRelease.collider.GetComponent<jobSwitcher>().jobSwitcherType);
-                    grabbedItem.transform.GetComponent<AIDemons>().AssignedBuilding = hitWhenRelease.transform.gameObject;
+                    grabbedItem.transform.GetComponent<AIDemons>().AssignedBuilding = hitWhenRelease.collider.gameObject;
                 }
             }
 

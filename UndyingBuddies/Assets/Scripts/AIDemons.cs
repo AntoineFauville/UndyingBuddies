@@ -41,11 +41,13 @@ public class AIDemons : MonoBehaviour
         Debug.Log("attack");
         NavMeshAgent.isStopped = true;
     }
+
     public void Die()
     {
         Debug.Log("die");
         NavMeshAgent.isStopped = true;
     }
+
     public void Walk()
     {
         Debug.Log("walk");
@@ -60,6 +62,7 @@ public class AIDemons : MonoBehaviour
             NavMeshAgent.isStopped = true;
         }
     }
+
     public void Gather(ResourceType resourceToGather)
     {
         Debug.Log("gather");
@@ -81,22 +84,35 @@ public class AIDemons : MonoBehaviour
             StartCoroutine(TransferingTime());
         }
     }
+
     public void Idle()
     {
         Debug.Log("idle");
         NavMeshAgent.isStopped = true;
     }
+
     public void Place()
     {
         Debug.Log("place");
         NavMeshAgent.isStopped = true;
+
+        GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += woodAmount;
+        GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += foodAmount;
+
         woodAmount = 0;
         foodAmount = 0;
     }
+
     public void Build()
     {
         Debug.Log("build");
         NavMeshAgent.isStopped = true;
+        if (!AbleToPerformAction)
+        {
+            AbleToPerformAction = true;
+            TargetToGoTo.GetComponent<Building>().BuildingCreation += 40;
+            StartCoroutine(TransferingTime());
+        }
     }
 
     public bool CheckIfAnythingWithPriestNearBy()
@@ -226,6 +242,57 @@ public class AIDemons : MonoBehaviour
 
         return closestWoodSupply;
     } // closest resource
+
+    public Vector3 RandomNavmeshLocation(float radius)
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+        {
+            finalPosition = hit.position;
+        }
+        return finalPosition;
+    }
+
+    public bool CheckForClosestBuildingToBuild()
+    {
+        bool check = false;
+
+        GameObject closestBuilding = null;
+
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+
+        List<GameObject> listToCheck;
+
+        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables;
+
+        foreach (GameObject potentialTarget in listToCheck)
+        {
+            Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
+            float dSqrToTarget = directionToTarget.sqrMagnitude;
+            if (dSqrToTarget < closestDistanceSqr)
+            {
+                closestDistanceSqr = dSqrToTarget;
+                closestBuilding = potentialTarget;
+            }
+        }
+
+        TargetToGoTo = closestBuilding;
+
+        if (Vector3.Distance(this.transform.position, TargetToGoTo.transform.position) < _demonRangeOfCloseBy)
+        {
+            check = true;
+        }
+        else
+        {
+            check = false;
+        }
+
+        return check;
+    } // check if there is an enemy to attack close up
 
     IEnumerator TransferingTime()
     {

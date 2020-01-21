@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   demonLife: 10
   demonRangeOfDetection: 20
-  demonRangeOfCloseBy: 4
+  demonRangeOfCloseBy: 3
   woodResourcePrefab: {fileID: 4423328961707705391, guid: a5041154ce0a1de4db2d6bc8e821e903,
     type: 3}
   maxWoodCanCarry: 5
@@ -22,3 +22,13 @@ MonoBehaviour:
     type: 3}
   maxFoodCanCarry: 5
   energyResourcePrefab: {fileID: 0}
+  Barrack: {fileID: 11400000, guid: b93fff988c0da1f46afa98ed13a96e91, type: 2}
+  cityhall: {fileID: 11400000, guid: c1521c4134042a04ca856c69d2ca0c71, type: 2}
+  foodHouse: {fileID: 11400000, guid: 21990a823d7ce414b9c3a906fdb91096, type: 2}
+  woodHouse: {fileID: 11400000, guid: 1dfb7d35d6106f448a860116c5648c45, type: 2}
+  initialFoodAmount: 2000
+  initialWoodAmount: 20
+  initialEnergyAmount: 0
+  CostOfNewDemonFood: 40
+  DemonPrefab: {fileID: 5965878919500901836, guid: 020809d02fe6672458738479d4b763bb,
+    type: 3}

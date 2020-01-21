@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AiManager : MonoBehaviour
 {
-    [SerializeField] private GameSettings _gameSettings;
+    public GameSettings GameSettings;
 
     //all the AI
     public List<GameObject> Demons = new List<GameObject>();
@@ -15,6 +15,8 @@ public class AiManager : MonoBehaviour
     //all the wood supply around
     public List<GameObject> Woods = new List<GameObject>();
     public List<GameObject> Foods = new List<GameObject>();
+
+    public List<GameObject> Buildables = new List<GameObject>();
 
     public GameObject FlagToFollow;
 
@@ -30,7 +32,16 @@ public class AiManager : MonoBehaviour
         AddDemons();
         AddPriest();
         AddAllTheInitialResource();
+        AddAllTheBuildable();
         StartCoroutine(SlowUpdate());
+    }
+
+    public void AddAllTheBuildable()
+    {
+        foreach (var buildable in GameObject.FindGameObjectsWithTag("buildable"))
+        {
+            Buildables.Add(buildable);
+        }
     }
 
     public void AddAllTheInitialResource()
@@ -88,7 +99,7 @@ public class AiManager : MonoBehaviour
             demon.name = "demon_" + nameID;
             nameID++;
 
-            demon.GetComponent<AIDemons>().Setup(demon.name, JobType.builder, _gameSettings.demonLife, _gameSettings.demonRangeOfDetection, _gameSettings.demonRangeOfCloseBy);
+            demon.GetComponent<AIDemons>().Setup(demon.name, JobType.builder, GameSettings.demonLife, GameSettings.demonRangeOfDetection, GameSettings.demonRangeOfCloseBy);
         }
     }
 
@@ -115,6 +126,35 @@ public class AiManager : MonoBehaviour
             switch (demonJobType)
             {
                 case JobType.builder:
+                    if (Buildables.Count == 0)
+                    {
+                        if (currentAiDemon.AssignedBuilding != null) //in case you don't have a city hall, this would be null since you haven't assigned the demons to a building yet
+                        {
+                            if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding)) // if nothing is to be build check after the city hall and idle there
+                            {
+                                currentAiDemon.Idle();
+                            }
+                            else
+                            {
+                                currentAiDemon.Walk();
+                            }
+                        }
+                        else
+                        {
+                            currentAiDemon.Idle();
+                        }
+                    }
+                    else
+                    {
+                        if (currentAiDemon.CheckForClosestBuildingToBuild())
+                        {
+                            currentAiDemon.Build();
+                        }
+                        else
+                        {
+                            currentAiDemon.Walk();
+                        }
+                    }
                     break;
 
                 case JobType.collectFood:
@@ -124,7 +164,7 @@ public class AiManager : MonoBehaviour
                     }
                     else
                     {
-                        if (currentAiDemon.foodAmount <= _gameSettings.maxFoodCanCarry) //do i have food on me //no
+                        if (currentAiDemon.foodAmount <= GameSettings.maxFoodCanCarry) //do i have food on me //no
                         {
                             GameObject food = currentAiDemon.FindClosestResourceSupply(ResourceType.food);
                             if (currentAiDemon.checkIfGivenObjectIscloseBy(food))
@@ -157,7 +197,7 @@ public class AiManager : MonoBehaviour
                     }
                     else
                     {
-                        if (currentAiDemon.woodAmount <= _gameSettings.maxWoodCanCarry) //do i have wood on me //no
+                        if (currentAiDemon.woodAmount <= GameSettings.maxWoodCanCarry) //do i have wood on me //no
                         {
                             GameObject wood = currentAiDemon.FindClosestResourceSupply(ResourceType.wood);
                             if (currentAiDemon.checkIfGivenObjectIscloseBy(wood))
@@ -197,6 +237,11 @@ public class AiManager : MonoBehaviour
                     }
                     else
                     {
+                        if (FlagToFollow == null)
+                        {
+                            FlagToFollow = GameObject.FindGameObjectWithTag("flag");
+                        }
+
                         if (currentAiDemon.checkIfGivenObjectIscloseBy(FlagToFollow))
                         {
                             currentAiDemon.Idle();
@@ -210,7 +255,7 @@ public class AiManager : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.7f);
         StartCoroutine(SlowUpdate());
     }
 }
