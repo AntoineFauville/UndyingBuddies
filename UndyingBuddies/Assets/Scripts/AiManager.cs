@@ -19,8 +19,11 @@ public class AiManager : MonoBehaviour
     public List<GameObject> Buildables = new List<GameObject>();
 
     public GameObject FlagToFollow;
-
     int nameID;
+
+    //enemy
+    public List<GameObject> AIPriest = new List<GameObject>();
+    public List<GameObject> AIPriestBuildings = new List<GameObject>();
 
     void Start()
     {
@@ -105,12 +108,12 @@ public class AiManager : MonoBehaviour
 
     void AddPriest()
     {
-        foreach (var priest in GameObject.FindGameObjectsWithTag("priest"))
-        {
-            Priest.Add(priest);
-            priest.name = "priest_" + nameID;
-            nameID++;
-        }
+        //foreach (var priest in GameObject.FindGameObjectsWithTag("priest"))
+        //{
+        //    Priest.Add(priest);
+        //    priest.name = "priest_" + nameID;
+        //    nameID++;
+        //}
     }
 
     IEnumerator SlowUpdate()
@@ -123,14 +126,122 @@ public class AiManager : MonoBehaviour
             currentAiDemon = demon.GetComponent<AIDemons>();
             demonJobType = currentAiDemon.JobType;
 
-            switch (demonJobType)
+            if (currentAiDemon.life <= 0)
             {
-                case JobType.builder:
-                    if (Buildables.Count == 0)
-                    {
-                        if (currentAiDemon.AssignedBuilding != null) //in case you don't have a city hall, this would be null since you haven't assigned the demons to a building yet
+                Demons.Remove(demon);
+                currentAiDemon.Die();
+            }
+            else
+            {
+                switch (demonJobType)
+                {
+                    case JobType.builder:
+                        if (Buildables.Count == 0)
                         {
-                            if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding)) // if nothing is to be build check after the city hall and idle there
+                            if (currentAiDemon.AssignedBuilding != null) //in case you don't have a city hall, this would be null since you haven't assigned the demons to a building yet
+                            {
+                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding)) // if nothing is to be build check after the city hall and idle there
+                                {
+                                    currentAiDemon.Idle();
+                                }
+                                else
+                                {
+                                    currentAiDemon.Walk();
+                                }
+                            }
+                            else
+                            {
+                                currentAiDemon.Idle();
+                            }
+                        }
+                        else
+                        {
+                            if (currentAiDemon.CheckForClosestBuildingToBuild())
+                            {
+                                currentAiDemon.Build();
+                            }
+                            else
+                            {
+                                currentAiDemon.Walk();
+                            }
+                        }
+                        break;
+
+                    case JobType.collectFood:
+                        if (Foods.Count == 0)
+                        {
+                            currentAiDemon.Idle();
+                        }
+                        else
+                        {
+                            if (currentAiDemon.foodAmount <= GameSettings.maxFoodCanCarry) //do i have food on me //no
+                            {
+                                GameObject food = currentAiDemon.FindClosestResourceSupply(ResourceType.food);
+                                if (currentAiDemon.checkIfGivenObjectIscloseBy(food))
+                                {
+                                    currentAiDemon.Gather(ResourceType.food);
+                                }
+                                else
+                                {
+                                    currentAiDemon.Walk();
+                                }
+                            }
+                            else
+                            {
+                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                {
+                                    currentAiDemon.Place();
+                                }
+                                else
+                                {
+                                    currentAiDemon.Walk();
+                                }
+                            }
+                        }
+                        break;
+
+                    case JobType.collectWood:
+                        if (Woods.Count == 0)
+                        {
+                            currentAiDemon.Idle();
+                        }
+                        else
+                        {
+                            if (currentAiDemon.woodAmount <= GameSettings.maxWoodCanCarry) //do i have wood on me //no
+                            {
+                                GameObject wood = currentAiDemon.FindClosestResourceSupply(ResourceType.wood);
+                                if (currentAiDemon.checkIfGivenObjectIscloseBy(wood))
+                                {
+                                    currentAiDemon.Gather(ResourceType.wood);
+                                }
+                                else
+                                {
+                                    currentAiDemon.Walk();
+                                }
+                            }
+                            else // yes
+                            {
+                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                {
+                                    currentAiDemon.Place();
+                                }
+                                else
+                                {
+                                    currentAiDemon.Walk();
+                                }
+                            }
+                        }
+                        break;
+
+                    case JobType.followFlag:
+                        if (Priest.Count <= 0)
+                        {
+                            if (FlagToFollow == null)
+                            {
+                                FlagToFollow = GameObject.FindGameObjectWithTag("flag");
+                            }
+
+                            if (currentAiDemon.checkIfGivenObjectIscloseBy(FlagToFollow))
                             {
                                 currentAiDemon.Idle();
                             }
@@ -141,117 +252,36 @@ public class AiManager : MonoBehaviour
                         }
                         else
                         {
-                            currentAiDemon.Idle();
-                        }
-                    }
-                    else
-                    {
-                        if (currentAiDemon.CheckForClosestBuildingToBuild())
-                        {
-                            currentAiDemon.Build();
-                        }
-                        else
-                        {
-                            currentAiDemon.Walk();
-                        }
-                    }
-                    break;
-
-                case JobType.collectFood:
-                    if (Foods.Count == 0)
-                    {
-                        currentAiDemon.Idle();
-                    }
-                    else
-                    {
-                        if (currentAiDemon.foodAmount <= GameSettings.maxFoodCanCarry) //do i have food on me //no
-                        {
-                            GameObject food = currentAiDemon.FindClosestResourceSupply(ResourceType.food);
-                            if (currentAiDemon.checkIfGivenObjectIscloseBy(food))
+                            if (currentAiDemon.CheckIfAnythingWithPriestNearBy())
                             {
-                                currentAiDemon.Gather(ResourceType.food);
+                                if (currentAiDemon.CheckIfPriestIsCloseToAttack())
+                                {
+                                    currentAiDemon.Attack();
+                                }
+                                else
+                                {
+                                    currentAiDemon.Walk();
+                                }
                             }
                             else
                             {
-                                currentAiDemon.Walk();
-                            }
-                        }
-                        else
-                        {
-                            if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
-                            {
-                                currentAiDemon.Place();
-                            }
-                            else
-                            {
-                                currentAiDemon.Walk();
-                            }
-                        }
-                    }
-                    break;
+                                if (FlagToFollow == null)
+                                {
+                                    FlagToFollow = GameObject.FindGameObjectWithTag("flag");
+                                }
 
-                case JobType.collectWood:
-                    if (Woods.Count == 0)
-                    {
-                        currentAiDemon.Idle();
-                    }
-                    else
-                    {
-                        if (currentAiDemon.woodAmount <= GameSettings.maxWoodCanCarry) //do i have wood on me //no
-                        {
-                            GameObject wood = currentAiDemon.FindClosestResourceSupply(ResourceType.wood);
-                            if (currentAiDemon.checkIfGivenObjectIscloseBy(wood))
-                            {
-                                currentAiDemon.Gather(ResourceType.wood);
-                            }
-                            else
-                            {
-                                currentAiDemon.Walk();
+                                if (currentAiDemon.checkIfGivenObjectIscloseBy(FlagToFollow))
+                                {
+                                    currentAiDemon.Idle();
+                                }
+                                else
+                                {
+                                    currentAiDemon.Walk();
+                                }
                             }
                         }
-                        else // yes
-                        {
-                            if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
-                            {
-                                currentAiDemon.Place();
-                            }
-                            else
-                            {
-                                currentAiDemon.Walk();
-                            }
-                        }
-                    }
-                    break;
-
-                case JobType.followFlag:
-                    if (currentAiDemon.CheckIfAnythingWithPriestNearBy())
-                    {
-                        if (currentAiDemon.CheckIfPriestIsCloseToAttack())
-                        {
-                            currentAiDemon.Attack();
-                        }
-                        else
-                        {
-                            currentAiDemon.Walk();
-                        }
-                    }
-                    else
-                    {
-                        if (FlagToFollow == null)
-                        {
-                            FlagToFollow = GameObject.FindGameObjectWithTag("flag");
-                        }
-
-                        if (currentAiDemon.checkIfGivenObjectIscloseBy(FlagToFollow))
-                        {
-                            currentAiDemon.Idle();
-                        }
-                        else
-                        {
-                            currentAiDemon.Walk();
-                        }
-                    }
-                    break;
+                        break;
+                }
             }
         }
 

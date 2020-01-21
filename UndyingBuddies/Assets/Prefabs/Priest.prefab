@@ -2031,6 +2031,7 @@ GameObject:
   - component: {fileID: 4780855472861588953}
   - component: {fileID: 4780855472861588952}
   - component: {fileID: 4780855472861588951}
+  - component: {fileID: 2683776210274104171}
   m_Layer: 0
   m_Name: Priest
   m_TagString: demon
@@ -2155,6 +2156,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec95ecc95edc264f9b83444aee6cccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 0
+  CanAttackBack: 0
+  AmIBuilding: 0
+  PriestType: 0
+  CanAttackAgain: 0
+  Target: {fileID: 0}
+  NavMeshAgent: {fileID: 4170596306738344779}
+--- !u!114 &2683776210274104171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6092849278970286903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d07ce676d7afda4dabb3b0f7dd5e654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &6092849278970287187
 GameObject:
   m_ObjectHideFlags: 0

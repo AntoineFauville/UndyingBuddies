@@ -25,4 +25,9 @@ public class GameSettings : ScriptableObject
 
     public int CostOfNewDemonFood = 40;
     public GameObject DemonPrefab;
+    public int damageDemons = 5;
+
+    public int PriestHealth = 10;
+    public int PriestBuildingHealth = 50;
+    public int PriestAttackAmount = 5;
 }

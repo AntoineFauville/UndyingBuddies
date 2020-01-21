@@ -18,6 +18,8 @@ public class SpawnDemons : MonoBehaviour
     {
         if (resourceManager.amountOfFood >= gameSettings.CostOfNewDemonFood)
         {
+            resourceManager.amountOfFood -= gameSettings.CostOfNewDemonFood;
+
             GameObject demon = Instantiate(gameSettings.DemonPrefab, this.transform.GetComponent<Building>().SpawningPoint.transform.position, new Quaternion());
             
             demon.GetComponent<AIDemons>().Setup(demon.name, JobType.builder, gameSettings.demonLife, gameSettings.demonRangeOfDetection, gameSettings.demonRangeOfCloseBy);
