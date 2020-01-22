@@ -5,6 +5,7 @@ using UnityEngine;
 public class Grab : MonoBehaviour
 {
     public bool grabbing;
+    public bool conditionToReleaseMet;
     public GameObject grabbedItem;
     [SerializeField] Vector3 posCurrentObject;
     [SerializeField] GameObject HoldingAnything;
@@ -29,26 +30,72 @@ public class Grab : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+            //hit is the object that i want to grab
             if (Physics.Raycast(ray, out hit))
             {
                 if (hit.transform.GetComponent<Grabable>() != null && hit.transform.GetComponent<CharacterTypeTagger>() != null)
                 {
                     if (hit.transform.GetComponent<CharacterTypeTagger>().characterType == CharacterType.demon)
                     {
+                        //if it's a resource reset the relation with the building
+                        if (hit.transform.GetComponent<TransformIntoResource>() != null)
+                        {
+                            //since we just moved the ai from 1 house to an other we need to clean that ai from whatever other building he was in
+                            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++)
+                            {
+                                if (GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().StockPile.Contains(hit.transform.gameObject))
+                                {
+                                    GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().StockPile.Remove(hit.transform.gameObject);
+                                }
+                            }
+
+                            hit.transform.GetComponent<TransformIntoResource>().BuildingWhereImPlaced = null;
+                            hit.transform.GetComponent<TransformIntoResource>().spawnPoint = null;
+                        }
+
                         StartCoroutine(waitForMouseToUnderstand(hit.transform.gameObject));
                     }
                 }
             }
         }
 
-        RaycastHit hitPos;
-        Ray rayPos = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(rayPos, out hitPos))
+        if (grabbedItem != null)
         {
-            if (hitPos.collider.tag == "Floor" || hitPos.collider.tag == "switchJobArea")
+            RaycastHit hitPos;
+            Ray rayPos = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(rayPos, out hitPos))
             {
-                posCurrentObject = hitPos.point;
+                if (hitPos.collider.tag == "switchJobArea" && grabbedItem.transform.GetComponent<AIDemons>() != null)
+                {
+                    conditionToReleaseMet = true;
+                    posCurrentObject = hitPos.point;
+                }
+                else if(hitPos.collider.tag == "ResourceTransformer" && grabbedItem.transform.GetComponent<TransformIntoResource>() != null)
+                {
+                    if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.WoodCutter && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.wood)
+                    {
+                        conditionToReleaseMet = true;
+                        posCurrentObject = hitPos.point;
+                    }
+                    else if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.FoodProcessor && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.food)
+                    {
+                        conditionToReleaseMet = true;
+                        posCurrentObject = hitPos.point;
+                    }
+                }
+                else
+                {
+                    if (hitPos.collider.tag == "Floor")
+                    {
+                        conditionToReleaseMet = true;
+                        posCurrentObject = hitPos.point;
+                    }
+                    else
+                    {
+                        conditionToReleaseMet = false;
+                    }
+                }
             }
         }
 
@@ -62,7 +109,7 @@ public class Grab : MonoBehaviour
             HoldingAnything.transform.position = posCurrentObject;
         }
 
-        if (Input.GetMouseButtonDown(0) && grabbing)
+        if (Input.GetMouseButtonDown(0) && grabbing && conditionToReleaseMet)
         {
             handAnim.Play("hand anim holdrelease");
 
@@ -77,12 +124,23 @@ public class Grab : MonoBehaviour
                 {
                     Debug.Log("couldn't find a jobswitcher on this area, please add one");
                 }
-
+                
                 //certain that i'm carrying a demon
                 if (grabbedItem.transform.GetComponent<AIDemons>() != null && hitWhenRelease.collider.tag == "switchJobArea" && hitWhenRelease.collider.GetComponent<jobSwitcher>() != null)
                 {
                     grabbedItem.transform.GetComponent<AIDemons>().SwitchJob(hitWhenRelease.collider.GetComponent<jobSwitcher>().jobSwitcherType);
                     grabbedItem.transform.GetComponent<AIDemons>().AssignedBuilding = hitWhenRelease.collider.gameObject;
+
+                    //since we just moved the ai from 1 house to an other we need to clean that ai from whatever other building he was in
+                    for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++)
+                    {
+                        if (GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Contains(grabbedItem))
+                        {
+                            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Remove(grabbedItem);
+                        }
+                    }
+
+                    hitWhenRelease.collider.gameObject.transform.GetComponentInParent<Building>().AiAttributedToBuilding.Add(grabbedItem);
                 }
             }
 

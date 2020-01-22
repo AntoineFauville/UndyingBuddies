@@ -71,6 +71,32 @@ public class BuildingCreator : MonoBehaviour
                     Debug.Log("not enought resources");
                 }
                 break;
+
+            case (int)BuildingType.WoodCutter: //4
+                if (resourceManager.amountOfWood >= gameSettings.woodCutter.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.woodCutter.BuildingCostInFood)
+                {
+                    resourceManager.amountOfWood -= gameSettings.woodCutter.BuildingCostInWood;
+                    resourceManager.amountOfFood -= gameSettings.woodCutter.BuildingCostInFood;
+                    InstantiateBuilding(gameSettings.woodCutter.PrefabBuilding);
+                }
+                else
+                {
+                    Debug.Log("not enought resources");
+                }
+                break;
+
+            case (int)BuildingType.FoodProcessor: //5
+                if (resourceManager.amountOfWood >= gameSettings.foodProcessor.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.foodProcessor.BuildingCostInFood)
+                {
+                    resourceManager.amountOfWood -= gameSettings.foodProcessor.BuildingCostInWood;
+                    resourceManager.amountOfFood -= gameSettings.foodProcessor.BuildingCostInFood;
+                    InstantiateBuilding(gameSettings.foodProcessor.PrefabBuilding);
+                }
+                else
+                {
+                    Debug.Log("not enought resources");
+                }
+                break;
         }
     }
 

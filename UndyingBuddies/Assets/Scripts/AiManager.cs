@@ -278,6 +278,28 @@ public class AiManager : MonoBehaviour
                             }
                         }
                         break;
+
+                    case JobType.foodProcessor:
+                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().StockPile.Count > 0)
+                        {
+                            currentAiDemon.Process();
+                        }
+                        else
+                        {
+                            currentAiDemon.Idle();
+                        }
+                        break;
+
+                    case JobType.woodCutter:
+                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().StockPile.Count > 0)
+                        {
+                            currentAiDemon.Process();
+                        }
+                        else
+                        {
+                            currentAiDemon.Idle();
+                        }                
+                        break;
                 }
             }
             else
