@@ -280,8 +280,9 @@ public class AiManager : MonoBehaviour
                         break;
 
                     case JobType.foodProcessor:
-                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().StockPile.Count > 0)
+                        if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count > 0)
                         {
+                            Debug.Log("Stockpile : " + currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count);
                             currentAiDemon.Process();
                         }
                         else
@@ -291,14 +292,15 @@ public class AiManager : MonoBehaviour
                         break;
 
                     case JobType.woodCutter:
-                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().StockPile.Count > 0)
+                        if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count > 0)
                         {
+                            Debug.Log("Stockpile : " + currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count);
                             currentAiDemon.Process();
                         }
                         else
                         {
                             currentAiDemon.Idle();
-                        }                
+                        }
                         break;
                 }
             }

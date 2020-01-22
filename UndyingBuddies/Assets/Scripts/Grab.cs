@@ -120,11 +120,6 @@ public class Grab : MonoBehaviour
 
             if (Physics.Raycast(rayWhenRelease, out hitWhenRelease))
             {
-                if (hitWhenRelease.collider.GetComponent<jobSwitcher>() == null)
-                {
-                    Debug.Log("couldn't find a jobswitcher on this area, please add one");
-                }
-                
                 //certain that i'm carrying a demon
                 if (grabbedItem.transform.GetComponent<AIDemons>() != null && hitWhenRelease.collider.tag == "switchJobArea" && hitWhenRelease.collider.GetComponent<jobSwitcher>() != null)
                 {

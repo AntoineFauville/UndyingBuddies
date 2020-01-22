@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 6996662033740498011}
   - component: {fileID: 7582571277078077363}
   m_Layer: 0
-  m_Name: Collider (2)
+  m_Name: JobSwitcher
   m_TagString: switchJobArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jobSwitcherType: 3
+  Building: {fileID: 6202098714204367732}
 --- !u!1 &5482478374636479860
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,6 +378,8 @@ MonoBehaviour:
   Ground: {fileID: 1629463652550797990}
   BuildingCreation: 0
   SpawningPoint: {fileID: 0}
+  AiAttributedToBuilding: []
+  StockPile: []
 --- !u!114 &6865226048011971278
 MonoBehaviour:
   m_ObjectHideFlags: 0

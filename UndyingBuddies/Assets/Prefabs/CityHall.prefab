@@ -558,7 +558,7 @@ GameObject:
   - component: {fileID: 462064040544847903}
   - component: {fileID: 7582571277078077363}
   m_Layer: 0
-  m_Name: Collider (2)
+  m_Name: JobSwitcher
   m_TagString: switchJobArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -604,6 +604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jobSwitcherType: 4
+  Building: {fileID: 8417878289992104274}
 --- !u!1 &4443488739121910925
 GameObject:
   m_ObjectHideFlags: 0

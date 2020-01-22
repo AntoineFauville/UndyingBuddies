@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ResourceProcessing : MonoBehaviour
 {
-    private Building building;
+    [SerializeField] private Building building;
 
-    private bool CanProcess;
-    private int amountOfAiAttributed;
+    [SerializeField] private bool CanProcess;
+    [SerializeField] private int amountOfAiAttributed;
 
     private int timeToWait;
 
@@ -22,15 +22,15 @@ public class ResourceProcessing : MonoBehaviour
             Debug.Log("Can't process if there isn't any stockpile to refer to");
         }
 
-        amountOfAiAttributed = building.AiAttributedToBuilding.Count;
-
         StartCoroutine(waitToProcess());
     }
 
     void Update()
     {
+        amountOfAiAttributed = building.AiAttributedToBuilding.Count;
+
         //verification to not divide time by 0
-        if (amountOfAiAttributed == 0)
+        if (amountOfAiAttributed <= 0)
         {
             timeToWait = 2;
         }
