@@ -9,5 +9,6 @@ public enum JobType
     followFlag = 3,
     builder = 4,
     woodCutter = 5,
-    foodProcessor = 6
+    foodProcessor = 6,
+    energyProcessor = 7
 }

@@ -302,6 +302,18 @@ public class AiManager : MonoBehaviour
                             currentAiDemon.Idle();
                         }
                         break;
+
+                    case JobType.energyProcessor:
+                        if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count > 0)
+                        {
+                            Debug.Log("Stockpile : " + currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count);
+                            currentAiDemon.Process();
+                        }
+                        else
+                        {
+                            currentAiDemon.Idle();
+                        }
+                        break;
                 }
             }
             else

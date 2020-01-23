@@ -56,6 +56,12 @@ public class Grab : MonoBehaviour
                         StartCoroutine(waitForMouseToUnderstand(hit.transform.gameObject));
                     }
                 }
+
+                if (hit.transform.GetComponent<Energy>() != null)
+                {
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfEnergy += 1;
+                    DestroyImmediate(hit.transform.gameObject);
+                }
             }
         }
 
@@ -79,6 +85,11 @@ public class Grab : MonoBehaviour
                         posCurrentObject = hitPos.point;
                     }
                     else if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.FoodProcessor && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.food)
+                    {
+                        conditionToReleaseMet = true;
+                        posCurrentObject = hitPos.point;
+                    }
+                    else if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.SpellHouse && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.energy)
                     {
                         conditionToReleaseMet = true;
                         posCurrentObject = hitPos.point;

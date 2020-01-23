@@ -20,6 +20,7 @@ public class GameSettings : ScriptableObject
     public BuildingArchetype woodHouse;
     public BuildingArchetype woodCutter;
     public BuildingArchetype foodProcessor;
+    public BuildingArchetype spellHouse;
 
     public int initialFoodAmount = 20;
     public int initialWoodAmount = 20;

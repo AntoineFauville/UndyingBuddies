@@ -30,6 +30,8 @@ public class Building : MonoBehaviour
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingHealth;
         if (BuildingType == BuildingType.WoodHouse)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingHealth;
+        if (BuildingType == BuildingType.SpellHouse)
+            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingHealth;
 
         this.gameObject.GetComponent<CharacterTypeTagger>().characterType = CharacterType.neutral;
 

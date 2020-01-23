@@ -97,6 +97,19 @@ public class BuildingCreator : MonoBehaviour
                     Debug.Log("not enought resources");
                 }
                 break;
+
+            case (int)BuildingType.SpellHouse: //6
+                if (resourceManager.amountOfWood >= gameSettings.spellHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.spellHouse.BuildingCostInFood)
+                {
+                    resourceManager.amountOfWood -= gameSettings.spellHouse.BuildingCostInWood;
+                    resourceManager.amountOfFood -= gameSettings.spellHouse.BuildingCostInFood;
+                    InstantiateBuilding(gameSettings.spellHouse.PrefabBuilding);
+                }
+                else
+                {
+                    Debug.Log("not enought resources");
+                }
+                break;
         }
     }
 

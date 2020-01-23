@@ -16,6 +16,14 @@ public class TransformIntoResource : MonoBehaviour
 
     private bool CanTransform;
 
+    void Start()
+    {
+        if (gameSettings != null)
+        {
+            gameSettings = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings;
+        }
+    }
+
     void Update()
     {
         if (!haveIGotGrabbed && this.transform.GetComponent<Grabable>().grabbed)
