@@ -18,6 +18,8 @@ public class GameSettings : ScriptableObject
     public BuildingArchetype cityhall;
     public BuildingArchetype foodHouse;
     public BuildingArchetype woodHouse;
+    public BuildingArchetype woodCutter;
+    public BuildingArchetype foodProcessor;
 
     public int initialFoodAmount = 20;
     public int initialWoodAmount = 20;

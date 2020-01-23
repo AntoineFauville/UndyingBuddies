@@ -16,6 +16,10 @@ public class Building : MonoBehaviour
 
     public GameObject SpawningPoint;
 
+    public List<GameObject> AiAttributedToBuilding = new List<GameObject>();
+
+    public List<GameObject> StockPile = new List<GameObject>();
+
     void Start()
     {
         if (BuildingType == BuildingType.Barrack)

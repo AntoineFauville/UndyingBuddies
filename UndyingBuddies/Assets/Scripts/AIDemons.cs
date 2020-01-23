@@ -84,6 +84,11 @@ public class AIDemons : MonoBehaviour
         }
     }
 
+    public void Process()
+    {
+        animatorDemon.Play("Gather");
+    }
+
     public void Gather(ResourceType resourceToGather)
     {
         //Debug.Log("gather");

@@ -11,6 +11,11 @@ public class TransformIntoResource : MonoBehaviour
     public bool haveIGotGrabbed;
     public bool instantiateOnce;
 
+    public GameObject spawnPoint;
+    public GameObject BuildingWhereImPlaced;
+
+    private bool CanTransform;
+
     void Update()
     {
         if (!haveIGotGrabbed && this.transform.GetComponent<Grabable>().grabbed)
@@ -18,13 +23,27 @@ public class TransformIntoResource : MonoBehaviour
             haveIGotGrabbed = true;
         }
 
-        if (haveIGotGrabbed && !this.transform.GetComponent<Grabable>().grabbed)//when i release the object, it turns into resources
+        if (CanTransform)//when i release the object, it turns into resources
         {
-            Transform();
+            TransformIntoOtherResource();
         }
     }
 
-    void Transform()
+    void OnTriggerEnter(Collider coll)
+    {
+        if (coll.transform.tag == "ResourceTransformer")
+        {
+            spawnPoint = coll.GetComponentInParent<Building>().SpawningPoint;
+            BuildingWhereImPlaced = coll.GetComponentInParent<Building>().transform.gameObject;
+
+            if (!coll.GetComponentInParent<Building>().StockPile.Contains(this.transform.gameObject))
+            {
+                coll.GetComponentInParent<Building>().StockPile.Add(this.transform.gameObject);
+            }
+        }
+    }
+
+    public void TransformIntoOtherResource()
     {
         GameObject newResource;
 
@@ -33,7 +52,7 @@ public class TransformIntoResource : MonoBehaviour
             if (!instantiateOnce)
             {
                 instantiateOnce = true;
-                newResource = Instantiate(gameSettings.woodResourcePrefab, this.transform.position, new Quaternion());
+                newResource = Instantiate(gameSettings.woodResourcePrefab, spawnPoint.transform.position, new Quaternion());
                 GameObject.Find("Main Camera").GetComponent<AiManager>().AddResource(newResource);
                 Clean();
             }
@@ -43,7 +62,7 @@ public class TransformIntoResource : MonoBehaviour
             if (!instantiateOnce)
             {
                 instantiateOnce = true;
-                newResource = Instantiate(gameSettings.foodResourcePrefab, this.transform.position, new Quaternion());
+                newResource = Instantiate(gameSettings.foodResourcePrefab, spawnPoint.transform.position, new Quaternion());
                 GameObject.Find("Main Camera").GetComponent<AiManager>().AddResource(newResource);
                 Clean();
             }
@@ -53,7 +72,7 @@ public class TransformIntoResource : MonoBehaviour
             if (!instantiateOnce)
             {
                 instantiateOnce = true;
-                newResource = Instantiate(gameSettings.energyResourcePrefab, this.transform.position, new Quaternion());
+                newResource = Instantiate(gameSettings.energyResourcePrefab, spawnPoint.transform.position, new Quaternion());
                 GameObject.Find("Main Camera").GetComponent<AiManager>().AddResource(newResource);
                 Clean();
             }

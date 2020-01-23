@@ -261,6 +261,8 @@ MonoBehaviour:
   Ground: {fileID: 5108519397441971164}
   BuildingCreation: 0
   SpawningPoint: {fileID: 0}
+  AiAttributedToBuilding: []
+  StockPile: []
 --- !u!1 &5108519397441971164
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,6 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jobSwitcherType: 2
+  Building: {fileID: 5861286806855064772}
 --- !u!1001 &499434750773160884
 PrefabInstance:
   m_ObjectHideFlags: 0

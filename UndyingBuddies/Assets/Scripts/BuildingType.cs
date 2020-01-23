@@ -8,4 +8,6 @@ public enum BuildingType
     FoodHouse = 1,
     WoodHouse = 2,
     Barrack = 3,
+    WoodCutter = 4,
+    FoodProcessor = 5
 }
