@@ -23,6 +23,10 @@ public class Building : MonoBehaviour
 
     public UiHealth UiHealth;
 
+    public GameObject BoudingBoxTag;
+    public GameObject BoudingBoxWhenPlacing;
+    public DetectPlacement detectPlacement;
+
     void Start()
     {
         if (BuildingType == BuildingType.Barrack)
@@ -44,7 +48,11 @@ public class Building : MonoBehaviour
 
         this.gameObject.GetComponent<CharacterTypeTagger>().characterType = CharacterType.neutral;
 
-        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
+        if (BuildingType == BuildingType.CityHall)
+        {
+            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
+
+        }
 
         UiHealth.life = Health;
         UiHealth.maxLife = maxHealth;

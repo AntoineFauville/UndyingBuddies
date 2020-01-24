@@ -62,6 +62,18 @@ public class TerrainManagerLock : MonoBehaviour
 
                 if (AIOnMe.Count > 0)
                 {
+                    for (int i = 0; i < AIOnMe.Count; i++)
+                    {
+                        if (AIOnMe[i] == null)
+                        {
+                            AIOnMe.Remove(AIOnMe[i]);
+                        }
+                    }
+                }
+                
+
+                if (AIOnMe.Count > 0)
+                {
                     killAllAIUI.SetActive(true);
                     UnlockUI.SetActive(false);
                 }
@@ -94,7 +106,7 @@ public class TerrainManagerLock : MonoBehaviour
                 break;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1);
 
         StartCoroutine(SlowUpdate());
     }

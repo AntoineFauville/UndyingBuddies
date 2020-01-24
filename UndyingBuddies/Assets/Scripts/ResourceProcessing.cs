@@ -7,9 +7,9 @@ public class ResourceProcessing : MonoBehaviour
     [SerializeField] private Building building;
 
     [SerializeField] private bool CanProcess;
-    [SerializeField] private int amountOfAiAttributed;
+    [SerializeField] private float amountOfAiAttributed;
 
-    private int timeToWait;
+    private float timeToWait;
 
     void Start()
     {
@@ -47,6 +47,8 @@ public class ResourceProcessing : MonoBehaviour
         {
             CanProcess = false;
         }
+
+        //Debug.Log(timeToWait);    
     }
 
     IEnumerator waitToProcess()
@@ -56,6 +58,7 @@ public class ResourceProcessing : MonoBehaviour
         if (CanProcess)
         {
             building.StockPile[0].GetComponent<TransformIntoResource>().TransformIntoOtherResource();
+
             building.StockPile.Remove(building.StockPile[0]);
         }
 

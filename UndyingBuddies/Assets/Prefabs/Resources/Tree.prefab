@@ -97,7 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_OverrideArea: 0
   m_Area: 0
-  m_IgnoreFromBuild: 0
+  m_IgnoreFromBuild: 1
   m_AffectedAgents: ffffffff
 --- !u!54 &2891304650232494574
 Rigidbody:
@@ -160,7 +160,6 @@ MonoBehaviour:
   instantiateOnce: 0
   spawnPoint: {fileID: 0}
   BuildingWhereImPlaced: {fileID: 0}
-  canBeGrabbed: 0
 --- !u!136 &6046206322439569411
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -38,7 +38,7 @@ public class ResourceManager : MonoBehaviour
         textFood.text = amountOfFood.ToString();
         textEnergy.text = amountOfEnergy.ToString();
 
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(1);
 
         StartCoroutine(SlowUpdate());
     }

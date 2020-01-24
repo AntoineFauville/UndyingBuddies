@@ -323,7 +323,7 @@ public class AiManager : MonoBehaviour
                     case JobType.woodCutter:
                         if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count > 0)
                         {
-                            Debug.Log("Stockpile : " + currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count);
+                            //Debug.Log("Stockpile : " + currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count);
                             currentAiDemon.Process();
                         }
                         else
@@ -335,7 +335,7 @@ public class AiManager : MonoBehaviour
                     case JobType.energyProcessor:
                         if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count > 0)
                         {
-                            Debug.Log("Stockpile : " + currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count);
+                            //Debug.Log("Stockpile : " + currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.StockPile.Count);
                             currentAiDemon.Process();
                         }
                         else
@@ -360,7 +360,7 @@ public class AiManager : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(1f);
         StartCoroutine(SlowUpdate());
     }
 

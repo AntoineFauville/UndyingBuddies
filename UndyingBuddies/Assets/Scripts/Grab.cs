@@ -21,11 +21,18 @@ public class Grab : MonoBehaviour
         }
 
         HoldingAnything.SetActive(false);
+
+        for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
+        {
+            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
+            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxWhenPlacing.SetActive(false);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        //this manage is you can click or not on the objects
         if (Input.GetMouseButtonDown(0) && !grabbing && !notUsingSpell)
         {
             RaycastHit hit;
@@ -66,6 +73,7 @@ public class Grab : MonoBehaviour
             }
         }
 
+        //this is when you hold the object and you have one
         if (grabbedItem != null)
         {
             RaycastHit hitPos;
@@ -73,12 +81,17 @@ public class Grab : MonoBehaviour
 
             if (Physics.Raycast(rayPos, out hitPos))
             {
-                if (hitPos.collider.tag == "switchJobArea" && grabbedItem.transform.GetComponent<AIDemons>() != null)
+                if (hitPos.collider.tag == "terrainWarFlagOnly" && grabbedItem.transform.tag == "flag")
                 {
                     conditionToReleaseMet = true;
                     posCurrentObject = hitPos.point;
                 }
-                else if(hitPos.collider.tag == "ResourceTransformer" && grabbedItem.transform.GetComponent<TransformIntoResource>() != null)
+                else if (hitPos.collider.tag == "switchJobArea" && grabbedItem.transform.GetComponent<AIDemons>() != null)
+                {
+                    conditionToReleaseMet = true;
+                    posCurrentObject = hitPos.point;
+                }
+                else if (hitPos.collider.tag == "ResourceTransformer" && grabbedItem.transform.GetComponent<TransformIntoResource>() != null)
                 {
                     if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.WoodCutter && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.wood)
                     {
@@ -96,6 +109,32 @@ public class Grab : MonoBehaviour
                         posCurrentObject = hitPos.point;
                     }
                 }
+                else if (grabbedItem.transform.GetComponent<Building>() != null)//if i'm a building i want to make sure the ground is working to be placed
+                {
+                    if (hitPos.collider.tag == "Floor")
+                    {
+                        posCurrentObject = hitPos.point;
+                    }
+
+                    for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // activate all the bouding box if it's a building
+                    {
+                        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(true);
+                        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxWhenPlacing.SetActive(true);
+                    }
+
+                    if (!grabbedItem.transform.GetComponent<Building>().detectPlacement.Detected)
+                    {
+                        grabbedItem.transform.GetComponent<Building>().BoudingBoxTag.GetComponent<MeshRenderer>().material.color = Color.white;
+                        grabbedItem.transform.GetComponent<Building>().BoudingBoxWhenPlacing.GetComponent<MeshRenderer>().material.color = Color.white;
+                        conditionToReleaseMet = true;
+                    }
+                    else
+                    {
+                        grabbedItem.transform.GetComponent<Building>().BoudingBoxTag.GetComponent<MeshRenderer>().material.color = Color.red;
+                        grabbedItem.transform.GetComponent<Building>().BoudingBoxWhenPlacing.GetComponent<MeshRenderer>().material.color = Color.red;
+                        conditionToReleaseMet = false;
+                    }
+                }
                 else
                 {
                     if (hitPos.collider.tag == "Floor")
@@ -110,6 +149,10 @@ public class Grab : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            grabbing = false;
+        }
 
         if (grabbing)
         {
@@ -119,6 +162,12 @@ public class Grab : MonoBehaviour
             grabbedItem.layer = 2;
             HoldingAnything.SetActive(true);
             HoldingAnything.transform.position = posCurrentObject;
+
+            if (grabbedItem.transform.GetComponent<Building>() != null && Input.GetButtonDown("Cancel"))
+            {
+                DestroyImmediate(grabbedItem);
+                Debug.Log("canceled building placement");
+            }
         }
 
         if (Input.GetMouseButtonDown(0) && grabbing && conditionToReleaseMet)
@@ -127,6 +176,55 @@ public class Grab : MonoBehaviour
             if (grabbedItem.transform.GetComponent<Rigidbody>() != null)
             {
                 grabbedItem.transform.GetComponent<Rigidbody>().useGravity = true;
+            }
+
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
+            {
+                GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
+                GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxWhenPlacing.SetActive(false);
+            }
+
+            if (grabbedItem.transform.GetComponent<Building>() != null)
+            {
+                //cost if you do want to apply the spell on the ground
+                if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.CityHall)
+                {
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingCostInWood;
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingCostInFood;
+                }
+                else if(grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodHouse)
+                {
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingCostInWood;
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingCostInFood;
+                }
+                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodHouse)
+                {
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingCostInWood;
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingCostInFood;
+                }
+                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.SpellHouse)
+                {
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingCostInWood;
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingCostInFood;
+                }
+                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.Barrack)
+                {
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.Barrack.BuildingCostInWood;
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.Barrack.BuildingCostInFood;
+                }
+                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodProcessor)
+                {
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingCostInWood;
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingCostInFood;
+                }
+                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodCutter)
+                {
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingCostInWood;
+                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingCostInFood;
+                }
+
+                GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(grabbedItem);
+                GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Add(grabbedItem);
             }
 
             handAnim.Play("hand anim holdrelease");
@@ -158,7 +256,9 @@ public class Grab : MonoBehaviour
             }
 
             grabbedItem.layer = 0;
-            
+
+            grabbedItem.transform.position = posCurrentObject;
+
             grabbedItem = null;
 
             HoldingAnything.SetActive(false);

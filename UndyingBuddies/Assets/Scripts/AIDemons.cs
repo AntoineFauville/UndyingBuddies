@@ -106,6 +106,7 @@ public class AIDemons : MonoBehaviour
 
     public void Process()
     {
+        NavMeshAgent.isStopped = true;
         animatorDemon.Play("Gather");
     }
 

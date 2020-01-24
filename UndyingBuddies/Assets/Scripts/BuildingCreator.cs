@@ -23,8 +23,6 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.CityHall: //0
                 if (resourceManager.amountOfWood >= gameSettings.cityhall.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.cityhall.BuildingCostInFood)
                 {
-                    resourceManager.amountOfWood -= gameSettings.cityhall.BuildingCostInWood;
-                    resourceManager.amountOfFood -= gameSettings.cityhall.BuildingCostInFood;
                     InstantiateBuilding(gameSettings.cityhall.PrefabBuilding);
                 }
                 else
@@ -36,8 +34,6 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.FoodHouse: //1
                 if (resourceManager.amountOfWood >= gameSettings.foodHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.foodHouse.BuildingCostInFood)
                 {
-                    resourceManager.amountOfWood -= gameSettings.foodHouse.BuildingCostInWood;
-                    resourceManager.amountOfFood -= gameSettings.foodHouse.BuildingCostInFood;
                     InstantiateBuilding(gameSettings.foodHouse.PrefabBuilding);
                 }
                 else
@@ -49,8 +45,6 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.WoodHouse: //2
                 if (resourceManager.amountOfWood >= gameSettings.woodHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.woodHouse.BuildingCostInFood)
                 {
-                    resourceManager.amountOfWood -= gameSettings.woodHouse.BuildingCostInWood;
-                    resourceManager.amountOfFood -= gameSettings.woodHouse.BuildingCostInFood;
                     InstantiateBuilding(gameSettings.woodHouse.PrefabBuilding);
                 }
                 else
@@ -62,8 +56,6 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.Barrack: //3
                 if (resourceManager.amountOfWood >= gameSettings.Barrack.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.Barrack.BuildingCostInFood)
                 {
-                    resourceManager.amountOfWood -= gameSettings.Barrack.BuildingCostInWood;
-                    resourceManager.amountOfFood -= gameSettings.Barrack.BuildingCostInFood;
                     InstantiateBuilding(gameSettings.Barrack.PrefabBuilding);
                 }
                 else
@@ -75,8 +67,6 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.WoodCutter: //4
                 if (resourceManager.amountOfWood >= gameSettings.woodCutter.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.woodCutter.BuildingCostInFood)
                 {
-                    resourceManager.amountOfWood -= gameSettings.woodCutter.BuildingCostInWood;
-                    resourceManager.amountOfFood -= gameSettings.woodCutter.BuildingCostInFood;
                     InstantiateBuilding(gameSettings.woodCutter.PrefabBuilding);
                 }
                 else
@@ -88,8 +78,6 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.FoodProcessor: //5
                 if (resourceManager.amountOfWood >= gameSettings.foodProcessor.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.foodProcessor.BuildingCostInFood)
                 {
-                    resourceManager.amountOfWood -= gameSettings.foodProcessor.BuildingCostInWood;
-                    resourceManager.amountOfFood -= gameSettings.foodProcessor.BuildingCostInFood;
                     InstantiateBuilding(gameSettings.foodProcessor.PrefabBuilding);
                 }
                 else
@@ -101,8 +89,6 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.SpellHouse: //6
                 if (resourceManager.amountOfWood >= gameSettings.spellHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.spellHouse.BuildingCostInFood)
                 {
-                    resourceManager.amountOfWood -= gameSettings.spellHouse.BuildingCostInWood;
-                    resourceManager.amountOfFood -= gameSettings.spellHouse.BuildingCostInFood;
                     InstantiateBuilding(gameSettings.spellHouse.PrefabBuilding);
                 }
                 else
@@ -120,7 +106,7 @@ public class BuildingCreator : MonoBehaviour
         newObj.GetComponent<Building>().PreGround.SetActive(true);
         newObj.GetComponent<Building>().Ground.SetActive(false);
 
-        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Add(newObj);
+        
 
         StartCoroutine(waitForFeedback(newObj));        
     }
