@@ -36,8 +36,6 @@ public class TerrainManagerLock : MonoBehaviour
 
     IEnumerator SlowUpdate()
     {
-        yield return new WaitForSeconds(0.5f);
-
         switch (terrainStage)
         {
             case TerrainStage.CompleteLock:
@@ -45,7 +43,7 @@ public class TerrainManagerLock : MonoBehaviour
 
                 for (int i = 0; i < ResourcesAvailable.Count; i++)
                 {
-                    ResourcesAvailable[i].GetComponent<TransformIntoResource>().canBeGrabbed = false;
+                    ResourcesAvailable[i].GetComponent<CharacterTypeTagger>().characterType = CharacterType.neutral;
                 }
 
                 TerrainUI.SetActive(false);
@@ -57,7 +55,7 @@ public class TerrainManagerLock : MonoBehaviour
 
                 for (int i = 0; i < ResourcesAvailable.Count; i++)
                 {
-                    ResourcesAvailable[i].GetComponent<TransformIntoResource>().canBeGrabbed = false;
+                    ResourcesAvailable[i].GetComponent<CharacterTypeTagger>().characterType = CharacterType.neutral;
                 }
 
                 TerrainUI.SetActive(true);
@@ -80,18 +78,23 @@ public class TerrainManagerLock : MonoBehaviour
 
                 for (int i = 0; i < TerrainToUnlock.Count; i++)
                 {
-                    TerrainToUnlock[i].GetComponent<TerrainManagerLock>().terrainStage = TerrainStage.SoftLock;
+                    if (TerrainToUnlock[i].GetComponent<TerrainManagerLock>().terrainStage != TerrainStage.Unlocked)
+                    {
+                        TerrainToUnlock[i].GetComponent<TerrainManagerLock>().terrainStage = TerrainStage.SoftLock;
+                    }
                 }
 
                 for (int i = 0; i < ResourcesAvailable.Count; i++)
                 {
-                    ResourcesAvailable[i].GetComponent<TransformIntoResource>().canBeGrabbed = true;
+                    ResourcesAvailable[i].GetComponent<CharacterTypeTagger>().characterType = CharacterType.demon;
                 }
 
                 TerrainUI.SetActive(false);
 
                 break;
         }
+
+        yield return new WaitForSeconds(0.5f);
 
         StartCoroutine(SlowUpdate());
     }

@@ -23,7 +23,7 @@ public class ResourceManager : MonoBehaviour
 
         foreach (var resource in GameObject.FindGameObjectsWithTag("Resource"))
         {
-            if (resource.GetComponent<TransformIntoResource>().canBeGrabbed)
+            if (resource.GetComponent<CharacterTypeTagger>().characterType == CharacterType.demon)
             {
                 Resource.Add(resource);
             }

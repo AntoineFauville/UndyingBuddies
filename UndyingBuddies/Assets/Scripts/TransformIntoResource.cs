@@ -17,8 +17,6 @@ public class TransformIntoResource : MonoBehaviour
 
     private bool CanTransform;
 
-    public bool canBeGrabbed; // this checks if I'm related to a terrain or not, and if i'm unlocked i can be grabbed
-
     void Start()
     {
         if (gameSettings != null)
@@ -29,7 +27,7 @@ public class TransformIntoResource : MonoBehaviour
 
     void Update()
     {
-        if (!haveIGotGrabbed && this.transform.GetComponent<Grabable>().grabbed && canBeGrabbed)
+        if (!haveIGotGrabbed && this.transform.GetComponent<Grabable>().grabbed)
         {
             haveIGotGrabbed = true;
         }
@@ -105,8 +103,6 @@ public class TransformIntoResource : MonoBehaviour
                 Clean();
             }
         }
-
-        
     }
 
     void Clean()

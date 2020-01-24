@@ -7,7 +7,7 @@ public class NavMeshController : MonoBehaviour
 {
     public NavMeshSurface _navMeshSurface;
 
-    void Start()
+    void Awake()
     {
         ReGenerateNavMesh();
     }
