@@ -5,6 +5,7 @@ using UnityEngine;
 public class TransformIntoResource : MonoBehaviour
 {
     public ResourceType myResourceType;
+    public ResourceSizeType resourceSizeType;
 
     [SerializeField] private GameSettings gameSettings;
 
@@ -16,6 +17,8 @@ public class TransformIntoResource : MonoBehaviour
 
     private bool CanTransform;
 
+    public bool canBeGrabbed; // this checks if I'm related to a terrain or not, and if i'm unlocked i can be grabbed
+
     void Start()
     {
         if (gameSettings != null)
@@ -26,7 +29,7 @@ public class TransformIntoResource : MonoBehaviour
 
     void Update()
     {
-        if (!haveIGotGrabbed && this.transform.GetComponent<Grabable>().grabbed)
+        if (!haveIGotGrabbed && this.transform.GetComponent<Grabable>().grabbed && canBeGrabbed)
         {
             haveIGotGrabbed = true;
         }
@@ -61,6 +64,15 @@ public class TransformIntoResource : MonoBehaviour
             {
                 instantiateOnce = true;
                 newResource = Instantiate(gameSettings.woodResourcePrefab, spawnPoint.transform.position, new Quaternion());
+                if (resourceSizeType == ResourceSizeType.smoll)
+                {
+                    newResource.GetComponent<Resource>().amountOfResourceAvailable = gameSettings.woodSmallContainer;
+                }
+                else if (resourceSizeType == ResourceSizeType.medium)
+                {
+                    newResource.GetComponent<Resource>().amountOfResourceAvailable = gameSettings.woodMediumContainer;
+                }
+                
                 GameObject.Find("Main Camera").GetComponent<AiManager>().AddResource(newResource);
                 Clean();
             }
@@ -71,6 +83,14 @@ public class TransformIntoResource : MonoBehaviour
             {
                 instantiateOnce = true;
                 newResource = Instantiate(gameSettings.foodResourcePrefab, spawnPoint.transform.position, new Quaternion());
+                if (resourceSizeType == ResourceSizeType.smoll)
+                {
+                    newResource.GetComponent<Resource>().amountOfResourceAvailable = gameSettings.foodSmallContainer;
+                }
+                else if (resourceSizeType == ResourceSizeType.medium)
+                {
+                    newResource.GetComponent<Resource>().amountOfResourceAvailable = gameSettings.foodMediumContainer;
+                }
                 GameObject.Find("Main Camera").GetComponent<AiManager>().AddResource(newResource);
                 Clean();
             }

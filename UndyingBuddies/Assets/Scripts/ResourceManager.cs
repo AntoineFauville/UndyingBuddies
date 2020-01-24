@@ -13,17 +13,33 @@ public class ResourceManager : MonoBehaviour
     public Text textFood;
     public Text textEnergy;
 
+    public List<GameObject> Resource = new List<GameObject>();
+
     void Start()
     {
         amountOfWood = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.initialWoodAmount;
         amountOfFood = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.initialFoodAmount;
         amountOfEnergy = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.initialEnergyAmount;
+
+        foreach (var resource in GameObject.FindGameObjectsWithTag("Resource"))
+        {
+            if (resource.GetComponent<TransformIntoResource>().canBeGrabbed)
+            {
+                Resource.Add(resource);
+            }
+        }
+
+        StartCoroutine(SlowUpdate());
     }
 
-    void Update()
+    IEnumerator SlowUpdate()
     {
         textWood.text = amountOfWood.ToString();
         textFood.text = amountOfFood.ToString();
         textEnergy.text = amountOfEnergy.ToString();
+
+        yield return new WaitForSeconds(0.6f);
+
+        StartCoroutine(SlowUpdate());
     }
 }

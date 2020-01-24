@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 6046206322439569411}
   m_Layer: 0
   m_Name: Tree
-  m_TagString: Tree
+  m_TagString: Resource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,6 +171,8 @@ MonoBehaviour:
   gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
   haveIGotGrabbed: 0
   instantiateOnce: 0
+  spawnPoint: {fileID: 0}
+  BuildingWhereImPlaced: {fileID: 0}
 --- !u!136 &6046206322439569411
 CapsuleCollider:
   m_ObjectHideFlags: 0

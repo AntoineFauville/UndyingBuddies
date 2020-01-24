@@ -98,6 +98,17 @@ public class AIPriest : MonoBehaviour
 
     void Die()
     {
+        for (int i = 0; i < GameObject.FindGameObjectsWithTag("Floor").Length; i++)
+        {
+            if (GameObject.FindGameObjectsWithTag("Floor")[i].GetComponent<TerrainManagerLock>() != null)
+            {
+                if (GameObject.FindGameObjectsWithTag("Floor")[i].GetComponent<TerrainManagerLock>().AIOnMe.Contains(this.gameObject))
+                {
+                    GameObject.FindGameObjectsWithTag("Floor")[i].GetComponent<TerrainManagerLock>().AIOnMe.Remove(this.gameObject);
+                }
+            }
+        }
+
         aiManager.Priest.Remove(this.gameObject);
 
         StartCoroutine(waitToDie());

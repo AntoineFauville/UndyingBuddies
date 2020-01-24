@@ -35,4 +35,13 @@ public class GameSettings : ScriptableObject
     public int PriestAttackAmount = 5;
 
     public SpellArchetype fireSpell;
+
+    public int woodSmallContainer = 20;
+    public int woodMediumContainer = 50;
+
+    public int foodSmallContainer = 20;
+    public int foodMediumContainer = 50;
+
+    public int foodAmountToUnlockTerrain = 100;
+    public int woodAmountToUnlockTerrain = 100;
 }
