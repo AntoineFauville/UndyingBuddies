@@ -5,6 +5,7 @@ using UnityEngine;
 public class Building : MonoBehaviour
 {
     public int Health;
+    public int maxHealth;
     public BuildingType BuildingType;
 
     public bool canBeInteractable;
@@ -19,6 +20,8 @@ public class Building : MonoBehaviour
     public List<GameObject> AiAttributedToBuilding = new List<GameObject>();
 
     public List<GameObject> StockPile = new List<GameObject>();
+
+    public UiHealth UiHealth;
 
     void Start()
     {
@@ -37,9 +40,14 @@ public class Building : MonoBehaviour
         if (BuildingType == BuildingType.SpellHouse)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingHealth;
 
+        maxHealth = Health;
+
         this.gameObject.GetComponent<CharacterTypeTagger>().characterType = CharacterType.neutral;
 
         GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
+
+        UiHealth.life = Health;
+        UiHealth.maxLife = maxHealth;
 
         StartCoroutine(feedToNotLooseGame());
     }
@@ -58,6 +66,27 @@ public class Building : MonoBehaviour
         }
     }
 
+    public void GetAttack(int damage)
+    {
+        if (Health > 0)
+        {
+            Health -= damage;
+
+            UiHealth.life = Health;
+        }
+        else
+        {
+            DestroyBuilding();
+        }
+    }
+
+    void DestroyBuilding()
+    {
+        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Remove(this.gameObject);
+
+        DestroyImmediate(this.gameObject);
+    }
+
     IEnumerator feedToNotLooseGame()
     {
         yield return new WaitForSeconds(6);
@@ -70,4 +99,5 @@ public class Building : MonoBehaviour
 
         StartCoroutine(feedToNotLooseGame());
     }
+    
 }

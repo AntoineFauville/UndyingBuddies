@@ -55,10 +55,6 @@ public class AIPriest : MonoBehaviour
         {
             Die();
         }
-        else
-        {
-
-        }
 
         //if see a demon nearby
         
@@ -68,7 +64,6 @@ public class AIPriest : MonoBehaviour
 
             if (Target != null)
             {
-
                 if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
                 {
                     NavMeshAgent.isStopped = true;
@@ -78,6 +73,10 @@ public class AIPriest : MonoBehaviour
                     if (Target.GetComponent<AIDemons>() != null)
                     {
                         Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
+                    }
+                    else if(Target.GetComponent<Building>() != null)
+                    {
+                        Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
                     }
 
                     StartCoroutine(waitToReAttack());
@@ -121,9 +120,29 @@ public class AIPriest : MonoBehaviour
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
 
-        List<GameObject> listToCheck;
+        List<GameObject> listToCheck = new List<GameObject>();
+        
+        if (GameObject.Find("Main Camera").GetComponent<AiManager>().Demons.Count > 0) // if i have a building to attack make sure the priest can attack the building
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Demons.Count; i++)
+            {
+                if (!listToCheck.Contains(GameObject.Find("Main Camera").GetComponent<AiManager>().Demons[i]))
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().Demons[i]);
+                }
+            }
+        }
 
-        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().Demons;
+        if (GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count > 0) // if i have a building to attack make sure the priest can attack the building
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++)
+            {
+                if (!listToCheck.Contains(GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i]))
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i]);
+                }
+            }
+        }
 
         foreach (GameObject potentialTarget in listToCheck)
         {
