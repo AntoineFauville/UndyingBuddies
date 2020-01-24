@@ -8,6 +8,7 @@ public class AIDemons : MonoBehaviour
     public string myName;
     public JobType JobType;
     public int life;
+    public UiHealth UiHealth;
     private int _demonRangeOfDetection;
     private int _demonRangeOfCloseBy;
 
@@ -23,6 +24,8 @@ public class AIDemons : MonoBehaviour
 
     Animator animatorDemon;
 
+    public bool amIInFire;
+
     public void Setup(string name, JobType initialJobtype, int initiallife, int demonRangeOfDetection, int demonRangeOfAttack)
     {
         myName = name;
@@ -37,6 +40,23 @@ public class AIDemons : MonoBehaviour
     public void SwitchJob(JobType newJobtype)
     {
         JobType = newJobtype;
+    }
+
+    void OnTriggerStay(Collider collider)
+    {
+        if (collider.tag == "FireZone")
+        {
+            amIInFire = true;
+        }
+        else
+        {
+            amIInFire = false;
+        }
+    }
+
+    void OnTriggerExit()
+    {
+        amIInFire = false;
     }
 
     //actions

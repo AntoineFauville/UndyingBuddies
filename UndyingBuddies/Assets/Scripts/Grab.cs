@@ -7,6 +7,7 @@ public class Grab : MonoBehaviour
     public bool grabbing;
     public bool conditionToReleaseMet;
     public GameObject grabbedItem;
+    public bool notUsingSpell;
     [SerializeField] Vector3 posCurrentObject;
     [SerializeField] GameObject HoldingAnything;
     [SerializeField] Animator handAnim;
@@ -25,7 +26,7 @@ public class Grab : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !grabbing)
+        if (Input.GetMouseButtonDown(0) && !grabbing && !notUsingSpell)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

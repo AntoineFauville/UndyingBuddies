@@ -30,12 +30,18 @@ public class Building : MonoBehaviour
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingHealth;
         if (BuildingType == BuildingType.WoodHouse)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingHealth;
+        if (BuildingType == BuildingType.WoodCutter)
+            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingHealth;
+        if (BuildingType == BuildingType.FoodProcessor)
+            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingHealth;
         if (BuildingType == BuildingType.SpellHouse)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingHealth;
 
         this.gameObject.GetComponent<CharacterTypeTagger>().characterType = CharacterType.neutral;
 
         GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
+
+        StartCoroutine(feedToNotLooseGame());
     }
 
     void Update()
@@ -50,5 +56,18 @@ public class Building : MonoBehaviour
                 GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Remove(this.gameObject);
             }
         }
+    }
+
+    IEnumerator feedToNotLooseGame()
+    {
+        yield return new WaitForSeconds(6);
+
+        if (BuildingType == BuildingType.CityHall)
+        {
+            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += 1;
+            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += 1;
+        }
+
+        StartCoroutine(feedToNotLooseGame());
     }
 }

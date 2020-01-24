@@ -315,6 +315,14 @@ public class AiManager : MonoBehaviour
                         }
                         break;
                 }
+
+                if (currentAiDemon.amIInFire)
+                {
+                    currentAiDemon.life -= GameSettings.fireSpell.DamageToDemons;
+                }
+
+                currentAiDemon.UiHealth.life = currentAiDemon.life;
+                currentAiDemon.UiHealth.maxLife = GameSettings.demonLife;
             }
             else
             {

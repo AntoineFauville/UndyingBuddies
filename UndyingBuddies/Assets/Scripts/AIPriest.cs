@@ -21,6 +21,10 @@ public class AIPriest : MonoBehaviour
 
     public NavMeshAgent NavMeshAgent;
 
+    public bool amIInFire;
+
+    public UiHealth UiHealth;
+
     void Start()
     {
         aiManager = GameObject.Find("Main Camera").GetComponent<AiManager>();
@@ -41,6 +45,8 @@ public class AIPriest : MonoBehaviour
         }
 
         CheckClosestDemonToAttack();
+
+        StartCoroutine(slowUpdate());
     }
 
     void Update()
@@ -49,34 +55,43 @@ public class AIPriest : MonoBehaviour
         {
             Die();
         }
+        else
+        {
+
+        }
 
         //if see a demon nearby
+        
         if (!AmIBuilding && CanAttackBack)
         {
             CheckClosestDemonToAttack();
 
-            if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
+            if (Target != null)
             {
-                NavMeshAgent.isStopped = true;
 
-                CanAttackAgain = true;
-
-                if (Target.GetComponent<AIDemons>() != null)
+                if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
                 {
-                    Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
+                    NavMeshAgent.isStopped = true;
+
+                    CanAttackAgain = true;
+
+                    if (Target.GetComponent<AIDemons>() != null)
+                    {
+                        Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
+                    }
+
+                    StartCoroutine(waitToReAttack());
                 }
+                else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)
+                {
+                    NavMeshAgent.isStopped = false;
 
-                StartCoroutine(waitToReAttack());
-            }
-            else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)
-            {
-                NavMeshAgent.isStopped = false;
-
-                NavMeshAgent.destination = Target.transform.position;
-            }
-            else
-            {
-                NavMeshAgent.isStopped = true;
+                    NavMeshAgent.destination = Target.transform.position;
+                }
+                else
+                {
+                    NavMeshAgent.isStopped = true;
+                }
             }
         }
     }
@@ -113,6 +128,23 @@ public class AIPriest : MonoBehaviour
         Target = bestDemon;
     } // check if there is an enemy to attack close up
 
+    void OnTriggerStay(Collider collider)
+    {
+        if (collider.tag == "FireZone")
+        {
+            amIInFire = true;
+        }
+        else
+        {
+            amIInFire = false;
+        }
+    }
+
+    void OnTriggerExit()
+    {
+        amIInFire = false;
+    }
+
     IEnumerator waitToDie()
     {
         yield return new WaitForSeconds(0.05f);
@@ -124,5 +156,20 @@ public class AIPriest : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         CanAttackAgain = false;
+    }
+
+    IEnumerator slowUpdate()
+    {
+        yield return new WaitForSeconds(0.7f);
+
+        if (amIInFire)
+        {
+            Health -= _gameSettings.fireSpell.DamageToEnemy;
+        }
+
+        UiHealth.life = Health;
+        UiHealth.maxLife = _gameSettings.PriestHealth;
+
+        StartCoroutine(slowUpdate());
     }
 }
