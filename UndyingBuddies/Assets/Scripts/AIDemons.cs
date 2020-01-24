@@ -122,11 +122,19 @@ public class AIDemons : MonoBehaviour
             
             if (resourceToGather == ResourceType.wood)
             {
-                woodAmount += 1;
+                if (TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable > 0)
+                {
+                    TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
+                    woodAmount += 1;
+                }
             }
             else if (resourceToGather == ResourceType.food)
             {
-                foodAmount += 1;
+                if (TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable > 0)
+                {
+                    TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
+                    foodAmount += 1;
+                }
             }
 
             StartCoroutine(TransferingTime());

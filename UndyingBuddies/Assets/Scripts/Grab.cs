@@ -123,6 +123,12 @@ public class Grab : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && grabbing && conditionToReleaseMet)
         {
+
+            if (grabbedItem.transform.GetComponent<Rigidbody>() != null)
+            {
+                grabbedItem.transform.GetComponent<Rigidbody>().useGravity = true;
+            }
+
             handAnim.Play("hand anim holdrelease");
 
             grabbedItem.GetComponent<Grabable>().grabbed = false;
@@ -152,12 +158,7 @@ public class Grab : MonoBehaviour
             }
 
             grabbedItem.layer = 0;
-
-            if (grabbedItem.transform.GetComponent<Rigidbody>() != null)
-            {
-                grabbedItem.transform.GetComponent<Rigidbody>().useGravity = true;
-            }
-
+            
             grabbedItem = null;
 
             HoldingAnything.SetActive(false);

@@ -7510,6 +7510,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5661156765467765845, guid: 020809d02fe6672458738479d4b763bb,
+        type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 020809d02fe6672458738479d4b763bb, type: 3}
 --- !u!1001 &1112945444
@@ -8203,6 +8208,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8803593055677472343}
     m_Modifications:
+    - target: {fileID: 4741101803749598165, guid: 668d1833ec2d45a47ab209a8e7100367,
+        type: 3}
+      propertyPath: m_Name
+      value: UIHealth
+      objectReference: {fileID: 0}
     - target: {fileID: 9113972547635873580, guid: 668d1833ec2d45a47ab209a8e7100367,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8257,11 +8267,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4741101803749598165, guid: 668d1833ec2d45a47ab209a8e7100367,
-        type: 3}
-      propertyPath: m_Name
-      value: UIHealth
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 668d1833ec2d45a47ab209a8e7100367, type: 3}

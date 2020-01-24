@@ -165,13 +165,9 @@ public class AiManager : MonoBehaviour
                         break;
 
                     case JobType.collectFood:
-                        if (Foods.Count == 0)
+                        if (Foods.Count > 0)
                         {
-                            currentAiDemon.Idle();
-                        }
-                        else
-                        {
-                            if (currentAiDemon.foodAmount <= GameSettings.maxFoodCanCarry) //do i have food on me //no
+                           if (currentAiDemon.foodAmount <= GameSettings.maxFoodCanCarry && Foods.Count > 0) //do i have food on me //no
                             {
                                 GameObject food = currentAiDemon.FindClosestResourceSupply(ResourceType.food);
                                 if (currentAiDemon.checkIfGivenObjectIscloseBy(food))
@@ -195,16 +191,31 @@ public class AiManager : MonoBehaviour
                                 }
                             }
                         }
+                        else //if no then go to the building and idle there
+                        {
+                            if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                            {
+                                if (currentAiDemon.woodAmount > 0) // would it be that i have some food on me ?
+                                {
+                                    currentAiDemon.Place();
+                                }
+                                else
+                                {
+                                    currentAiDemon.Idle();
+                                }
+                            }
+                            else
+                            {
+                                currentAiDemon.Walk();
+                            }
+                        }
                         break;
 
                     case JobType.collectWood:
-                        if (Woods.Count == 0)
+                       
+                        if (Woods.Count > 0) //is there wood around me ?
                         {
-                            currentAiDemon.Idle();
-                        }
-                        else
-                        {
-                            if (currentAiDemon.woodAmount <= GameSettings.maxWoodCanCarry) //do i have wood on me //no
+                            if (currentAiDemon.woodAmount <= GameSettings.maxWoodCanCarry)
                             {
                                 GameObject wood = currentAiDemon.FindClosestResourceSupply(ResourceType.wood);
                                 if (currentAiDemon.checkIfGivenObjectIscloseBy(wood))
@@ -226,6 +237,24 @@ public class AiManager : MonoBehaviour
                                 {
                                     currentAiDemon.Walk();
                                 }
+                            }
+                        }
+                        else //if no then go to the building and idle there
+                        {
+                            if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                            {
+                                if (currentAiDemon.woodAmount > 0) // would it be that i have some wood on me ?
+                                {
+                                    currentAiDemon.Place();
+                                }
+                                else
+                                {
+                                    currentAiDemon.Idle();
+                                }
+                            }
+                            else
+                            {
+                                currentAiDemon.Walk();
                             }
                         }
                         break;
