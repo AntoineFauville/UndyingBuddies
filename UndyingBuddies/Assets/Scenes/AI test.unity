@@ -8489,7 +8489,7 @@ GameObject:
   m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1237052568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8508,6 +8508,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 39517213e328a254b9e103bf781af3d1, type: 2}
   - {fileID: 11400000, guid: 63cfbfb0ca68aad4fb60ad26b38b50aa, type: 2}
   GameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
+  currentWaveTimeIndex: 0
 --- !u!4 &1237052569
 Transform:
   m_ObjectHideFlags: 0
@@ -15460,7 +15461,7 @@ PrefabInstance:
     - target: {fileID: 813676334979895088, guid: 2726dfede82108a47bfc53f69a18f242,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 813676334979895088, guid: 2726dfede82108a47bfc53f69a18f242,
         type: 3}
@@ -15522,6 +15523,16 @@ PrefabInstance:
       propertyPath: DestroyToWin_01
       value: 
       objectReference: {fileID: 8803593055677472336}
+    - target: {fileID: 357629445583387240, guid: 2726dfede82108a47bfc53f69a18f242,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 891920006913416448, guid: 2726dfede82108a47bfc53f69a18f242,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.5999985
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2726dfede82108a47bfc53f69a18f242, type: 3}
 --- !u!1001 &1911693703161633094
