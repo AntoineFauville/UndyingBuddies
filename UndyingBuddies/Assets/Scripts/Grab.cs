@@ -41,6 +41,47 @@ public class Grab : MonoBehaviour
             //hit is the object that i want to grab
             if (Physics.Raycast(ray, out hit))
             {
+                if (hit.collider.GetComponent<InfoReader>() != null)
+                {
+                    GameObject infoPanel = GameObject.Find("InfoPanel");
+
+                    infoPanel.GetComponent<CanvasGroup>().alpha = 1;
+
+                    infoPanel.GetComponent<InfoPanel>().SpellHouseSpecific.SetActive(false);
+                    infoPanel.GetComponent<InfoPanel>().CityHallSpecific.SetActive(false);
+
+                    if (hit.collider.GetComponent<InfoReader>().infoArchetype != null)
+                    {
+                        infoPanel.GetComponent<InfoPanel>().NameOfObject.text = hit.collider.GetComponent<InfoReader>().infoArchetype.nameObject;
+                        infoPanel.GetComponent<InfoPanel>().Description.text = hit.collider.GetComponent<InfoReader>().infoArchetype.story;
+                        infoPanel.GetComponent<InfoPanel>().Image.sprite = hit.collider.GetComponent<InfoReader>().infoArchetype.image;
+                    }
+                    else
+                    {
+                        infoPanel.GetComponent<InfoPanel>().NameOfObject.text = "Placeholder";
+                        infoPanel.GetComponent<InfoPanel>().Description.text = "Placeholder";
+                        infoPanel.GetComponent<InfoPanel>().Image.sprite = null;
+                    }
+
+                    if (hit.collider.GetComponent<InfoReader>().myBuilding != null)
+                    {
+                        Debug.Log("I'm a building");
+
+                        infoPanel.GetComponent<InfoPanel>().Health.text = hit.collider.GetComponent<InfoReader>().myBuilding.Health + " / " + hit.collider.GetComponent<InfoReader>().myBuilding.maxHealth + " Health";
+
+                        if (hit.collider.GetComponent<InfoReader>().myBuilding.BuildingType == BuildingType.CityHall)
+                        {
+                            Debug.Log("I'm city hall");
+                            infoPanel.GetComponent<InfoPanel>().CityHallSpecific.SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        infoPanel.GetComponent<InfoPanel>().SpellHouseSpecific.SetActive(false);
+                        infoPanel.GetComponent<InfoPanel>().CityHallSpecific.SetActive(false);
+                    }
+                }
+
                 if (hit.transform.GetComponent<Grabable>() != null && hit.transform.GetComponent<CharacterTypeTagger>() != null)
                 {
                     if (hit.transform.GetComponent<CharacterTypeTagger>().characterType == CharacterType.demon)

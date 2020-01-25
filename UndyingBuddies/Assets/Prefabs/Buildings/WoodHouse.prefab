@@ -426,6 +426,7 @@ GameObject:
   - component: {fileID: 5523509404519262338}
   - component: {fileID: 5523509404519262349}
   - component: {fileID: 7906677491834152720}
+  - component: {fileID: 6048628667328973467}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -476,6 +477,20 @@ MonoBehaviour:
   m_Area: 0
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &6048628667328973467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5523509404519262339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf5fb5b2788b6c241bf19e7974e1b988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infoArchetype: {fileID: 11400000, guid: 6c455ddac46a3344d944f015ffead692, type: 2}
+  myBuilding: {fileID: 8631111307789841984}
 --- !u!1 &5948030819016754741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1850,15 +1865,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38c59bf579d37444c9890cf8ea56e949, type: 3}
---- !u!4 &9195682908028602819 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 464832, guid: 38c59bf579d37444c9890cf8ea56e949,
-    type: 3}
-  m_PrefabInstance: {fileID: 9195682908028411395}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9195682908028280025 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 131802, guid: 38c59bf579d37444c9890cf8ea56e949,
+    type: 3}
+  m_PrefabInstance: {fileID: 9195682908028411395}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9195682908028602819 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 464832, guid: 38c59bf579d37444c9890cf8ea56e949,
     type: 3}
   m_PrefabInstance: {fileID: 9195682908028411395}
   m_PrefabAsset: {fileID: 0}

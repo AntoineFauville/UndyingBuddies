@@ -7,15 +7,9 @@ public class BuildingCreator : MonoBehaviour
 {
     BuildingType buildingType;
 
-    private ResourceManager resourceManager;
-    private GameSettings gameSettings;
-
-    void Start()
-    {
-        resourceManager = GameObject.Find("Main Camera").GetComponent<ResourceManager>();
-        gameSettings = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings;
-    }
-
+    [SerializeField] private ResourceManager resourceManager;
+    [SerializeField] private GameSettings gameSettings;
+    
     public void CreateBuilding(int building)
     {
         switch (building)
@@ -105,15 +99,13 @@ public class BuildingCreator : MonoBehaviour
 
         newObj.GetComponent<Building>().PreGround.SetActive(true);
         newObj.GetComponent<Building>().Ground.SetActive(false);
-
         
-
         StartCoroutine(waitForFeedback(newObj));        
     }
 
     IEnumerator waitForFeedback(GameObject newObj)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.05f);
 
         GameObject.Find("Main Camera").GetComponent<Grab>().grabbedItem = newObj;
         GameObject.Find("Main Camera").GetComponent<Grab>().grabbing = true;

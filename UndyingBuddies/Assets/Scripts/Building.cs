@@ -67,6 +67,9 @@ public class Building : MonoBehaviour
             PreGround.SetActive(false);
             Ground.SetActive(true);
 
+            BoudingBoxTag.SetActive(false);
+            BoudingBoxWhenPlacing.SetActive(false);
+
             if (GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Contains(this.gameObject))
             {
                 GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Remove(this.gameObject);

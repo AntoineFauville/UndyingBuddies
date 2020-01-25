@@ -42,8 +42,11 @@ public class GameSettings : ScriptableObject
     public int foodSmallContainer = 20;
     public int foodMediumContainer = 50;
 
+    public int energyAmount = 1;
+
     public int foodAmountToUnlockTerrain = 100;
     public int woodAmountToUnlockTerrain = 100;
+
 
     public GameObject PriestPrefab;
     public GameObject AIFormationPrefab;

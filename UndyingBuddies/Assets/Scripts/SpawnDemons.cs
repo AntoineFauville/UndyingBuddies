@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class SpawnDemons : MonoBehaviour
 {
-    private ResourceManager resourceManager;
-    private GameSettings gameSettings;
+    [SerializeField] private ResourceManager resourceManager;
+    [SerializeField] private GameSettings gameSettings;
 
-    void Start()
-    {
-        resourceManager = GameObject.Find("Main Camera").GetComponent<ResourceManager>();
-        gameSettings = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings;
-    }
-
+    [SerializeField] private AiManager AiManager;
 
     public void SpawnNewDemon()
     {
@@ -20,11 +15,11 @@ public class SpawnDemons : MonoBehaviour
         {
             resourceManager.amountOfFood -= gameSettings.CostOfNewDemonFood;
 
-            GameObject demon = Instantiate(gameSettings.DemonPrefab, this.transform.GetComponent<Building>().SpawningPoint.transform.position, new Quaternion());
+            GameObject demon = Instantiate(gameSettings.DemonPrefab, GameObject.Find("CityHall").GetComponent<Building>().SpawningPoint.transform.position, new Quaternion());
             
             demon.GetComponent<AIDemons>().Setup(demon.name, JobType.builder, gameSettings.demonLife, gameSettings.demonRangeOfDetection, gameSettings.demonRangeOfCloseBy);
 
-            GameObject.Find("Main Camera").GetComponent<AiManager>().Demons.Add(demon);
+            AiManager.Demons.Add(demon);
         }
     }
 }

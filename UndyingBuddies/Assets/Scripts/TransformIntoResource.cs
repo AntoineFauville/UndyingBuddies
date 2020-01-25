@@ -99,6 +99,7 @@ public class TransformIntoResource : MonoBehaviour
             {
                 instantiateOnce = true;
                 newResource = Instantiate(gameSettings.energyResourcePrefab, spawnPoint.transform.position, new Quaternion());
+                newResource.GetComponent<Resource>().amountOfResourceAvailable = gameSettings.energyAmount;
                 GameObject.Find("Main Camera").GetComponent<AiManager>().AddResource(newResource);
                 Clean();
             }
