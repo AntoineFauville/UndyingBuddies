@@ -8,8 +8,18 @@ public class Resource : MonoBehaviour
 
     public int amountOfResourceAvailable;
 
+    public UiHealth uiHealth;
+
+    void Start()
+    {
+        uiHealth.life = amountOfResourceAvailable;
+        uiHealth.maxLife = amountOfResourceAvailable;
+    }
+
     void Update()
     {
+        uiHealth.life = amountOfResourceAvailable;
+
         if (amountOfResourceAvailable <= 0)
         {
             Die();
