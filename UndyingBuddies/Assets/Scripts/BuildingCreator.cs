@@ -9,7 +9,12 @@ public class BuildingCreator : MonoBehaviour
 
     [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private GameSettings gameSettings;
-    
+
+    void Update()
+    {
+
+    }
+
     public void CreateBuilding(int building)
     {
         switch (building)

@@ -27,6 +27,9 @@ public class Grab : MonoBehaviour
             GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
             GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxWhenPlacing.SetActive(false);
         }
+
+        GameObject.Find("InfoPanel").GetComponent<CanvasGroup>().alpha = 0;
+        GameObject.Find("InfoPanel").GetComponent<InfoPanel>().preventingFromPlayerGrabbing.SetActive(false);
     }
 
     // Update is called once per frame
@@ -46,6 +49,7 @@ public class Grab : MonoBehaviour
                     GameObject infoPanel = GameObject.Find("InfoPanel");
 
                     infoPanel.GetComponent<CanvasGroup>().alpha = 1;
+                    GameObject.Find("InfoPanel").GetComponent<InfoPanel>().preventingFromPlayerGrabbing.SetActive(true);
 
                     infoPanel.GetComponent<InfoPanel>().SpellHouseSpecific.SetActive(false);
                     infoPanel.GetComponent<InfoPanel>().CityHallSpecific.SetActive(false);
@@ -65,14 +69,15 @@ public class Grab : MonoBehaviour
 
                     if (hit.collider.GetComponent<InfoReader>().myBuilding != null)
                     {
-                        Debug.Log("I'm a building");
-
                         infoPanel.GetComponent<InfoPanel>().Health.text = hit.collider.GetComponent<InfoReader>().myBuilding.Health + " / " + hit.collider.GetComponent<InfoReader>().myBuilding.maxHealth + " Health";
 
                         if (hit.collider.GetComponent<InfoReader>().myBuilding.BuildingType == BuildingType.CityHall)
                         {
-                            Debug.Log("I'm city hall");
                             infoPanel.GetComponent<InfoPanel>().CityHallSpecific.SetActive(true);
+                        }
+                        else if (hit.collider.GetComponent<InfoReader>().myBuilding.BuildingType == BuildingType.SpellHouse)
+                        {
+                            infoPanel.GetComponent<InfoPanel>().SpellHouseSpecific.SetActive(true);
                         }
                     }
                     else
@@ -204,10 +209,11 @@ public class Grab : MonoBehaviour
             HoldingAnything.SetActive(true);
             HoldingAnything.transform.position = posCurrentObject;
 
-            if (grabbedItem.transform.GetComponent<Building>() != null && Input.GetButtonDown("Cancel"))
+            if (grabbedItem.transform.GetComponent<Building>() != null && Input.GetButtonDown("E"))
             {
                 DestroyImmediate(grabbedItem);
                 Debug.Log("canceled building placement");
+                HoldingAnything.SetActive(false);
             }
         }
 

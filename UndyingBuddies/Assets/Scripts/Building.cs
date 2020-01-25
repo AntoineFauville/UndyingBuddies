@@ -104,8 +104,8 @@ public class Building : MonoBehaviour
 
         if (BuildingType == BuildingType.CityHall)
         {
-            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += 1;
-            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += 1;
+            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += 3;
+            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += 3;
         }
 
         StartCoroutine(feedToNotLooseGame());

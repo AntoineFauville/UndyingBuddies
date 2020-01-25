@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SpellArchetype : ScriptableObject
 {
+    public string spellName;
+
     public Spell spellPrefab;
     public GameObject spellLeftAfterSpawned;
     public GameObject PlacementShowDebug;

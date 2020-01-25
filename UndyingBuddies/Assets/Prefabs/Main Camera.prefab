@@ -1428,6 +1428,7 @@ GameObject:
   - component: {fileID: 4305183206406083475}
   - component: {fileID: 3527928107186702111}
   - component: {fileID: 534708699656455029}
+  - component: {fileID: 1804241153139477777}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1652,6 +1653,22 @@ MonoBehaviour:
   resourceManager: {fileID: 813676334979895092}
   gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
   AiManager: {fileID: 813676334979895093}
+--- !u!114 &1804241153139477777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813676334979895095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 520685c769029b94c9b032c287f63f7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlockedFireSpell: 0
+  spellArchetype: {fileID: 11400000, guid: 4e70b12a3bdb36c48aff27c10c76daa4, type: 2}
+  PlaceSpell: {fileID: 0}
+  ButtonToPurchase: {fileID: 6721417937577692273}
 --- !u!1 &813676334989587623
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,6 +1782,7 @@ RectTransform:
   - {fileID: 813676334051261013}
   - {fileID: 813676335480251077}
   - {fileID: 813676334436323550}
+  - {fileID: 3267402894784699939}
   m_Father: {fileID: 813676333716681207}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2128,6 +2146,50 @@ MonoBehaviour:
     5 Wood
 
     5 Food'
+--- !u!1 &1076753176579469279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2188708654650223703}
+  - component: {fileID: 5791964068917713254}
+  m_Layer: 0
+  m_Name: PreventPlayerFromClicking (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2188708654650223703
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076753176579469279}
+  m_LocalRotation: {x: -0.7372772, y: -0, z: -0, w: 0.6755904}
+  m_LocalPosition: {x: 84, y: -13, z: 0}
+  m_LocalScale: {x: 173.49568, y: 9.338413, z: 280.39874}
+  m_Children: []
+  m_Father: {fileID: 8540916921796773611}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: -94.99999, y: 0, z: 0}
+--- !u!65 &5791964068917713254
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076753176579469279}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0000004, z: 1.0000004}
+  m_Center: {x: 0, y: -0.0000019073486, z: 0.0000019073486}
 --- !u!1 &1486203035468366202
 GameObject:
   m_ObjectHideFlags: 0
@@ -2287,7 +2349,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Demon
 
-    50 Food'
+    35 Food'
 --- !u!1 &1517506775861302259
 GameObject:
   m_ObjectHideFlags: 0
@@ -2628,6 +2690,7 @@ RectTransform:
   - {fileID: 5912710428999756336}
   - {fileID: 7808217961300813131}
   - {fileID: 1194316959398794316}
+  - {fileID: 2188708654650223703}
   m_Father: {fileID: 813676333716681207}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2681,7 +2744,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2656114701716071301}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -2703,6 +2766,7 @@ MonoBehaviour:
   Image: {fileID: 105868518796084871}
   CityHallSpecific: {fileID: 7380286277469011752}
   SpellHouseSpecific: {fileID: 5692380819119777633}
+  preventingFromPlayerGrabbing: {fileID: 1076753176579469279}
 --- !u!1 &3278220476469111187
 GameObject:
   m_ObjectHideFlags: 0
@@ -3356,6 +3420,50 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: You Won
+--- !u!1 &5578631428212200202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3267402894784699939}
+  - component: {fileID: 466225065087794623}
+  m_Layer: 0
+  m_Name: PreventPlayerFromClicking (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3267402894784699939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578631428212200202}
+  m_LocalRotation: {x: -0.7372772, y: -0, z: -0, w: 0.6755904}
+  m_LocalPosition: {x: 81, y: 42.400055, z: 14.999884}
+  m_LocalScale: {x: 181.0334, y: 9.33988, z: 126.49221}
+  m_Children: []
+  m_Father: {fileID: 813676335132659490}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: -94.99999, y: 0, z: 0}
+--- !u!65 &466225065087794623
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578631428212200202}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0000004, z: 1.0000004}
+  m_Center: {x: 0, y: -0.0000019073486, z: 0.0000019073486}
 --- !u!1 &5692380819119777633
 GameObject:
   m_ObjectHideFlags: 0
@@ -3385,7 +3493,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.00037190042}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 3425702995786491565}
   m_Father: {fileID: 8540916921796773611}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3692,9 +3801,9 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Spell House
 
-    5 Wood
+    100 Wood
 
-    5 Food'
+    120 Food'
 --- !u!1 &6499100470403331783
 GameObject:
   m_ObjectHideFlags: 0
@@ -3818,6 +3927,135 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!1 &6721417937577692273
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3425702995786491565}
+  - component: {fileID: 2182091670857198892}
+  - component: {fileID: 5146690024061492224}
+  - component: {fileID: 2407479318725131747}
+  m_Layer: 2
+  m_Name: Fire
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3425702995786491565
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6721417937577692273}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3463494190925182105}
+  m_Father: {fileID: 1194316959398794316}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2182091670857198892
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6721417937577692273}
+  m_CullTransparentMesh: 0
+--- !u!114 &5146690024061492224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6721417937577692273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!114 &2407479318725131747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6721417937577692273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 5146690024061492224}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1804241153139477777}
+        m_MethodName: UnlockFireSpell
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4546,9 +4784,9 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Barrack
 
-    5 Wood
+    30 Wood
 
-    5 Food'
+    10 Food'
 --- !u!1 &8469358074099880560
 GameObject:
   m_ObjectHideFlags: 0
@@ -4676,8 +4914,100 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1076753176579469279}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!1 &9097807793288474472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3463494190925182105}
+  - component: {fileID: 3654131327609006596}
+  - component: {fileID: 3893559398007374912}
+  m_Layer: 2
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3463494190925182105
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9097807793288474472}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3425702995786491565}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3654131327609006596
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9097807793288474472}
+  m_CullTransparentMesh: 0
+--- !u!114 &3893559398007374912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9097807793288474472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 10
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 110
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Unlock Fire
+
+    1 Energy'
 --- !u!1001 &813676334539277498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4747,15 +5077,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f48410fcea3606469fe5746645179e8, type: 3}
---- !u!95 &7347779063098042541 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7976521933986065431, guid: 1f48410fcea3606469fe5746645179e8,
-    type: 3}
-  m_PrefabInstance: {fileID: 813676334539277498}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7347779063688114644 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7976521935581721966, guid: 1f48410fcea3606469fe5746645179e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 813676334539277498}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7347779063098042541 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7976521933986065431, guid: 1f48410fcea3606469fe5746645179e8,
     type: 3}
   m_PrefabInstance: {fileID: 813676334539277498}
   m_PrefabAsset: {fileID: 0}

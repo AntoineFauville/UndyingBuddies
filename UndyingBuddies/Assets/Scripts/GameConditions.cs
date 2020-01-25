@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameConditions : MonoBehaviour
 {
@@ -37,10 +38,19 @@ public class GameConditions : MonoBehaviour
     void Win()
     {
         winPanel.SetActive(true);
+        StartCoroutine(waitforSeconds());
     }
 
     void Loose()
     {
         loosePanel.SetActive(true);
+        StartCoroutine(waitforSeconds());
+    }
+
+    IEnumerator waitforSeconds()
+    {
+        yield return new WaitForSeconds(3);
+
+        SceneManager.LoadScene(0);
     }
 }

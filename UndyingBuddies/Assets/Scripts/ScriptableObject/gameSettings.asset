@@ -31,9 +31,9 @@ MonoBehaviour:
   foodProcessor: {fileID: 11400000, guid: 4ad366c97c7326540b14217113d14d6a, type: 2}
   spellHouse: {fileID: 11400000, guid: 9246efe8921844c4ea175dccaebea61d, type: 2}
   initialFoodAmount: 50
-  initialWoodAmount: 50
-  initialEnergyAmount: 20
-  CostOfNewDemonFood: 40
+  initialWoodAmount: 30
+  initialEnergyAmount: 0
+  CostOfNewDemonFood: 35
   DemonPrefab: {fileID: 5965878919500901836, guid: 020809d02fe6672458738479d4b763bb,
     type: 3}
   damageDemons: 5
@@ -43,8 +43,9 @@ MonoBehaviour:
   fireSpell: {fileID: 11400000, guid: 4e70b12a3bdb36c48aff27c10c76daa4, type: 2}
   woodSmallContainer: 20
   woodMediumContainer: 50
-  foodSmallContainer: 20
-  foodMediumContainer: 50
+  foodSmallContainer: 30
+  foodMediumContainer: 60
+  energyAmount: 1
   foodAmountToUnlockTerrain: 100
   woodAmountToUnlockTerrain: 100
   PriestPrefab: {fileID: 6092849278970286903, guid: c27c6c1dc3feee747bdd4645da47eafc,

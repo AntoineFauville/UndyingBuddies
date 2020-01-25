@@ -31,6 +31,8 @@ public class TerrainManagerLock : MonoBehaviour
         if (AIOnMe.Count <= 0 && resourceManager.amountOfWood >= gameSettings.woodAmountToUnlockTerrain && resourceManager.amountOfFood >= gameSettings.foodAmountToUnlockTerrain)
         {
             terrainStage = TerrainStage.Unlocked;
+            resourceManager.amountOfWood -= gameSettings.woodAmountToUnlockTerrain;
+            resourceManager.amountOfFood -= gameSettings.foodAmountToUnlockTerrain;
         }
     }
 

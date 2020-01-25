@@ -11,4 +11,5 @@ public class InfoPanel : MonoBehaviour
     public Image Image;
     public GameObject CityHallSpecific;
     public GameObject SpellHouseSpecific;
+    public GameObject preventingFromPlayerGrabbing;
 }
