@@ -8473,6 +8473,55 @@ MonoBehaviour:
   TerrainUI: {fileID: 849945228}
   killAllAIUI: {fileID: 849945231}
   UnlockUI: {fileID: 849945230}
+--- !u!1 &1237052567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1237052569}
+  - component: {fileID: 1237052568}
+  m_Layer: 0
+  m_Name: WaveSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1237052568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237052567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9038c5fc097a94409c82d38ace91bb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WaveType:
+  - {fileID: 11400000, guid: 06aae1755861cf046abacc3079e9490a, type: 2}
+  - {fileID: 11400000, guid: 4200f10c527c2d84bb81d7350ae820d8, type: 2}
+  - {fileID: 11400000, guid: 39517213e328a254b9e103bf781af3d1, type: 2}
+  - {fileID: 11400000, guid: 63cfbfb0ca68aad4fb60ad26b38b50aa, type: 2}
+  GameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
+--- !u!4 &1237052569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237052567}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 105.7, y: 0, z: -3.13}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1245344727
 GameObject:
   m_ObjectHideFlags: 0
@@ -15372,7 +15421,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2118077450 stripped
 GameObject:
@@ -15398,6 +15447,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 813676334979895093, guid: 2726dfede82108a47bfc53f69a18f242,
+        type: 3}
+      propertyPath: FlagToFollow
+      value: 
+      objectReference: {fileID: 503503945}
     - target: {fileID: 813676334979895088, guid: 2726dfede82108a47bfc53f69a18f242,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15453,11 +15507,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 813676334979895093, guid: 2726dfede82108a47bfc53f69a18f242,
-        type: 3}
-      propertyPath: FlagToFollow
-      value: 
-      objectReference: {fileID: 503503945}
     - target: {fileID: 4305183206406083475, guid: 2726dfede82108a47bfc53f69a18f242,
         type: 3}
       propertyPath: aiManager
@@ -15963,7 +16012,7 @@ PrefabInstance:
     - target: {fileID: 5965878919500656306, guid: 020809d02fe6672458738479d4b763bb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5965878919500656306, guid: 020809d02fe6672458738479d4b763bb,
         type: 3}
@@ -16638,6 +16687,9 @@ MonoBehaviour:
   NavMeshAgent: {fileID: 0}
   amIInFire: 0
   UiHealth: {fileID: 1361615041}
+  PriestAttackerType: 0
+  aiFormationFollowPoint: {fileID: 0}
+  animatorPriest: {fileID: 0}
 --- !u!114 &8803593055677472342
 MonoBehaviour:
   m_ObjectHideFlags: 0

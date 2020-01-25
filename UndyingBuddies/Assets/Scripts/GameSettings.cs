@@ -44,4 +44,7 @@ public class GameSettings : ScriptableObject
 
     public int foodAmountToUnlockTerrain = 100;
     public int woodAmountToUnlockTerrain = 100;
+
+    public GameObject PriestPrefab;
+    public GameObject AIFormationPrefab;
 }

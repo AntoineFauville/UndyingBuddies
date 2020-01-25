@@ -2034,7 +2034,7 @@ GameObject:
   - component: {fileID: 6581895783526221135}
   m_Layer: 0
   m_Name: Priest
-  m_TagString: demon
+  m_TagString: priest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2150,6 +2150,9 @@ MonoBehaviour:
   NavMeshAgent: {fileID: 4170596306738344779}
   amIInFire: 0
   UiHealth: {fileID: 2464233365802528211}
+  PriestAttackerType: 0
+  aiFormationFollowPoint: {fileID: 0}
+  animatorPriest: {fileID: 6092849278979877439}
 --- !u!114 &2683776210274104171
 MonoBehaviour:
   m_ObjectHideFlags: 0
