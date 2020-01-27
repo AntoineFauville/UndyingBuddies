@@ -127,41 +127,47 @@ public class Grab : MonoBehaviour
 
             if (Physics.Raycast(rayPos, out hitPos))
             {
-                if (hitPos.collider.tag == "terrainWarFlagOnly" && grabbedItem.transform.tag == "flag")
+                if (hitPos.collider.tag != "boundingBox")
                 {
-                    conditionToReleaseMet = true;
                     posCurrentObject = hitPos.point;
+                }
+
+                if (hitPos.collider.tag == "terrainWarFlagOnly")
+                {
+                    if (grabbedItem.transform.tag == "flag" || grabbedItem.transform.tag == "FireZone")
+                    {
+                        conditionToReleaseMet = true;
+                    }
+                    else
+                    {
+                        conditionToReleaseMet = false;
+                    }
                 }
                 else if (hitPos.collider.tag == "switchJobArea" && grabbedItem.transform.GetComponent<AIDemons>() != null)
                 {
                     conditionToReleaseMet = true;
-                    posCurrentObject = hitPos.point;
                 }
                 else if (hitPos.collider.tag == "ResourceTransformer" && grabbedItem.transform.GetComponent<TransformIntoResource>() != null)
                 {
                     if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.WoodCutter && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.wood)
                     {
                         conditionToReleaseMet = true;
-                        posCurrentObject = hitPos.point;
                     }
                     else if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.FoodProcessor && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.food)
                     {
                         conditionToReleaseMet = true;
-                        posCurrentObject = hitPos.point;
                     }
                     else if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.SpellHouse && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.energy)
                     {
                         conditionToReleaseMet = true;
-                        posCurrentObject = hitPos.point;
+                    }
+                    else
+                    {
+                        conditionToReleaseMet = false;
                     }
                 }
                 else if (grabbedItem.transform.GetComponent<Building>() != null)//if i'm a building i want to make sure the ground is working to be placed
                 {
-                    if (hitPos.collider.tag == "Floor")
-                    {
-                        posCurrentObject = hitPos.point;
-                    }
-
                     for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // activate all the bouding box if it's a building
                     {
                         GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(true);
@@ -186,7 +192,6 @@ public class Grab : MonoBehaviour
                     if (hitPos.collider.tag == "Floor")
                     {
                         conditionToReleaseMet = true;
-                        posCurrentObject = hitPos.point;
                     }
                     else
                     {
