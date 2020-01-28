@@ -10,12 +10,8 @@ public class Building : MonoBehaviour
 
     public bool canBeInteractable;
 
-    public GameObject PreGround;
-    public GameObject Ground;
-
-    public int BuildingCreation = 0;
-
-    public GameObject SpawningPoint;
+    public GameObject SpawningPoint_01;
+    public GameObject SpawningPoint_02;
 
     public List<GameObject> AiAttributedToBuilding = new List<GameObject>();
 
@@ -24,7 +20,6 @@ public class Building : MonoBehaviour
     public UiHealth UiHealth;
 
     public GameObject BoudingBoxTag;
-    public GameObject BoudingBoxWhenPlacing;
     public DetectPlacement detectPlacement;
 
     void Start()
@@ -56,25 +51,10 @@ public class Building : MonoBehaviour
 
         UiHealth.life = Health;
         UiHealth.maxLife = maxHealth;
+        
+        BoudingBoxTag.SetActive(false);
 
         StartCoroutine(feedToNotLooseGame());
-    }
-
-    void Update()
-    {
-        if (BuildingCreation >= 100)
-        {
-            PreGround.SetActive(false);
-            Ground.SetActive(true);
-
-            BoudingBoxTag.SetActive(false);
-            BoudingBoxWhenPlacing.SetActive(false);
-
-            if (GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Contains(this.gameObject))
-            {
-                GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Remove(this.gameObject);
-            }
-        }
     }
 
     public void GetAttack(int damage)
