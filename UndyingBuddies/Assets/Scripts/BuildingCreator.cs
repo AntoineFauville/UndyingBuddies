@@ -30,7 +30,7 @@ public class BuildingCreator : MonoBehaviour
                 }
                 break;
 
-            case (int)BuildingType.FoodHouse: //1
+            case (int)BuildingType.FoodStock: //1
                 if (resourceManager.amountOfWood >= gameSettings.foodHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.foodHouse.BuildingCostInFood)
                 {
                     InstantiateBuilding(gameSettings.foodHouse.PrefabBuilding);
@@ -41,7 +41,7 @@ public class BuildingCreator : MonoBehaviour
                 }
                 break;
 
-            case (int)BuildingType.WoodHouse: //2
+            case (int)BuildingType.WoodStock: //2
                 if (resourceManager.amountOfWood >= gameSettings.woodHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.woodHouse.BuildingCostInFood)
                 {
                     InstantiateBuilding(gameSettings.woodHouse.PrefabBuilding);
@@ -63,7 +63,7 @@ public class BuildingCreator : MonoBehaviour
                 }
                 break;
 
-            case (int)BuildingType.WoodCutter: //4
+            case (int)BuildingType.WoodProcessor: //4
                 if (resourceManager.amountOfWood >= gameSettings.woodCutter.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.woodCutter.BuildingCostInFood)
                 {
                     InstantiateBuilding(gameSettings.woodCutter.PrefabBuilding);
@@ -85,7 +85,7 @@ public class BuildingCreator : MonoBehaviour
                 }
                 break;
 
-            case (int)BuildingType.SpellHouse: //6
+            case (int)BuildingType.EnergyGenerator: //6
                 if (resourceManager.amountOfWood >= gameSettings.spellHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.spellHouse.BuildingCostInFood)
                 {
                     InstantiateBuilding(gameSettings.spellHouse.PrefabBuilding);
@@ -101,6 +101,12 @@ public class BuildingCreator : MonoBehaviour
     void InstantiateBuilding(GameObject gameObject)
     {
         GameObject newObj = Instantiate(gameObject);
+
+        if (buildingType == BuildingType.FoodStock || buildingType == BuildingType.WoodStock)
+        {
+            GameObject.Find("Main Camera").GetComponent<AiManager>().StockageBuildings.Add(newObj);
+        }
+
         StartCoroutine(waitForFeedback(newObj));        
     }
 

@@ -5,10 +5,10 @@ using UnityEngine;
 public enum BuildingType
 {
     CityHall = 0,
-    FoodHouse = 1,
-    WoodHouse = 2,
+    FoodStock = 1,
+    WoodStock = 2,
     Barrack = 3,
-    WoodCutter = 4,
+    WoodProcessor = 4,
     FoodProcessor = 5,
-    SpellHouse = 6
+    EnergyGenerator = 6
 }

@@ -11,11 +11,17 @@ public class Building : MonoBehaviour
     public bool canBeInteractable;
 
     public GameObject SpawningPoint_01;
-    public GameObject SpawningPoint_02;
 
     public List<GameObject> AiAttributedToBuilding = new List<GameObject>();
 
-    public List<GameObject> StockPile = new List<GameObject>();
+    public List<GameObject> Stokpile = new List<GameObject>();
+
+    public bool WhatsBeenWorkedOnTheTableExist;
+    public bool WorkedOnTableBeenProcessed;
+
+    public List<GameObject> StockPileVisuals = new List<GameObject>();
+    public int maxStockage = 8;
+    public int currentStockage = 0;
 
     public UiHealth UiHealth;
 
@@ -28,15 +34,15 @@ public class Building : MonoBehaviour
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.Barrack.BuildingHealth;
         if (BuildingType == BuildingType.CityHall)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingHealth;
-        if (BuildingType == BuildingType.FoodHouse)
+        if (BuildingType == BuildingType.FoodStock)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingHealth;
-        if (BuildingType == BuildingType.WoodHouse)
+        if (BuildingType == BuildingType.WoodStock)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingHealth;
-        if (BuildingType == BuildingType.WoodCutter)
+        if (BuildingType == BuildingType.WoodProcessor)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingHealth;
         if (BuildingType == BuildingType.FoodProcessor)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingHealth;
-        if (BuildingType == BuildingType.SpellHouse)
+        if (BuildingType == BuildingType.EnergyGenerator)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingHealth;
 
         maxHealth = Health;

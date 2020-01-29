@@ -51,9 +51,9 @@ public class Grab : MonoBehaviour
                             //since we just moved the ai from 1 house to an other we need to clean that ai from whatever other building he was in
                             for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++)
                             {
-                                if (GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().StockPile.Contains(hit.transform.gameObject))
+                                if (GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().Stokpile.Contains(hit.transform.gameObject))
                                 {
-                                    GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().StockPile.Remove(hit.transform.gameObject);
+                                    GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().Stokpile.Remove(hit.transform.gameObject);
                                 }
                             }
 
@@ -103,7 +103,7 @@ public class Grab : MonoBehaviour
                 }
                 else if (hitPos.collider.tag == "ResourceTransformer" && grabbedItem.transform.GetComponent<TransformIntoResource>() != null)
                 {
-                    if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.WoodCutter && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.wood)
+                    if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.WoodProcessor && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.wood)
                     {
                         conditionToReleaseMet = true;
                     }
@@ -111,7 +111,7 @@ public class Grab : MonoBehaviour
                     {
                         conditionToReleaseMet = true;
                     }
-                    else if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.SpellHouse && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.energy)
+                    else if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.EnergyGenerator && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.energy)
                     {
                         conditionToReleaseMet = true;
                     }
@@ -202,17 +202,17 @@ public class Grab : MonoBehaviour
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingCostInWood;
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingCostInFood;
                 }
-                else if(grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodHouse)
+                else if(grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodStock)
                 {
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingCostInWood;
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingCostInFood;
                 }
-                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodHouse)
+                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodStock)
                 {
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingCostInWood;
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingCostInFood;
                 }
-                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.SpellHouse)
+                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.EnergyGenerator)
                 {
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingCostInWood;
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingCostInFood;
@@ -227,14 +227,13 @@ public class Grab : MonoBehaviour
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingCostInWood;
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingCostInFood;
                 }
-                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodCutter)
+                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodProcessor)
                 {
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingCostInWood;
                     GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingCostInFood;
                 }
 
                 GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(grabbedItem);
-                GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Add(grabbedItem);
 
                 if (grabbedItem.transform.GetComponent<Building>().detectPlacement != null)
                 {

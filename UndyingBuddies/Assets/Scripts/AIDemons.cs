@@ -16,8 +16,10 @@ public class AIDemons : MonoBehaviour
 
     public GameObject TargetToGoTo;
 
-    public int woodAmount;
-    public int foodAmount;
+    public int LogAmount;
+    public int BushAmount;
+    public int PlankAmount;
+    public int BerryBasketAmount;
     public GameObject AssignedBuilding;
 
     bool AbleToPerformAction;
@@ -126,7 +128,7 @@ public class AIDemons : MonoBehaviour
                 if (TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable > 0)
                 {
                     TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
-                    woodAmount += 1;
+                    LogAmount += 1;
                 }
             }
             else if (resourceToGather == ResourceType.food)
@@ -134,7 +136,7 @@ public class AIDemons : MonoBehaviour
                 if (TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable > 0)
                 {
                     TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
-                    foodAmount += 1;
+                    BushAmount += 1;
                 }
             }
 
@@ -149,17 +151,29 @@ public class AIDemons : MonoBehaviour
         NavMeshAgent.isStopped = true;
     }
 
-    public void Place()
+    public void PlaceOnTable()
+    {
+        animatorDemon.Play("Place");
+        NavMeshAgent.isStopped = true;
+    }
+
+    public void TakeFromTable()
+    {
+        animatorDemon.Play("Place");
+        NavMeshAgent.isStopped = true;
+    }
+
+    public void PlaceInStockpile()
     {
         //Debug.Log("place");
         animatorDemon.Play("Place");
         NavMeshAgent.isStopped = true;
 
-        GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += woodAmount;
-        GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += foodAmount;
+        GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += LogAmount;
+        GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += BushAmount;
 
-        woodAmount = 0;
-        foodAmount = 0;
+        LogAmount = 0;
+        BushAmount = 0;
     }
     
     public bool CheckIfAnythingWithPriestNearBy()
@@ -303,7 +317,7 @@ public class AIDemons : MonoBehaviour
         return finalPosition;
     }
 
-    public bool CheckForClosestBuildingToBuild()
+    public bool CheckForClosestBuildingToPlaceStockage()
     {
         bool check = false;
 
@@ -314,7 +328,7 @@ public class AIDemons : MonoBehaviour
 
         List<GameObject> listToCheck;
 
-        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables;
+        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().StockageBuildings;
 
         foreach (GameObject potentialTarget in listToCheck)
         {
@@ -330,6 +344,37 @@ public class AIDemons : MonoBehaviour
         TargetToGoTo = closestBuilding;
 
         if (Vector3.Distance(this.transform.position, TargetToGoTo.transform.position) < _demonRangeOfCloseBy)
+        {
+            check = true;
+        }
+        else
+        {
+            check = false;
+        }
+
+        return check;
+    } // check if there is an enemy to attack close up
+
+    public bool CheckIfThereIsStockageAvailable()
+    {
+        bool check = false;
+
+        int stockage = 0;
+
+        List<GameObject> listToCheck;
+
+        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().StockageBuildings;
+
+        for (int i = 0; i < listToCheck.Count; i++)
+        {
+            int stock;
+
+            stock = listToCheck[i].GetComponent<Building>().maxStockage - listToCheck[i].GetComponent<Building>().currentStockage;
+
+            stockage += stock;
+        }
+
+        if (stockage > 0)
         {
             check = true;
         }

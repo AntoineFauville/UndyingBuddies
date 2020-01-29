@@ -39,7 +39,7 @@ public class ResourceProcessing : MonoBehaviour
             timeToWait = 2 / amountOfAiAttributed;
         }
 
-        if (building.StockPile.Count > 0 && building.AiAttributedToBuilding.Count > 0)
+        if (building.Stokpile.Count > 0 && building.AiAttributedToBuilding.Count > 0)
         {
             CanProcess = true;
         }
@@ -57,9 +57,9 @@ public class ResourceProcessing : MonoBehaviour
 
         if (CanProcess)
         {
-            building.StockPile[0].GetComponent<TransformIntoResource>().TransformIntoOtherResource();
+            building.Stokpile[0].GetComponent<TransformIntoResource>().TransformIntoOtherResource();
 
-            building.StockPile.Remove(building.StockPile[0]);
+            building.Stokpile.Remove(building.Stokpile[0]);
         }
 
         StartCoroutine(waitToProcess());
