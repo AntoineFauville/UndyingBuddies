@@ -15,9 +15,9 @@ public class SpawnDemons : MonoBehaviour
         {
             resourceManager.amountOfFood -= gameSettings.CostOfNewDemonFood;
 
-            GameObject demon = Instantiate(gameSettings.DemonPrefab, GameObject.Find("CityHall").GetComponent<Building>().SpawningPoint.transform.position, new Quaternion());
+            GameObject demon = Instantiate(gameSettings.DemonPrefab, GameObject.Find("CityHall").GetComponent<Building>().SpawningPoint_01.transform.position, new Quaternion());
             
-            demon.GetComponent<AIDemons>().Setup(demon.name, JobType.builder, gameSettings.demonLife, gameSettings.demonRangeOfDetection, gameSettings.demonRangeOfCloseBy);
+            demon.GetComponent<AIDemons>().Setup(demon.name, JobType.IdleVillager, gameSettings.demonLife, gameSettings.demonRangeOfDetection, gameSettings.demonRangeOfCloseBy);
 
             AiManager.Demons.Add(demon);
         }

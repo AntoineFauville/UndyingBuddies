@@ -104,7 +104,7 @@ public class AiManager : MonoBehaviour
             demon.name = "demon_" + nameID;
             nameID++;
 
-            demon.GetComponent<AIDemons>().Setup(demon.name, JobType.builder, GameSettings.demonLife, GameSettings.demonRangeOfDetection, GameSettings.demonRangeOfCloseBy);
+            demon.GetComponent<AIDemons>().Setup(demon.name, JobType.IdleVillager, GameSettings.demonLife, GameSettings.demonRangeOfDetection, GameSettings.demonRangeOfCloseBy);
         }
     }
 
@@ -132,38 +132,6 @@ public class AiManager : MonoBehaviour
             {
                 switch (demonJobType)
                 {
-                    case JobType.builder:
-                        if (Buildables.Count == 0)
-                        {
-                            if (currentAiDemon.AssignedBuilding != null) //in case you don't have a city hall, this would be null since you haven't assigned the demons to a building yet
-                            {
-                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding)) // if nothing is to be build check after the city hall and idle there
-                                {
-                                    currentAiDemon.Idle();
-                                }
-                                else
-                                {
-                                    currentAiDemon.Walk();
-                                }
-                            }
-                            else
-                            {
-                                currentAiDemon.Idle();
-                            }
-                        }
-                        else
-                        {
-                            if (currentAiDemon.CheckForClosestBuildingToBuild())
-                            {
-                                currentAiDemon.Build();
-                            }
-                            else
-                            {
-                                currentAiDemon.Walk();
-                            }
-                        }
-                        break;
-
                     case JobType.collectFood:
                         if (Foods.Count > 0)
                         {

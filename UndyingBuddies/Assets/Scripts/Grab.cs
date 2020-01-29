@@ -25,11 +25,8 @@ public class Grab : MonoBehaviour
         for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
         {
             GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
-            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxWhenPlacing.SetActive(false);
+            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().detectPlacement.gameObject.SetActive(false);
         }
-
-        GameObject.Find("InfoPanel").GetComponent<CanvasGroup>().alpha = 0;
-        GameObject.Find("InfoPanel").GetComponent<InfoPanel>().preventingFromPlayerGrabbing.SetActive(false);
     }
 
     // Update is called once per frame
@@ -44,49 +41,6 @@ public class Grab : MonoBehaviour
             //hit is the object that i want to grab
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.GetComponent<InfoReader>() != null)
-                {
-                    GameObject infoPanel = GameObject.Find("InfoPanel");
-
-                    infoPanel.GetComponent<CanvasGroup>().alpha = 1;
-                    GameObject.Find("InfoPanel").GetComponent<InfoPanel>().preventingFromPlayerGrabbing.SetActive(true);
-
-                    infoPanel.GetComponent<InfoPanel>().SpellHouseSpecific.SetActive(false);
-                    infoPanel.GetComponent<InfoPanel>().CityHallSpecific.SetActive(false);
-
-                    if (hit.collider.GetComponent<InfoReader>().infoArchetype != null)
-                    {
-                        infoPanel.GetComponent<InfoPanel>().NameOfObject.text = hit.collider.GetComponent<InfoReader>().infoArchetype.nameObject;
-                        infoPanel.GetComponent<InfoPanel>().Description.text = hit.collider.GetComponent<InfoReader>().infoArchetype.story;
-                        infoPanel.GetComponent<InfoPanel>().Image.sprite = hit.collider.GetComponent<InfoReader>().infoArchetype.image;
-                    }
-                    else
-                    {
-                        infoPanel.GetComponent<InfoPanel>().NameOfObject.text = "Placeholder";
-                        infoPanel.GetComponent<InfoPanel>().Description.text = "Placeholder";
-                        infoPanel.GetComponent<InfoPanel>().Image.sprite = null;
-                    }
-
-                    if (hit.collider.GetComponent<InfoReader>().myBuilding != null)
-                    {
-                        infoPanel.GetComponent<InfoPanel>().Health.text = hit.collider.GetComponent<InfoReader>().myBuilding.Health + " / " + hit.collider.GetComponent<InfoReader>().myBuilding.maxHealth + " Health";
-
-                        if (hit.collider.GetComponent<InfoReader>().myBuilding.BuildingType == BuildingType.CityHall)
-                        {
-                            infoPanel.GetComponent<InfoPanel>().CityHallSpecific.SetActive(true);
-                        }
-                        else if (hit.collider.GetComponent<InfoReader>().myBuilding.BuildingType == BuildingType.SpellHouse)
-                        {
-                            infoPanel.GetComponent<InfoPanel>().SpellHouseSpecific.SetActive(true);
-                        }
-                    }
-                    else
-                    {
-                        infoPanel.GetComponent<InfoPanel>().SpellHouseSpecific.SetActive(false);
-                        infoPanel.GetComponent<InfoPanel>().CityHallSpecific.SetActive(false);
-                    }
-                }
-
                 if (hit.transform.GetComponent<Grabable>() != null && hit.transform.GetComponent<CharacterTypeTagger>() != null)
                 {
                     if (hit.transform.GetComponent<CharacterTypeTagger>().characterType == CharacterType.demon)
@@ -171,19 +125,16 @@ public class Grab : MonoBehaviour
                     for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // activate all the bouding box if it's a building
                     {
                         GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(true);
-                        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxWhenPlacing.SetActive(true);
                     }
 
                     if (!grabbedItem.transform.GetComponent<Building>().detectPlacement.Detected)
                     {
                         grabbedItem.transform.GetComponent<Building>().BoudingBoxTag.GetComponent<MeshRenderer>().material.color = Color.white;
-                        grabbedItem.transform.GetComponent<Building>().BoudingBoxWhenPlacing.GetComponent<MeshRenderer>().material.color = Color.white;
                         conditionToReleaseMet = true;
                     }
                     else
                     {
                         grabbedItem.transform.GetComponent<Building>().BoudingBoxTag.GetComponent<MeshRenderer>().material.color = Color.red;
-                        grabbedItem.transform.GetComponent<Building>().BoudingBoxWhenPlacing.GetComponent<MeshRenderer>().material.color = Color.red;
                         conditionToReleaseMet = false;
                     }
                 }
@@ -209,7 +160,15 @@ public class Grab : MonoBehaviour
         {
             handAnim.Play("hand anim hold");
             grabbedItem.GetComponent<Grabable>().grabbed = true;
-            grabbedItem.transform.position = posCurrentObject + new Vector3 (0,7,0);
+            if (grabbedItem.transform.GetComponent<Building>() != null)
+            {
+                grabbedItem.transform.position = posCurrentObject;
+
+            }
+            else
+            {
+                grabbedItem.transform.position = posCurrentObject + new Vector3(0, 7, 0);
+            }
             grabbedItem.layer = 2;
             HoldingAnything.SetActive(true);
             HoldingAnything.transform.position = posCurrentObject;
@@ -233,7 +192,6 @@ public class Grab : MonoBehaviour
             for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
             {
                 GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
-                GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxWhenPlacing.SetActive(false);
             }
 
             if (grabbedItem.transform.GetComponent<Building>() != null)
@@ -277,6 +235,11 @@ public class Grab : MonoBehaviour
 
                 GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(grabbedItem);
                 GameObject.Find("Main Camera").GetComponent<AiManager>().Buildables.Add(grabbedItem);
+
+                if (grabbedItem.transform.GetComponent<Building>().detectPlacement != null)
+                {
+                    grabbedItem.transform.GetComponent<Building>().detectPlacement.gameObject.SetActive(false);
+                }
             }
 
             handAnim.Play("hand anim holdrelease");

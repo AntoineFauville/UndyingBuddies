@@ -161,20 +161,7 @@ public class AIDemons : MonoBehaviour
         woodAmount = 0;
         foodAmount = 0;
     }
-
-    public void Build()
-    {
-        //Debug.Log("build");
-        animatorDemon.Play("Build");
-        NavMeshAgent.isStopped = true;
-        if (!AbleToPerformAction)
-        {
-            AbleToPerformAction = true;
-            TargetToGoTo.GetComponent<Building>().BuildingCreation += 40;
-            StartCoroutine(TransferingTime());
-        }
-    }
-
+    
     public bool CheckIfAnythingWithPriestNearBy()
     {
         bool check = false;

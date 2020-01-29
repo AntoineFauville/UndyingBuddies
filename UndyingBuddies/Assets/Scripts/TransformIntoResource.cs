@@ -38,20 +38,6 @@ public class TransformIntoResource : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider coll)
-    {
-        if (coll.transform.tag == "ResourceTransformer")
-        {
-            spawnPoint = coll.GetComponentInParent<Building>().SpawningPoint;
-            BuildingWhereImPlaced = coll.GetComponentInParent<Building>().transform.gameObject;
-
-            if (!coll.GetComponentInParent<Building>().StockPile.Contains(this.transform.gameObject))
-            {
-                coll.GetComponentInParent<Building>().StockPile.Add(this.transform.gameObject);
-            }
-        }
-    }
-
     public void TransformIntoOtherResource()
     {
         GameObject newResource;

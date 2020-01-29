@@ -101,10 +101,6 @@ public class BuildingCreator : MonoBehaviour
     void InstantiateBuilding(GameObject gameObject)
     {
         GameObject newObj = Instantiate(gameObject);
-
-        newObj.GetComponent<Building>().PreGround.SetActive(true);
-        newObj.GetComponent<Building>().Ground.SetActive(false);
-        
         StartCoroutine(waitForFeedback(newObj));        
     }
 
