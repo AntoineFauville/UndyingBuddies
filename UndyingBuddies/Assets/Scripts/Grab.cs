@@ -12,6 +12,9 @@ public class Grab : MonoBehaviour
     [SerializeField] GameObject HoldingAnything;
     [SerializeField] Animator handAnim;
 
+    [SerializeField] ResourceManager ResourceManager;
+    [SerializeField] AiManager AiManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,10 +25,10 @@ public class Grab : MonoBehaviour
 
         HoldingAnything.SetActive(false);
 
-        for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
+        for (int i = 0; i < AiManager.Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
         {
-            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
-            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().detectPlacement.gameObject.SetActive(false);
+            AiManager.Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
+            AiManager.Buildings[i].GetComponent<Building>().detectPlacement.gameObject.SetActive(false);
         }
     }
 
@@ -49,11 +52,11 @@ public class Grab : MonoBehaviour
                         if (hit.transform.GetComponent<TransformIntoResource>() != null)
                         {
                             //since we just moved the ai from 1 house to an other we need to clean that ai from whatever other building he was in
-                            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++)
+                            for (int i = 0; i < AiManager.Buildings.Count; i++)
                             {
-                                if (GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().Stokpile.Contains(hit.transform.gameObject))
+                                if (AiManager.Buildings[i].GetComponent<Building>().Stokpile.Contains(hit.transform.gameObject))
                                 {
-                                    GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().Stokpile.Remove(hit.transform.gameObject);
+                                    AiManager.Buildings[i].GetComponent<Building>().Stokpile.Remove(hit.transform.gameObject);
                                 }
                             }
 
@@ -67,7 +70,7 @@ public class Grab : MonoBehaviour
 
                 if (hit.transform.GetComponent<Energy>() != null)
                 {
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfEnergy += 1;
+                    ResourceManager.amountOfEnergy += 1;
                     DestroyImmediate(hit.transform.gameObject);
                 }
             }
@@ -122,9 +125,9 @@ public class Grab : MonoBehaviour
                 }
                 else if (grabbedItem.transform.GetComponent<Building>() != null)//if i'm a building i want to make sure the ground is working to be placed
                 {
-                    for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // activate all the bouding box if it's a building
+                    for (int i = 0; i < AiManager.Buildings.Count; i++) // activate all the bouding box if it's a building
                     {
-                        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(true);
+                        AiManager.Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(true);
                     }
 
                     if (!grabbedItem.transform.GetComponent<Building>().detectPlacement.Detected)
@@ -189,9 +192,9 @@ public class Grab : MonoBehaviour
                 grabbedItem.transform.GetComponent<Rigidbody>().useGravity = true;
             }
 
-            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
+            for (int i = 0; i < AiManager.Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
             {
-                GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
+                AiManager.Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
             }
 
             if (grabbedItem.transform.GetComponent<Building>() != null)
@@ -199,41 +202,83 @@ public class Grab : MonoBehaviour
                 //cost if you do want to apply the spell on the ground
                 if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.CityHall)
                 {
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingCostInWood;
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingCostInFood;
+                    ResourceManager.amountOfWood -= AiManager.GameSettings.cityhall.BuildingCostInWood;
+                    ResourceManager.amountOfFood -= AiManager.GameSettings.cityhall.BuildingCostInFood;
                 }
                 else if(grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodStock)
                 {
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingCostInWood;
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingCostInFood;
+                    ResourceManager.amountOfWood -= AiManager.GameSettings.foodHouse.BuildingCostInWood;
+                    ResourceManager.amountOfFood -= AiManager.GameSettings.foodHouse.BuildingCostInFood;
                 }
                 else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodStock)
                 {
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingCostInWood;
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingCostInFood;
+                    ResourceManager.amountOfWood -= AiManager.GameSettings.woodHouse.BuildingCostInWood;
+                    ResourceManager.amountOfFood -= AiManager.GameSettings.woodHouse.BuildingCostInFood;
                 }
                 else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.EnergyGenerator)
                 {
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingCostInWood;
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingCostInFood;
+                    ResourceManager.amountOfWood -= AiManager.GameSettings.spellHouse.BuildingCostInWood;
+                    ResourceManager.amountOfFood -= AiManager.GameSettings.spellHouse.BuildingCostInFood;
                 }
                 else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.Barrack)
                 {
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.Barrack.BuildingCostInWood;
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.Barrack.BuildingCostInFood;
+                    ResourceManager.amountOfWood -= AiManager.GameSettings.Barrack.BuildingCostInWood;
+                    ResourceManager.amountOfFood -= AiManager.GameSettings.Barrack.BuildingCostInFood;
                 }
                 else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodProcessor)
                 {
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingCostInWood;
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingCostInFood;
+                    for (int i = 0; i < AiManager.GameSettings.foodProcessor.BuildingCostInFood; i++)
+                    {
+                        List<GameObject> foodStockToTakeFrom = new List<GameObject>();
+
+                        foreach (var foodStock in AiManager.FoodStockageBuilding)
+                        {
+                            if (foodStock.GetComponent<Building>().currentStockage > 0)
+                            {
+                                foodStockToTakeFrom.Add(foodStock);
+                            }
+                        }
+
+                        int rand = Random.Range(0, foodStockToTakeFrom.Count);
+                        foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage -= 1;
+                        foodStockToTakeFrom[rand].GetComponent<Building>().UpdateStockVisu();
+
+                        if (foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage <= 0)
+                        {
+                            foodStockToTakeFrom.Remove(foodStockToTakeFrom[rand]);
+                        }
+                    }
+
+                    for (int i = 0; i < AiManager.GameSettings.foodProcessor.BuildingCostInWood; i++)
+                    {
+                        List<GameObject> woodStockToTakeFrom = new List<GameObject>();
+
+                        foreach (var woodStock in AiManager.WoodStockageBuilding)
+                        {
+                            if (woodStock.GetComponent<Building>().currentStockage > 0)
+                            {
+                                woodStockToTakeFrom.Add(woodStock);
+                            }
+                        }
+
+                        int rand = Random.Range(0, woodStockToTakeFrom.Count);
+                        woodStockToTakeFrom[rand].GetComponent<Building>().currentStockage -= 1;
+                        woodStockToTakeFrom[rand].GetComponent<Building>().UpdateStockVisu();
+
+                        if (woodStockToTakeFrom[rand].GetComponent<Building>().currentStockage <= 0)
+                        {
+                            woodStockToTakeFrom.Remove(woodStockToTakeFrom[rand]);
+                        }
+                    }
                 }
                 else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodProcessor)
                 {
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingCostInWood;
-                    GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingCostInFood;
+                    
+                    ResourceManager.amountOfWood -= AiManager.GameSettings.woodCutter.BuildingCostInWood;
+                    ResourceManager.amountOfFood -= AiManager.GameSettings.woodCutter.BuildingCostInFood;
                 }
 
-                GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(grabbedItem);
+                AiManager.Buildings.Add(grabbedItem);
 
                 if (grabbedItem.transform.GetComponent<Building>().detectPlacement != null)
                 {
@@ -257,11 +302,11 @@ public class Grab : MonoBehaviour
                     grabbedItem.transform.GetComponent<AIDemons>().AssignedBuilding = hitWhenRelease.collider.gameObject;
 
                     //since we just moved the ai from 1 house to an other we need to clean that ai from whatever other building he was in
-                    for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Count; i++)
+                    for (int i = 0; i < AiManager.Buildings.Count; i++)
                     {
-                        if (GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Contains(grabbedItem))
+                        if (AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Contains(grabbedItem))
                         {
-                            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Remove(grabbedItem);
+                            AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Remove(grabbedItem);
                         }
                     }
 

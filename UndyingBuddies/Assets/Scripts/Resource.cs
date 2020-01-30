@@ -10,6 +10,8 @@ public class Resource : MonoBehaviour
 
     public UiHealth uiHealth;
 
+    public bool processedResource;
+
     void Start()
     {
         uiHealth.life = amountOfResourceAvailable;
@@ -30,12 +32,12 @@ public class Resource : MonoBehaviour
     {
         if (resourceType == ResourceType.wood)
         {
-            GameObject.Find("Main Camera").GetComponent<AiManager>().Woods.Remove(this.gameObject);
+            GameObject.Find("Main Camera").GetComponent<AiManager>().WoodToProcess.Remove(this.gameObject);
 
         }
         else if (resourceType == ResourceType.food)
         {
-            GameObject.Find("Main Camera").GetComponent<AiManager>().Foods.Remove(this.gameObject);
+            GameObject.Find("Main Camera").GetComponent<AiManager>().FoodToProcess.Remove(this.gameObject);
         }
 
         DestroyImmediate(this.gameObject);

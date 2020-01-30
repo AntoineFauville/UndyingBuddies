@@ -17,7 +17,9 @@ public class AIDemons : MonoBehaviour
     public GameObject TargetToGoTo;
 
     public int LogAmount;
+    public int MaxLog = 9;
     public int BushAmount;
+    public int MaxBush = 3;
     public int PlankAmount;
     public int BerryBasketAmount;
     public GameObject AssignedBuilding;
@@ -28,6 +30,14 @@ public class AIDemons : MonoBehaviour
 
     public bool amIInFire;
 
+    //visuals
+    public GameObject Wagon;
+    public GameObject[] BushObject;
+    public GameObject[] BerryContainerObject;
+    public GameObject[] LogObject;
+    public GameObject[] PlankObject;
+    public bool runCoroutineBerryOnce;
+
     public void Setup(string name, JobType initialJobtype, int initiallife, int demonRangeOfDetection, int demonRangeOfAttack)
     {
         myName = name;
@@ -37,6 +47,11 @@ public class AIDemons : MonoBehaviour
         _demonRangeOfCloseBy = demonRangeOfAttack;
 
         animatorDemon = this.GetComponent<Animator>();
+
+        if (Wagon != null)
+        {
+            Wagon.SetActive(false);
+        }
     }
 
     public void SwitchJob(JobType newJobtype)
@@ -113,13 +128,18 @@ public class AIDemons : MonoBehaviour
     }
 
     public void Gather(ResourceType resourceToGather)
-    {
+    {   
         //Debug.Log("gather");
         animatorDemon.Play("Gather");
 
         NavMeshAgent.isStopped = true;
 
-        if (!AbleToPerformAction)
+        if (Wagon != null)
+        {
+            Wagon.SetActive(true);
+        }
+
+        if (!AbleToPerformAction && !TargetToGoTo.GetComponent<Resource>().processedResource)
         {
             AbleToPerformAction = true;
             
@@ -127,16 +147,24 @@ public class AIDemons : MonoBehaviour
             {
                 if (TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable > 0)
                 {
-                    TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
-                    LogAmount += 1;
+                    if (LogAmount < MaxLog)
+                    {
+                        TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
+                        LogAmount += 1;
+                        LogObject[LogAmount - 1].SetActive(true);
+                    }
                 }
             }
             else if (resourceToGather == ResourceType.food)
             {
                 if (TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable > 0)
                 {
-                    TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
-                    BushAmount += 1;
+                    if (BushAmount < MaxBush)
+                    {
+                        TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
+                        BushAmount += 1;
+                        BushObject[BushAmount-1].SetActive(true);
+                    }
                 }
             }
 
@@ -155,12 +183,37 @@ public class AIDemons : MonoBehaviour
     {
         animatorDemon.Play("Place");
         NavMeshAgent.isStopped = true;
+
+        StartCoroutine(PlaceOnTableWait());
     }
 
     public void TakeFromTable()
     {
         animatorDemon.Play("Place");
         NavMeshAgent.isStopped = true;
+
+        BerryBasketAmount = 1;
+
+        if (Wagon != null)
+        {
+            Wagon.SetActive(true);
+        }
+
+        if (JobType == JobType.foodProcessor)
+        {
+            for (int i = 0; i < BerryContainerObject.Length; i++)
+            {
+                BerryContainerObject[i].SetActive(true);
+            }
+        }
+        else if (JobType == JobType.woodProcessor)
+        {
+            for (int i = 0; i < PlankObject.Length; i++)
+            {
+                PlankObject[i].SetActive(true);
+            }
+        }
+        
     }
 
     public void PlaceInStockpile()
@@ -169,11 +222,8 @@ public class AIDemons : MonoBehaviour
         animatorDemon.Play("Place");
         NavMeshAgent.isStopped = true;
 
-        GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += LogAmount;
-        GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += BushAmount;
-
-        LogAmount = 0;
-        BushAmount = 0;
+        if(!runCoroutineBerryOnce)
+            StartCoroutine(PlaceInStockpileWait());
     }
     
     public bool CheckIfAnythingWithPriestNearBy()
@@ -281,12 +331,12 @@ public class AIDemons : MonoBehaviour
 
         List<GameObject> listToCheck;
 
-        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().Woods;
+        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WoodToProcess;
 
         if (resourceType == ResourceType.wood)
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().Woods;
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WoodToProcess;
         else if (resourceType == ResourceType.food)
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().Foods;
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().FoodToProcess;
 
         foreach (GameObject potentialTarget in listToCheck)
         {
@@ -328,7 +378,10 @@ public class AIDemons : MonoBehaviour
 
         List<GameObject> listToCheck;
 
-        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().StockageBuildings;
+        if(JobType == JobType.foodProcessor)
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding;
+        else //wood
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding;
 
         foreach (GameObject potentialTarget in listToCheck)
         {
@@ -363,7 +416,10 @@ public class AIDemons : MonoBehaviour
 
         List<GameObject> listToCheck;
 
-        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().StockageBuildings;
+        if (JobType == JobType.foodProcessor)
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding;
+        else //wood
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding;
 
         for (int i = 0; i < listToCheck.Count; i++)
         {
@@ -398,5 +454,86 @@ public class AIDemons : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         DestroyImmediate(this.gameObject);
+    }
+
+    IEnumerator PlaceInStockpileWait()
+    {
+        runCoroutineBerryOnce = true;
+
+        yield return new WaitForSeconds(0.4f);
+
+        if (JobType == JobType.foodProcessor)
+        {
+            for (int i = 0; i < BerryContainerObject.Length; i++)
+            {
+                BerryContainerObject[i].SetActive(false);
+
+                if (TargetToGoTo.GetComponent<Building>().currentStockage < TargetToGoTo.GetComponent<Building>().maxStockage)
+                {
+                    TargetToGoTo.GetComponent<Building>().AddToStockage();
+                }
+                yield return new WaitForSeconds(0.4f);
+            }
+        }
+        else if(JobType == JobType.woodProcessor)
+        {
+            for (int i = 0; i < PlankObject.Length; i++)
+            {
+                PlankObject[i].SetActive(false);
+
+                if (TargetToGoTo.GetComponent<Building>().currentStockage < TargetToGoTo.GetComponent<Building>().maxStockage)
+                {
+                    TargetToGoTo.GetComponent<Building>().AddToStockage();
+                }
+                yield return new WaitForSeconds(0.4f);
+            }
+        }
+       
+        if (Wagon != null)
+        {
+            Wagon.SetActive(false);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        AssignedBuilding.GetComponent<jobSwitcher>().Building.WhatsBeenWorkedOnTheTableExist = false;
+        BerryBasketAmount = 0;
+        PlankAmount = 0;
+
+        runCoroutineBerryOnce = false;
+    }
+
+    IEnumerator PlaceOnTableWait()
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        if (JobType == JobType.foodProcessor)
+        {
+            for (int i = 0; i < BushObject.Length; i++)
+            {
+                BushObject[i].SetActive(false);
+                yield return new WaitForSeconds(0.4f);
+            }
+        }
+        else if (JobType == JobType.woodProcessor)
+        {
+            for (int i = 0; i < LogObject.Length; i++)
+            {
+                LogObject[i].SetActive(false);
+                yield return new WaitForSeconds(0.4f);
+            }
+        }
+
+        if (Wagon != null)
+        {
+            Wagon.SetActive(false);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        BushAmount = 0;
+        LogAmount = 0;
+        AssignedBuilding.GetComponent<jobSwitcher>().Building.WhatsBeenWorkedOnTheTableExist = true; //there is smthg on the table
+        AssignedBuilding.GetComponent<jobSwitcher>().Building.WorkedOnTableBeenProcessed = false; //but it hasn't been processed yet
     }
 }

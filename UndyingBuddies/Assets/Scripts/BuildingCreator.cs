@@ -104,7 +104,7 @@ public class BuildingCreator : MonoBehaviour
 
         if (buildingType == BuildingType.FoodStock || buildingType == BuildingType.WoodStock)
         {
-            GameObject.Find("Main Camera").GetComponent<AiManager>().StockageBuildings.Add(newObj);
+            GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Add(newObj);
         }
 
         StartCoroutine(waitForFeedback(newObj));        

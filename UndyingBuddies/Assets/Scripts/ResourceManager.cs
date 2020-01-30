@@ -17,10 +17,6 @@ public class ResourceManager : MonoBehaviour
 
     void Start()
     {
-        amountOfWood = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.initialWoodAmount;
-        amountOfFood = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.initialFoodAmount;
-        amountOfEnergy = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.initialEnergyAmount;
-
         foreach (var resource in GameObject.FindGameObjectsWithTag("Resource"))
         {
             if (resource.GetComponent<CharacterTypeTagger>().characterType == CharacterType.demon)
@@ -34,11 +30,17 @@ public class ResourceManager : MonoBehaviour
 
     IEnumerator SlowUpdate()
     {
+        amountOfFood = 0;
+        for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count; i++)
+        {
+            amountOfFood += GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+        }
+        
         textWood.text = amountOfWood.ToString();
         textFood.text = amountOfFood.ToString();
         textEnergy.text = amountOfEnergy.ToString();
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
 
         StartCoroutine(SlowUpdate());
     }

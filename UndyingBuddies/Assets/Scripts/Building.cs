@@ -20,7 +20,7 @@ public class Building : MonoBehaviour
     public bool WorkedOnTableBeenProcessed;
 
     public List<GameObject> StockPileVisuals = new List<GameObject>();
-    public int maxStockage = 8;
+    public int maxStockage = 48;
     public int currentStockage = 0;
 
     public UiHealth UiHealth;
@@ -35,7 +35,10 @@ public class Building : MonoBehaviour
         if (BuildingType == BuildingType.CityHall)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingHealth;
         if (BuildingType == BuildingType.FoodStock)
+        {
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingHealth;
+            GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Add(this.gameObject);
+        }
         if (BuildingType == BuildingType.WoodStock)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingHealth;
         if (BuildingType == BuildingType.WoodProcessor)
@@ -59,6 +62,11 @@ public class Building : MonoBehaviour
         UiHealth.maxLife = maxHealth;
         
         BoudingBoxTag.SetActive(false);
+
+        for (int i = 0; i < StockPileVisuals.Count; i++)
+        {
+            StockPileVisuals[i].SetActive(false);
+        }
 
         StartCoroutine(feedToNotLooseGame());
     }
@@ -84,14 +92,36 @@ public class Building : MonoBehaviour
         DestroyImmediate(this.gameObject);
     }
 
+    public void AddToStockage()
+    {
+        currentStockage += 1;
+
+        UpdateStockVisu();
+    }
+
+    public void UpdateStockVisu()
+    {
+        for (int i = 0; i < StockPileVisuals.Count; i++)
+        {
+            if (i < currentStockage) // index offset because i'm only calling this 6 times so it will always go under
+            {
+                StockPileVisuals[i].SetActive(true);
+            }
+            else
+            {
+                StockPileVisuals[i].SetActive(false);
+            }
+        }
+    }
+
     IEnumerator feedToNotLooseGame()
     {
         yield return new WaitForSeconds(6);
 
         if (BuildingType == BuildingType.CityHall)
         {
-            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += 3;
-            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += 3;
+            //GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += 3;
+            //GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += 3;
         }
 
         StartCoroutine(feedToNotLooseGame());
