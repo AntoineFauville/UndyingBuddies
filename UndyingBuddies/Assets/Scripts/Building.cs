@@ -7,6 +7,7 @@ public class Building : MonoBehaviour
     public int Health;
     public int maxHealth;
     public BuildingType BuildingType;
+    public BuildingArchetype buildingArchetype;
 
     public bool canBeInteractable;
 
@@ -28,36 +29,46 @@ public class Building : MonoBehaviour
     public GameObject BoudingBoxTag;
     public DetectPlacement detectPlacement;
 
+    public GameObject EmplacementWorker;
+    public GameObject visualsOnTable;
+
+    public int amountOfWorkerAllowed = 1;
+
     void Start()
     {
+        if(visualsOnTable != null)
+            visualsOnTable.SetActive(false);
+
         if (BuildingType == BuildingType.Barrack)
+        {
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.Barrack.BuildingHealth;
-        if (BuildingType == BuildingType.CityHall)
+        }
+        else if (BuildingType == BuildingType.CityHall)
+        {
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingHealth;
-        if (BuildingType == BuildingType.FoodStock)
+            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
+        }
+        else if (BuildingType == BuildingType.FoodStock)
         {
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingHealth;
             GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Add(this.gameObject);
         }
-        if (BuildingType == BuildingType.WoodStock)
+        else if(BuildingType == BuildingType.WoodStock)
+        {
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingHealth;
-        if (BuildingType == BuildingType.WoodProcessor)
+            GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Add(this.gameObject);
+        }
+        else if(BuildingType == BuildingType.WoodProcessor)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingHealth;
-        if (BuildingType == BuildingType.FoodProcessor)
+        else if(BuildingType == BuildingType.FoodProcessor)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingHealth;
-        if (BuildingType == BuildingType.EnergyGenerator)
+        else if(BuildingType == BuildingType.EnergyGenerator)
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingHealth;
 
         maxHealth = Health;
 
         this.gameObject.GetComponent<CharacterTypeTagger>().characterType = CharacterType.neutral;
-
-        if (BuildingType == BuildingType.CityHall)
-        {
-            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
-
-        }
-
+        
         UiHealth.life = Health;
         UiHealth.maxLife = maxHealth;
         
@@ -67,6 +78,8 @@ public class Building : MonoBehaviour
         {
             StockPileVisuals[i].SetActive(false);
         }
+
+        UpdateStockVisu();
 
         StartCoroutine(feedToNotLooseGame());
     }
@@ -98,7 +111,7 @@ public class Building : MonoBehaviour
 
         UpdateStockVisu();
     }
-
+    
     public void UpdateStockVisu()
     {
         for (int i = 0; i < StockPileVisuals.Count; i++)

@@ -13,7 +13,7 @@ public class SpawnDemons : MonoBehaviour
     {
         if (resourceManager.amountOfFood >= gameSettings.CostOfNewDemonFood)
         {
-            resourceManager.amountOfFood -= gameSettings.CostOfNewDemonFood;
+            resourceManager.ManageCostOfPurchaseDemon();
 
             GameObject demon = Instantiate(gameSettings.DemonPrefab, GameObject.Find("CityHall").GetComponent<Building>().SpawningPoint_01.transform.position, new Quaternion());
             
@@ -22,4 +22,6 @@ public class SpawnDemons : MonoBehaviour
             AiManager.Demons.Add(demon);
         }
     }
+
+ 
 }

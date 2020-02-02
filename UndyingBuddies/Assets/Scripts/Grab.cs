@@ -48,22 +48,6 @@ public class Grab : MonoBehaviour
                 {
                     if (hit.transform.GetComponent<CharacterTypeTagger>().characterType == CharacterType.demon)
                     {
-                        //if it's a resource reset the relation with the building
-                        if (hit.transform.GetComponent<TransformIntoResource>() != null)
-                        {
-                            //since we just moved the ai from 1 house to an other we need to clean that ai from whatever other building he was in
-                            for (int i = 0; i < AiManager.Buildings.Count; i++)
-                            {
-                                if (AiManager.Buildings[i].GetComponent<Building>().Stokpile.Contains(hit.transform.gameObject))
-                                {
-                                    AiManager.Buildings[i].GetComponent<Building>().Stokpile.Remove(hit.transform.gameObject);
-                                }
-                            }
-
-                            hit.transform.GetComponent<TransformIntoResource>().BuildingWhereImPlaced = null;
-                            hit.transform.GetComponent<TransformIntoResource>().spawnPoint = null;
-                        }
-
                         StartCoroutine(waitForMouseToUnderstand(hit.transform.gameObject));
                     }
                 }
@@ -102,25 +86,17 @@ public class Grab : MonoBehaviour
                 }
                 else if (hitPos.collider.tag == "switchJobArea" && grabbedItem.transform.GetComponent<AIDemons>() != null)
                 {
-                    conditionToReleaseMet = true;
-                }
-                else if (hitPos.collider.tag == "ResourceTransformer" && grabbedItem.transform.GetComponent<TransformIntoResource>() != null)
-                {
-                    if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.WoodProcessor && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.wood)
+                    if (hitPos.collider.GetComponent<jobSwitcher>() != null)
                     {
-                        conditionToReleaseMet = true;
-                    }
-                    else if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.FoodProcessor && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.food)
-                    {
-                        conditionToReleaseMet = true;
-                    }
-                    else if (hitPos.collider.GetComponentInParent<Building>().BuildingType == BuildingType.EnergyGenerator && grabbedItem.transform.GetComponent<TransformIntoResource>().myResourceType == ResourceType.energy)
-                    {
-                        conditionToReleaseMet = true;
-                    }
-                    else
-                    {
-                        conditionToReleaseMet = false;
+                        if (hitPos.collider.gameObject.transform.GetComponentInParent<Building>().AiAttributedToBuilding.Count < hitPos.collider.GetComponent<jobSwitcher>().Building.amountOfWorkerAllowed)
+                        {
+                            conditionToReleaseMet = true;
+                        }
+                        else
+                        {
+                            conditionToReleaseMet = false;
+                            Debug.Log("Build More Building, you already have a worker there");
+                        }
                     }
                 }
                 else if (grabbedItem.transform.GetComponent<Building>() != null)//if i'm a building i want to make sure the ground is working to be placed
@@ -186,7 +162,6 @@ public class Grab : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && grabbing && conditionToReleaseMet)
         {
-
             if (grabbedItem.transform.GetComponent<Rigidbody>() != null)
             {
                 grabbedItem.transform.GetComponent<Rigidbody>().useGravity = true;
@@ -199,85 +174,8 @@ public class Grab : MonoBehaviour
 
             if (grabbedItem.transform.GetComponent<Building>() != null)
             {
-                //cost if you do want to apply the spell on the ground
-                if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.CityHall)
-                {
-                    ResourceManager.amountOfWood -= AiManager.GameSettings.cityhall.BuildingCostInWood;
-                    ResourceManager.amountOfFood -= AiManager.GameSettings.cityhall.BuildingCostInFood;
-                }
-                else if(grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodStock)
-                {
-                    ResourceManager.amountOfWood -= AiManager.GameSettings.foodHouse.BuildingCostInWood;
-                    ResourceManager.amountOfFood -= AiManager.GameSettings.foodHouse.BuildingCostInFood;
-                }
-                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodStock)
-                {
-                    ResourceManager.amountOfWood -= AiManager.GameSettings.woodHouse.BuildingCostInWood;
-                    ResourceManager.amountOfFood -= AiManager.GameSettings.woodHouse.BuildingCostInFood;
-                }
-                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.EnergyGenerator)
-                {
-                    ResourceManager.amountOfWood -= AiManager.GameSettings.spellHouse.BuildingCostInWood;
-                    ResourceManager.amountOfFood -= AiManager.GameSettings.spellHouse.BuildingCostInFood;
-                }
-                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.Barrack)
-                {
-                    ResourceManager.amountOfWood -= AiManager.GameSettings.Barrack.BuildingCostInWood;
-                    ResourceManager.amountOfFood -= AiManager.GameSettings.Barrack.BuildingCostInFood;
-                }
-                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodProcessor)
-                {
-                    for (int i = 0; i < AiManager.GameSettings.foodProcessor.BuildingCostInFood; i++)
-                    {
-                        List<GameObject> foodStockToTakeFrom = new List<GameObject>();
-
-                        foreach (var foodStock in AiManager.FoodStockageBuilding)
-                        {
-                            if (foodStock.GetComponent<Building>().currentStockage > 0)
-                            {
-                                foodStockToTakeFrom.Add(foodStock);
-                            }
-                        }
-
-                        int rand = Random.Range(0, foodStockToTakeFrom.Count);
-                        foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage -= 1;
-                        foodStockToTakeFrom[rand].GetComponent<Building>().UpdateStockVisu();
-
-                        if (foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage <= 0)
-                        {
-                            foodStockToTakeFrom.Remove(foodStockToTakeFrom[rand]);
-                        }
-                    }
-
-                    for (int i = 0; i < AiManager.GameSettings.foodProcessor.BuildingCostInWood; i++)
-                    {
-                        List<GameObject> woodStockToTakeFrom = new List<GameObject>();
-
-                        foreach (var woodStock in AiManager.WoodStockageBuilding)
-                        {
-                            if (woodStock.GetComponent<Building>().currentStockage > 0)
-                            {
-                                woodStockToTakeFrom.Add(woodStock);
-                            }
-                        }
-
-                        int rand = Random.Range(0, woodStockToTakeFrom.Count);
-                        woodStockToTakeFrom[rand].GetComponent<Building>().currentStockage -= 1;
-                        woodStockToTakeFrom[rand].GetComponent<Building>().UpdateStockVisu();
-
-                        if (woodStockToTakeFrom[rand].GetComponent<Building>().currentStockage <= 0)
-                        {
-                            woodStockToTakeFrom.Remove(woodStockToTakeFrom[rand]);
-                        }
-                    }
-                }
-                else if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodProcessor)
-                {
-                    
-                    ResourceManager.amountOfWood -= AiManager.GameSettings.woodCutter.BuildingCostInWood;
-                    ResourceManager.amountOfFood -= AiManager.GameSettings.woodCutter.BuildingCostInFood;
-                }
-
+                ResourceManager.ManageCostOfPurchaseForBuilding(grabbedItem.transform.GetComponent<Building>().buildingArchetype);
+                
                 AiManager.Buildings.Add(grabbedItem);
 
                 if (grabbedItem.transform.GetComponent<Building>().detectPlacement != null)
@@ -307,6 +205,7 @@ public class Grab : MonoBehaviour
                         if (AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Contains(grabbedItem))
                         {
                             AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Remove(grabbedItem);
+                            grabbedItem.transform.GetComponent<AIDemons>().ResetVisuals();
                         }
                     }
 

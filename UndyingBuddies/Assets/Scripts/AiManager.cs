@@ -118,8 +118,24 @@ public class AiManager : MonoBehaviour
         //}
     }
 
-    IEnumerator SlowUpdate()
+    void CleanTheListFromEmptyObjects()
     {
+        for (int i = 0; i < FoodStockageBuilding.Count; i++)
+        {
+            if (FoodStockageBuilding[i] == null)
+            {
+                FoodStockageBuilding.Remove(FoodStockageBuilding[i]);
+            }
+        }
+
+        for (int i = 0; i < WoodStockageBuilding.Count; i++)
+        {
+            if (WoodStockageBuilding[i] == null)
+            {
+                WoodStockageBuilding.Remove(WoodStockageBuilding[i]);
+            }
+        }
+
         for (int i = 0; i < FoodToProcess.Count; i++)
         {
             if (FoodToProcess[i] == null)
@@ -135,6 +151,27 @@ public class AiManager : MonoBehaviour
                 WoodToProcess.Remove(WoodToProcess[i]);
             }
         }
+
+        for (int i = 0; i < Demons.Count; i++)
+        {
+            if (Demons[i] == null)
+            {
+                Demons.Remove(Demons[i]);
+            }
+        }
+
+        for (int i = 0; i < Priest.Count; i++)
+        {
+            if (Priest[i] == null)
+            {
+                Priest.Remove(Demons[i]);
+            }
+        }
+    }
+
+    IEnumerator SlowUpdate()
+    {
+        CleanTheListFromEmptyObjects();
 
         for (int i = 0; i < Demons.Count; i++)
         {
@@ -254,14 +291,28 @@ public class AiManager : MonoBehaviour
                             }
                             else
                             {
-                                GameObject food = currentAiDemon.FindClosestResourceSupply(ResourceType.food);
-                                if (currentAiDemon.checkIfGivenObjectIscloseBy(food))
+                                if (FoodToProcess.Count > 0)
                                 {
-                                    currentAiDemon.Gather(ResourceType.food);
+                                    GameObject food = currentAiDemon.FindClosestResourceSupply(ResourceType.food);
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(food))
+                                    {
+                                        currentAiDemon.Gather(ResourceType.food);
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                    }
                                 }
                                 else
                                 {
-                                    currentAiDemon.Walk();
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                    {
+                                        currentAiDemon.Idle();
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                    }
                                 }
                             }
                         }
@@ -311,7 +362,7 @@ public class AiManager : MonoBehaviour
                         }
                         else
                         {
-                            if (currentAiDemon.BushAmount >= 9)
+                            if (currentAiDemon.LogAmount >= 3)
                             {
                                 if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
                                 {
@@ -324,27 +375,41 @@ public class AiManager : MonoBehaviour
                             }
                             else
                             {
-                                GameObject wood = currentAiDemon.FindClosestResourceSupply(ResourceType.wood);
-                                if (currentAiDemon.checkIfGivenObjectIscloseBy(wood))
+                                if (WoodToProcess.Count > 0)
                                 {
-                                    currentAiDemon.Gather(ResourceType.wood);
+                                    GameObject wood = currentAiDemon.FindClosestResourceSupply(ResourceType.wood);
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(wood))
+                                    {
+                                        currentAiDemon.Gather(ResourceType.wood);
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                    }
                                 }
                                 else
                                 {
-                                    currentAiDemon.Walk();
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                    {
+                                        currentAiDemon.Idle();
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                    }
                                 }
                             }
                         }
                         break;
 
                     case JobType.energyProcessor:
-                        if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.Stokpile.Count > 0)
+                        if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
                         {
-                            currentAiDemon.Process();
+                            currentAiDemon.Prey();
                         }
                         else
                         {
-                            currentAiDemon.Idle();
+                            currentAiDemon.Walk();
                         }
                         break;
                 }

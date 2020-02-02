@@ -38,7 +38,15 @@ public class TerrainManagerLock : MonoBehaviour
 
     IEnumerator SlowUpdate()
     {
-        switch (terrainStage)
+        for (int i = 0; i < ResourcesAvailable.Count; i++)
+        {
+            if (ResourcesAvailable[i] == null)
+            {
+                ResourcesAvailable.Remove(ResourcesAvailable[i]);
+            }
+        }
+
+            switch (terrainStage)
         {
             case TerrainStage.CompleteLock:
                 this.gameObject.tag = "Untagged";

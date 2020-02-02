@@ -5,6 +5,7 @@ using UnityEngine;
 public class Resource : MonoBehaviour
 {
     public ResourceType resourceType;
+    public ResourceSizeType resourceSizeType;
 
     public int amountOfResourceAvailable;
 
@@ -14,6 +15,29 @@ public class Resource : MonoBehaviour
 
     void Start()
     {
+        if (resourceType == ResourceType.food)
+        {
+            if (resourceSizeType == ResourceSizeType.smoll)
+            {
+                amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodSmallContainer;
+            }
+            else if (resourceSizeType == ResourceSizeType.medium)
+            {
+                amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodMediumContainer;
+            }
+        }
+        else if (resourceType == ResourceType.wood)
+        {
+            if (resourceSizeType == ResourceSizeType.smoll)
+            {
+                amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodSmallContainer;
+            }
+            else if (resourceSizeType == ResourceSizeType.medium)
+            {
+                amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodMediumContainer;
+            }
+        }
+
         uiHealth.life = amountOfResourceAvailable;
         uiHealth.maxLife = amountOfResourceAvailable;
     }

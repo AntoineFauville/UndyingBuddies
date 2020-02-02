@@ -8,11 +8,6 @@ public class GameSettings : ScriptableObject
     public int demonLife = 10;
     public int demonRangeOfDetection = 20;
     public int demonRangeOfCloseBy = 5;
-    public GameObject woodResourcePrefab;
-    public int maxWoodCanCarry = 5;
-    public GameObject foodResourcePrefab;
-    public int maxFoodCanCarry = 5;
-    public GameObject energyResourcePrefab;
 
     public BuildingArchetype Barrack;
     public BuildingArchetype cityhall;
@@ -21,11 +16,7 @@ public class GameSettings : ScriptableObject
     public BuildingArchetype woodCutter;
     public BuildingArchetype foodProcessor;
     public BuildingArchetype spellHouse;
-
-    public int initialFoodAmount = 20;
-    public int initialWoodAmount = 20;
-    public int initialEnergyAmount = 0;
-
+    
     public int CostOfNewDemonFood = 40;
     public GameObject DemonPrefab;
     public int damageDemons = 5;
@@ -46,8 +37,7 @@ public class GameSettings : ScriptableObject
 
     public int foodAmountToUnlockTerrain = 100;
     public int woodAmountToUnlockTerrain = 100;
-
-
+    
     public GameObject PriestPrefab;
     public GameObject AIFormationPrefab;
 }

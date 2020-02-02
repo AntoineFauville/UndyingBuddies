@@ -9,12 +9,7 @@ public class BuildingCreator : MonoBehaviour
 
     [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private GameSettings gameSettings;
-
-    void Update()
-    {
-
-    }
-
+    
     public void CreateBuilding(int building)
     {
         switch (building)
@@ -22,7 +17,7 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.CityHall: //0
                 if (resourceManager.amountOfWood >= gameSettings.cityhall.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.cityhall.BuildingCostInFood)
                 {
-                    InstantiateBuilding(gameSettings.cityhall.PrefabBuilding);
+                    InstantiateBuilding(gameSettings.cityhall.PrefabBuilding, gameSettings.cityhall);
                 }
                 else
                 {
@@ -33,7 +28,7 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.FoodStock: //1
                 if (resourceManager.amountOfWood >= gameSettings.foodHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.foodHouse.BuildingCostInFood)
                 {
-                    InstantiateBuilding(gameSettings.foodHouse.PrefabBuilding);
+                    InstantiateBuilding(gameSettings.foodHouse.PrefabBuilding, gameSettings.foodHouse);
                 }
                 else
                 {
@@ -44,7 +39,7 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.WoodStock: //2
                 if (resourceManager.amountOfWood >= gameSettings.woodHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.woodHouse.BuildingCostInFood)
                 {
-                    InstantiateBuilding(gameSettings.woodHouse.PrefabBuilding);
+                    InstantiateBuilding(gameSettings.woodHouse.PrefabBuilding, gameSettings.woodHouse);
                 }
                 else
                 {
@@ -55,7 +50,7 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.Barrack: //3
                 if (resourceManager.amountOfWood >= gameSettings.Barrack.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.Barrack.BuildingCostInFood)
                 {
-                    InstantiateBuilding(gameSettings.Barrack.PrefabBuilding);
+                    InstantiateBuilding(gameSettings.Barrack.PrefabBuilding, gameSettings.Barrack);
                 }
                 else
                 {
@@ -66,7 +61,7 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.WoodProcessor: //4
                 if (resourceManager.amountOfWood >= gameSettings.woodCutter.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.woodCutter.BuildingCostInFood)
                 {
-                    InstantiateBuilding(gameSettings.woodCutter.PrefabBuilding);
+                    InstantiateBuilding(gameSettings.woodCutter.PrefabBuilding, gameSettings.woodCutter);
                 }
                 else
                 {
@@ -77,7 +72,7 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.FoodProcessor: //5
                 if (resourceManager.amountOfWood >= gameSettings.foodProcessor.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.foodProcessor.BuildingCostInFood)
                 {
-                    InstantiateBuilding(gameSettings.foodProcessor.PrefabBuilding);
+                    InstantiateBuilding(gameSettings.foodProcessor.PrefabBuilding, gameSettings.foodProcessor);
                 }
                 else
                 {
@@ -88,7 +83,7 @@ public class BuildingCreator : MonoBehaviour
             case (int)BuildingType.EnergyGenerator: //6
                 if (resourceManager.amountOfWood >= gameSettings.spellHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.spellHouse.BuildingCostInFood)
                 {
-                    InstantiateBuilding(gameSettings.spellHouse.PrefabBuilding);
+                    InstantiateBuilding(gameSettings.spellHouse.PrefabBuilding, gameSettings.spellHouse);
                 }
                 else
                 {
@@ -98,14 +93,11 @@ public class BuildingCreator : MonoBehaviour
         }
     }
 
-    void InstantiateBuilding(GameObject gameObject)
+    void InstantiateBuilding(GameObject gameObject, BuildingArchetype buildingArchetype)
     {
         GameObject newObj = Instantiate(gameObject);
 
-        if (buildingType == BuildingType.FoodStock || buildingType == BuildingType.WoodStock)
-        {
-            GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Add(newObj);
-        }
+        newObj.GetComponent<Building>().buildingArchetype = buildingArchetype;
 
         StartCoroutine(waitForFeedback(newObj));        
     }

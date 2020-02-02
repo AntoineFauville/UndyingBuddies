@@ -76,6 +76,30 @@ public class AIDemons : MonoBehaviour
         amIInFire = false;
     }
 
+    public void ResetVisuals()
+    {
+        for (int i = 0; i < BushObject.Length; i++)
+        {
+            BushObject[i].SetActive(false);
+        }
+        for (int i = 0; i < LogObject.Length; i++)
+        {
+            LogObject[i].SetActive(false);
+        }
+        if (Wagon != null)
+        {
+            Wagon.SetActive(false);
+        }
+        for (int i = 0; i < BerryContainerObject.Length; i++)
+        {
+            BerryContainerObject[i].SetActive(false);
+        }
+        for (int i = PlankObject.Length - 1; i > -1; i--)
+        {
+            PlankObject[i].SetActive(false);
+        }
+    }
+
     //actions
     public void Attack()
     {
@@ -125,6 +149,31 @@ public class AIDemons : MonoBehaviour
     {
         NavMeshAgent.isStopped = true;
         animatorDemon.Play("Gather");
+
+        if (AssignedBuilding.GetComponent<jobSwitcher>().Building.BuildingType == BuildingType.WoodProcessor || AssignedBuilding.GetComponent<jobSwitcher>().Building.BuildingType == BuildingType.FoodProcessor)
+        {
+            this.gameObject.transform.position = AssignedBuilding.GetComponent<jobSwitcher>().Building.EmplacementWorker.transform.position;
+            this.gameObject.transform.rotation = AssignedBuilding.GetComponent<jobSwitcher>().Building.EmplacementWorker.transform.rotation;
+
+            AssignedBuilding.GetComponent<jobSwitcher>().Building.visualsOnTable.SetActive(true);
+        }
+    }
+
+    public void Prey()
+    {
+        NavMeshAgent.isStopped = true;
+        animatorDemon.Play("Prey");
+
+        if (AssignedBuilding.GetComponent<jobSwitcher>().Building.BuildingType == BuildingType.EnergyGenerator && !AbleToPerformAction)
+        {
+            AbleToPerformAction = true;
+
+            this.gameObject.transform.position = AssignedBuilding.GetComponent<jobSwitcher>().Building.EmplacementWorker.transform.position;
+            this.gameObject.transform.rotation = AssignedBuilding.GetComponent<jobSwitcher>().Building.EmplacementWorker.transform.rotation;
+
+            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfEnergy += 1;
+            StartCoroutine(TransferingTime());
+        }
     }
 
     public void Gather(ResourceType resourceToGather)
@@ -191,9 +240,7 @@ public class AIDemons : MonoBehaviour
     {
         animatorDemon.Play("Place");
         NavMeshAgent.isStopped = true;
-
-        BerryBasketAmount = 1;
-
+        
         if (Wagon != null)
         {
             Wagon.SetActive(true);
@@ -201,6 +248,8 @@ public class AIDemons : MonoBehaviour
 
         if (JobType == JobType.foodProcessor)
         {
+            BerryBasketAmount = 1;
+
             for (int i = 0; i < BerryContainerObject.Length; i++)
             {
                 BerryContainerObject[i].SetActive(true);
@@ -208,14 +257,20 @@ public class AIDemons : MonoBehaviour
         }
         else if (JobType == JobType.woodProcessor)
         {
+            PlankAmount = 1;
+
             for (int i = 0; i < PlankObject.Length; i++)
             {
                 PlankObject[i].SetActive(true);
             }
         }
-        
-    }
 
+        if (AssignedBuilding.GetComponent<jobSwitcher>().Building.visualsOnTable != null)
+        {
+            AssignedBuilding.GetComponent<jobSwitcher>().Building.visualsOnTable.SetActive(false);
+        }
+    }
+    
     public void PlaceInStockpile()
     {
         //Debug.Log("place");
@@ -477,7 +532,8 @@ public class AIDemons : MonoBehaviour
         }
         else if(JobType == JobType.woodProcessor)
         {
-            for (int i = 0; i < PlankObject.Length; i++)
+
+            for(int i = PlankObject.Length-1; i > -1; i--)
             {
                 PlankObject[i].SetActive(false);
 
