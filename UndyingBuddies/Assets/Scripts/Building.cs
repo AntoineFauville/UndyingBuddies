@@ -36,8 +36,13 @@ public class Building : MonoBehaviour
 
     void Start()
     {
-        if(visualsOnTable != null)
+        BoudingBoxTag.SetActive(false);
+        detectPlacement.gameObject.SetActive(false);
+
+        if (visualsOnTable != null)
             visualsOnTable.SetActive(false);
+
+        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
 
         if (BuildingType == BuildingType.Barrack)
         {
@@ -46,7 +51,6 @@ public class Building : MonoBehaviour
         else if (BuildingType == BuildingType.CityHall)
         {
             Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingHealth;
-            GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
         }
         else if (BuildingType == BuildingType.FoodStock)
         {

@@ -91,8 +91,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3921505765937135851}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.17000008, z: 3.7039}
-  m_LocalScale: {x: 3.9807026, y: 1, z: 4.2215447}
+  m_LocalPosition: {x: 0, y: 0.51, z: 3.7039}
+  m_LocalScale: {x: 6, y: 1, z: 6}
   m_Children: []
   m_Father: {fileID: 2904495296871413100}
   m_RootOrder: 0
@@ -198,8 +198,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4424275509079221226}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.02, y: 0.3900001, z: 3.6100006}
-  m_LocalScale: {x: 1.7860922, y: 1, z: 2.2881503}
+  m_LocalPosition: {x: 0.02, y: 0.51, z: 3.6100006}
+  m_LocalScale: {x: 6, y: 0.2, z: 6}
   m_Children: []
   m_Father: {fileID: 2904495296871413100}
   m_RootOrder: 1
@@ -215,7 +215,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.18, y: 0.15, z: 2.83}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: -0.12, z: 0}
 --- !u!114 &7582571277078077363
 MonoBehaviour:
@@ -446,6 +446,7 @@ MonoBehaviour:
   detectPlacement: {fileID: 686878888977636470}
   EmplacementWorker: {fileID: 3377953753755102108}
   visualsOnTable: {fileID: 5284788047857725986}
+  amountOfWorkerAllowed: 1
 --- !u!114 &7376630337845578853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,7 +479,7 @@ GameObject:
   - component: {fileID: 686878888977636470}
   m_Layer: 2
   m_Name: BBoxDetect
-  m_TagString: boundingBox
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,8 +492,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6521865894015264827}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.17000008, z: 3.7500005}
-  m_LocalScale: {x: 4.519068, y: 1, z: 4.677995}
+  m_LocalPosition: {x: 0, y: 0.51, z: 3.7500005}
+  m_LocalScale: {x: 6, y: 1, z: 6}
   m_Children: []
   m_Father: {fileID: 2904495296871413100}
   m_RootOrder: 4
@@ -976,12 +977,12 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 5056047957477850832, guid: 668d1833ec2d45a47ab209a8e7100367,
+    - target: {fileID: 4537089652738623957, guid: 668d1833ec2d45a47ab209a8e7100367,
         type: 3}
       propertyPath: m_Layer
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 4537089652738623957, guid: 668d1833ec2d45a47ab209a8e7100367,
+    - target: {fileID: 5056047957477850832, guid: 668d1833ec2d45a47ab209a8e7100367,
         type: 3}
       propertyPath: m_Layer
       value: 2

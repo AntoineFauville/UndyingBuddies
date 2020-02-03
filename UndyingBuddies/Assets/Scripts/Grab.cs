@@ -29,17 +29,30 @@ public class Grab : MonoBehaviour
         }
 
         HoldingAnything.SetActive(false);
-
-        for (int i = 0; i < AiManager.Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
-        {
-            AiManager.Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
-            AiManager.Buildings[i].GetComponent<Building>().detectPlacement.gameObject.SetActive(false);
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        //if you over on top of resource building then you can sacrifice resource for energy
+        if (Input.GetMouseButtonDown(1) && !grabbing && !notUsingSpell)
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.tag == "foodStock")
+                {
+                    Sacrifice.TransformIntoEnergy(ResourceType.food, hit.transform.gameObject);
+                }
+                else if (hit.collider.tag == "woodStock")
+                {
+                    Sacrifice.TransformIntoEnergy(ResourceType.wood, hit.transform.gameObject);
+                }
+            }
+        }
+
         //this manage is you can click or not on the objects
         if (Input.GetMouseButtonDown(0) && !grabbing && !notUsingSpell)
         {
@@ -105,14 +118,17 @@ public class Grab : MonoBehaviour
                         AiManager.Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(true);
                     }
 
+                    grabbedItem.transform.GetComponent<Building>().detectPlacement.gameObject.SetActive(true);
+                    grabbedItem.transform.GetComponent<Building>().BoudingBoxTag.SetActive(false);
+
                     if (!grabbedItem.transform.GetComponent<Building>().detectPlacement.Detected)
                     {
-                        grabbedItem.transform.GetComponent<Building>().BoudingBoxTag.GetComponent<MeshRenderer>().material.color = Color.white;
+                        grabbedItem.transform.GetComponent<Building>().detectPlacement.GetComponent<MeshRenderer>().material.color = Color.white;
                         conditionToReleaseMet = true;
                     }
                     else
                     {
-                        grabbedItem.transform.GetComponent<Building>().BoudingBoxTag.GetComponent<MeshRenderer>().material.color = Color.red;
+                        grabbedItem.transform.GetComponent<Building>().detectPlacement.GetComponent<MeshRenderer>().material.color = Color.red;
                         conditionToReleaseMet = false;
                     }
                 }

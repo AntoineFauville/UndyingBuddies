@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1911693703527974638}
   - component: {fileID: 1911693703527974625}
-  - component: {fileID: 1911693703527974636}
   - component: {fileID: 1911693703527974639}
   - component: {fileID: 1911693703527974637}
   - component: {fileID: 1950813033152610870}
@@ -62,25 +61,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 90
   m_CollisionDetection: 0
---- !u!114 &1911693703527974636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1911693703527974627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a56f8881ac842d468b10b754e53d59d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myResourceType: 1
-  resourceSizeType: 0
-  gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
-  haveIGotGrabbed: 0
-  instantiateOnce: 0
-  spawnPoint: {fileID: 0}
-  BuildingWhereImPlaced: {fileID: 0}
 --- !u!114 &1911693703527974639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,7 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dda5e0ed7d2bb347a1b1024ea5a502a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceType: 0
+  resourceType: 1
+  resourceSizeType: 0
   amountOfResourceAvailable: 100
   uiHealth: {fileID: 7658678425761526441}
   processedResource: 0

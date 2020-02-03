@@ -26,10 +26,20 @@ public class Sacrifice : MonoBehaviour
             if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.food)
             {
                 resourceManager.amountOfEnergy += 1;
+
+                int rand;
+                rand = Random.Range(0, _aiManager.FoodStockageBuilding.Count);
+                _aiManager.FoodStockageBuilding[rand].GetComponent<Building>().currentStockage += 1;
+                _aiManager.FoodStockageBuilding[rand].GetComponent<Building>().UpdateStockVisu();
             }
             else if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.wood)
             {
                 resourceManager.amountOfEnergy += 2;
+
+                int rand;
+                rand = Random.Range(0, _aiManager.WoodStockageBuilding.Count);
+                _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().currentStockage += 1;
+                _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().UpdateStockVisu();
             }
         }
 
@@ -62,5 +72,23 @@ public class Sacrifice : MonoBehaviour
         }
 
         DestroyImmediate(grabbedObject);
+    }
+
+    public void TransformIntoEnergy(ResourceType resourceType, GameObject stockGameObject)
+    {
+        if (stockGameObject.GetComponent<Building>().currentStockage > 0)
+        {
+            stockGameObject.GetComponent<Building>().currentStockage -= 1;
+            stockGameObject.GetComponent<Building>().UpdateStockVisu();
+
+            if (resourceType == ResourceType.food)
+            {
+                resourceManager.amountOfEnergy += 1;
+            }
+            else if (resourceType == ResourceType.wood)
+            {
+                resourceManager.amountOfEnergy += 1;
+            }
+        }
     }
 }

@@ -8,7 +8,14 @@ public class DetectPlacement : MonoBehaviour
 
     void OnTriggerStay(Collider coll)
     {
-        if (coll.transform.tag == "boundingBox")
+        //Debug.Log(this.gameObject.name + "triggered" + "  " + coll.name);
+
+        if (coll.transform.tag == "boundingBox" || coll.transform.tag == "tree" 
+            || coll.transform.tag == "flag" || coll.transform.tag == "wood" 
+            || coll.transform.tag == "food" || coll.transform.tag == "relic" 
+            || coll.transform.tag == "priest" || coll.transform.tag == "demon" 
+            || coll.transform.tag == "foodStock" || coll.transform.tag == "woodStock" 
+            || coll.transform.tag == "terrainWarFlagOnly" || coll.transform.tag == "Untagged")
         {
             Detected = true;
         }
