@@ -15,6 +15,11 @@ public class Grab : MonoBehaviour
     [SerializeField] ResourceManager ResourceManager;
     [SerializeField] AiManager AiManager;
 
+    [SerializeField] GameObject grabbedPosition;
+    GameObject parentOfGrabbedObject;
+
+    [SerializeField] private Sacrifice Sacrifice;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,12 +55,6 @@ public class Grab : MonoBehaviour
                     {
                         StartCoroutine(waitForMouseToUnderstand(hit.transform.gameObject));
                     }
-                }
-
-                if (hit.transform.GetComponent<Energy>() != null)
-                {
-                    ResourceManager.amountOfEnergy += 1;
-                    DestroyImmediate(hit.transform.gameObject);
                 }
             }
         }
@@ -142,11 +141,13 @@ public class Grab : MonoBehaviour
             if (grabbedItem.transform.GetComponent<Building>() != null)
             {
                 grabbedItem.transform.position = posCurrentObject;
-
             }
             else
             {
-                grabbedItem.transform.position = posCurrentObject + new Vector3(0, 7, 0);
+                grabbedItem.transform.SetParent(grabbedPosition.transform);
+                grabbedItem.transform.position = grabbedPosition.transform.position;
+                grabbedItem.transform.rotation = grabbedPosition.transform.rotation;
+                grabbedItem.transform.localScale = new Vector3(1, 1, 1);
             }
             grabbedItem.layer = 2;
             HoldingAnything.SetActive(true);
@@ -158,6 +159,48 @@ public class Grab : MonoBehaviour
                 Debug.Log("canceled building placement");
                 HoldingAnything.SetActive(false);
             }
+        }
+
+        if (Input.GetMouseButtonDown(1) && grabbing)
+        {
+            for (int i = 0; i < AiManager.Buildings.Count; i++) // DE-activate all the bouding box in case they would be activated
+            {
+                AiManager.Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
+            }
+
+            if (grabbedItem.transform.GetComponent<Building>() == null)
+            {
+                if (AiManager.Demons.Count <= 1 && grabbedItem.GetComponent<AIDemons>() != null) // if we have a demon and we only have one demon or less lol don't comit suicide
+                {
+                    Debug.Log("Really man ? don't kill yourself like that");
+                }
+                else
+                {
+                    Debug.Log("sacrifice");
+
+                    handAnim.Play("hand anim Sacrifice");
+
+                    for (int i = 0; i < AiManager.Buildings.Count; i++)
+                    {
+                        if (AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Contains(grabbedItem))
+                        {
+                            AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Remove(grabbedItem);
+                            grabbedItem.transform.GetComponent<AIDemons>().ResetVisuals();
+                        }
+                    }
+
+                    parentOfGrabbedObject = null;
+
+                    HoldingAnything.SetActive(false);
+
+                    grabbing = false;
+
+                    Sacrifice.SacrificeForLordSavior(grabbedItem, AiManager);
+
+                    grabbedItem = null;
+                }
+            }
+
         }
 
         if (Input.GetMouseButtonDown(0) && grabbing && conditionToReleaseMet)
@@ -215,7 +258,15 @@ public class Grab : MonoBehaviour
 
             grabbedItem.layer = 0;
 
+            if (parentOfGrabbedObject != null)
+            {
+                grabbedItem.transform.SetParent(parentOfGrabbedObject.transform);
+            }
             grabbedItem.transform.position = posCurrentObject;
+            grabbedItem.transform.rotation = new Quaternion();
+            grabbedItem.transform.localScale = new Vector3(1,1,1);
+            
+            parentOfGrabbedObject = null;
 
             grabbedItem = null;
 
@@ -227,16 +278,20 @@ public class Grab : MonoBehaviour
 
     IEnumerator waitForMouseToUnderstand(GameObject hit)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.05f);
 
         HoldingAnything.SetActive(true);
 
         grabbing = true;
+        
         grabbedItem = hit.transform.gameObject;
 
         if (hit.transform.GetComponent<Rigidbody>() != null)
         {
             hit.transform.GetComponent<Rigidbody>().useGravity = false;
         }
+
+        if(grabbedItem.transform.parent != null)
+            parentOfGrabbedObject = grabbedItem.transform.parent.gameObject;
     }
 }
