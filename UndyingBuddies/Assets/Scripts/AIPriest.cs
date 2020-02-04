@@ -5,8 +5,21 @@ using UnityEngine.AI;
 
 public class AIPriest : MonoBehaviour
 {
-    public int Health;
+    //physical
+    public int healthAmount;
     public int maxHealth;
+    //fear
+    public int FearAmount;
+    public int fearMaxAmount;
+    //Mental Health
+    public int MentalHealthAmount;
+    public int MentalHealthMaxAmount;
+    //Lonelyness
+    public int LonelynessAmount;
+    public int LonelynessMaxAmount;
+    //Intestine Status
+    public int IntestineStatusAmount;
+    public int IntestineStatusMaxAmount;
 
     public bool CanAttackBack;
 
@@ -44,23 +57,23 @@ public class AIPriest : MonoBehaviour
 
         if (PriestType == PriestType.soldier)
         {
-            Health = _gameSettings.PriestHealth;
+            healthAmount = _gameSettings.PriestHealth;
         }
         else if (PriestType == PriestType.building)
         {
-            Health = _gameSettings.PriestBuildingHealth;
+            healthAmount = _gameSettings.PriestBuildingHealth;
         }
 
         CheckClosestDemonToAttack();
 
-        maxHealth = Health;
+        maxHealth = healthAmount;
 
         StartCoroutine(slowUpdate());
     }
 
     void Update()
     {
-        if (Health <= 0)
+        if (healthAmount <= 0)
         {
             Die();
         }
@@ -304,10 +317,10 @@ public class AIPriest : MonoBehaviour
 
         if (amIInFire)
         {
-            Health -= _gameSettings.fireSpell.DamageToEnemy;
+            healthAmount -= _gameSettings.fireSpell.DamageToEnemy;
         }
 
-        UiHealth.life = Health;
+        UiHealth.life = healthAmount;
         UiHealth.maxLife = _gameSettings.PriestHealth;
 
         StartCoroutine(slowUpdate());

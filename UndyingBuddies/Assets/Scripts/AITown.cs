@@ -11,6 +11,12 @@ public class AITown : MonoBehaviour
     [SerializeField] private GameObject waveController;
 
     [SerializeField] private GameObject buildingToDestroy;
+    [SerializeField] private GameObject visualsToShowActivation;
+
+    void Awake()
+    {
+        waveController.GetComponent<WaveSpawner>().enabled = false;
+    }
 
     // Update is called once per frame
     void Update()
@@ -25,7 +31,7 @@ public class AITown : MonoBehaviour
 
         for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
         {
-            if (AllRelatedAIOfThisTown[i].Health < AllRelatedAIOfThisTown[i].maxHealth)
+            if (AllRelatedAIOfThisTown[i].healthAmount < AllRelatedAIOfThisTown[i].maxHealth)
             {
                 Revenge = true;
             }
@@ -40,13 +46,20 @@ public class AITown : MonoBehaviour
 
             if (buildingToDestroy != null)
             {
-                waveController.SetActive(true);
+                if (visualsToShowActivation != null)
+                {
+                    visualsToShowActivation.SetActive(true);
+                }
+                waveController.GetComponent<WaveSpawner>().enabled = true;
             }
             else
             {
                 waveController.GetComponent<WaveSpawner>().enabled = false;
-                waveController.SetActive(false);
             }
+        }
+        else
+        {
+            waveController.GetComponent<WaveSpawner>().enabled = false;
         }
     }
 }

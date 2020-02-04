@@ -35,7 +35,7 @@ public class UiHealth : MonoBehaviour
 
         image.fillAmount = fill;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
 
         StartCoroutine(UiHealthverySlowUpdate());
     }

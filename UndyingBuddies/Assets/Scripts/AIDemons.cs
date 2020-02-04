@@ -113,7 +113,7 @@ public class AIDemons : MonoBehaviour
 
             if (TargetToGoTo.GetComponent<AIPriest>() != null)
             {
-                TargetToGoTo.GetComponent<AIPriest>().Health -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.damageDemons;
+                TargetToGoTo.GetComponent<AIPriest>().healthAmount -= GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.damageDemons;
             }
 
             StartCoroutine(TransferingTime());
