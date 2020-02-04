@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class AIPriest : MonoBehaviour
 {
     public int Health;
+    public int maxHealth;
 
     public bool CanAttackBack;
 
@@ -51,6 +52,8 @@ public class AIPriest : MonoBehaviour
         }
 
         CheckClosestDemonToAttack();
+
+        maxHealth = Health;
 
         StartCoroutine(slowUpdate());
     }
