@@ -8,14 +8,21 @@ public class AITown : MonoBehaviour
 
     bool Revenge;
 
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject waveController;
+
+    [SerializeField] private GameObject buildingToDestroy;
 
     // Update is called once per frame
     void Update()
     {
+        for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
+        {
+            if (AllRelatedAIOfThisTown[i] == null)
+            {
+                AllRelatedAIOfThisTown.Remove(AllRelatedAIOfThisTown[i]);
+            }
+        }
+
         for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
         {
             if (AllRelatedAIOfThisTown[i].Health < AllRelatedAIOfThisTown[i].maxHealth)
@@ -29,6 +36,16 @@ public class AITown : MonoBehaviour
             for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
             {
                 AllRelatedAIOfThisTown[i].PriestAttackerType = PriestAttackerType.rusher;
+            }
+
+            if (buildingToDestroy != null)
+            {
+                waveController.SetActive(true);
+            }
+            else
+            {
+                waveController.GetComponent<WaveSpawner>().enabled = false;
+                waveController.SetActive(false);
             }
         }
     }

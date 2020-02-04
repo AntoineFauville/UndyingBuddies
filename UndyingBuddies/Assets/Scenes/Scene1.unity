@@ -148,6 +148,8 @@ MonoBehaviour:
   - {fileID: 1565307376}
   - {fileID: 1262625460}
   - {fileID: 1437918197}
+  waveController: {fileID: 1237052567}
+  buildingToDestroy: {fileID: 1437918195}
 --- !u!4 &1314581
 Transform:
   m_ObjectHideFlags: 0
@@ -164,8 +166,9 @@ Transform:
   - {fileID: 1565307381}
   - {fileID: 1262625465}
   - {fileID: 1437918194}
+  - {fileID: 1237052569}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8001218
 PrefabInstance:
@@ -1839,7 +1842,7 @@ Transform:
   - {fileID: 105221796}
   - {fileID: 86371724}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &294488439
 MonoBehaviour:
@@ -3212,7 +3215,7 @@ Transform:
   - {fileID: 311956302}
   - {fileID: 2033660361}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &535431476
 MonoBehaviour:
@@ -3324,7 +3327,7 @@ Transform:
   - {fileID: 788915607}
   - {fileID: 881709102}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &539291922
 MonoBehaviour:
@@ -13812,11 +13815,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1237052567}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 123.5, y: 0, z: 65.52}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.45, y: -0.33168936, z: -0.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1314581}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1245344727
@@ -18294,7 +18297,7 @@ Transform:
   - {fileID: 925162551}
   - {fileID: 1012396012}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1753466845
 MonoBehaviour:
@@ -25885,7 +25888,7 @@ PrefabInstance:
     - target: {fileID: 7307830733568343969, guid: 1464a3853f6f9654cb0f70ae7f98b43c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7307830733568343969, guid: 1464a3853f6f9654cb0f70ae7f98b43c,
         type: 3}
