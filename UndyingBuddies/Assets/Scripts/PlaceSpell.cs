@@ -20,6 +20,7 @@ public class PlaceSpell : MonoBehaviour
 
     private ResourceManager resourceManager;
     private Grab grab;
+    private spellCanvasView currentSpellCanvas;
 
     void Start()
     {
@@ -33,6 +34,7 @@ public class PlaceSpell : MonoBehaviour
         spellCanvasView spellCanvasView;
         spellCanvasView = Instantiate(spellArchetype.UIToSpawn, SpellHandler.transform);
         spellCanvasView.spellArchetype = spellArchetype;
+        currentSpellCanvas = spellCanvasView;
 
         resourceManager.amountOfEnergy -= spellArchetype.CostToUnlockEnergy;
     }
@@ -78,6 +80,16 @@ public class PlaceSpell : MonoBehaviour
                 ShowSpellDebug(false);
                 grab.notUsingSpell = false;
             }
+        }
+
+        if (Input.GetMouseButtonUp(1) && activeSpell != null)
+        {
+            ShowSpellDebug(false);
+            grab.notUsingSpell = false;
+            ableToSpawnAgain = false;
+            activateShowOfSpell = false;
+            activeSpell = null;
+            currentSpellCanvas.ActivateBool();
         }
     }
 
