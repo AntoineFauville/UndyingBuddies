@@ -15,11 +15,11 @@ public class AIPriest : MonoBehaviour
     public int MentalHealthAmount;
     public int MentalHealthMaxAmount;
     //Lonelyness
-    public int LonelynessAmount;
-    public int LonelynessMaxAmount;
-    //Intestine Status
-    public int IntestineStatusAmount;
-    public int IntestineStatusMaxAmount;
+    //public int LonelynessAmount;
+    //public int LonelynessMaxAmount;
+    ////Intestine Status
+    //public int IntestineStatusAmount;
+    //public int IntestineStatusMaxAmount;
 
     public bool CanAttackBack;
 
@@ -67,13 +67,15 @@ public class AIPriest : MonoBehaviour
         CheckClosestDemonToAttack();
 
         maxHealth = healthAmount;
-
-        StartCoroutine(slowUpdate());
     }
 
     void Update()
     {
         if (healthAmount <= 0)
+        {
+            Die();
+        }
+        else if (MentalHealthAmount <= 0)
         {
             Die();
         }
@@ -280,24 +282,7 @@ public class AIPriest : MonoBehaviour
 
         Target = bestDemon;
     } // check if there is an enemy to attack close up
-
-    void OnTriggerStay(Collider collider)
-    {
-        if (collider.tag == "FireZone")
-        {
-            amIInFire = true;
-        }
-        else
-        {
-            amIInFire = false;
-        }
-    }
-
-    void OnTriggerExit()
-    {
-        amIInFire = false;
-    }
-
+    
     IEnumerator waitToDie()
     {
         yield return new WaitForSeconds(0.05f);
@@ -309,20 +294,5 @@ public class AIPriest : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         CanAttackAgain = false;
-    }
-
-    IEnumerator slowUpdate()
-    {
-        yield return new WaitForSeconds(0.7f);
-
-        if (amIInFire)
-        {
-            healthAmount -= _gameSettings.fireSpell.DamageToEnemy;
-        }
-
-        UiHealth.life = healthAmount;
-        UiHealth.maxLife = _gameSettings.PriestHealth;
-
-        StartCoroutine(slowUpdate());
     }
 }
