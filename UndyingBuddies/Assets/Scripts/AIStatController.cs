@@ -13,6 +13,19 @@ public class AIStatController : MonoBehaviour
     
     void Start()
     {
+        _aIPriest.maxHealth = _aIPriest.healthAmount;
+        
+
+        if (_aIPriest.PriestType == PriestType.soldier)
+        {
+            _aIPriest.healthAmount = _gameSettings.PriestHealth;
+            _aIPriest.MentalHealthAmount = 0;
+        }
+        else if (_aIPriest.PriestType == PriestType.building)
+        {
+            _aIPriest.healthAmount = _gameSettings.PriestBuildingHealth;
+        }
+
         StartCoroutine(HealSlowlyOverTime());
     }
 
@@ -27,7 +40,7 @@ public class AIStatController : MonoBehaviour
             case AiStatus.Fear:
                 break;
             case AiStatus.MentalHealth:
-                _aIPriest.healthAmount -= spellArchetype.DamageToEnemy - MentalHealthResistance;
+                _aIPriest.MentalHealthAmount -= spellArchetype.DamageToEnemy - MentalHealthResistance;
                 break;
             case AiStatus.Lonelyness:
                 break;
@@ -42,6 +55,7 @@ public class AIStatController : MonoBehaviour
     {
         _aIPriest.UiHealth.life = _aIPriest.healthAmount;
         _aIPriest.UiHealth.maxLife = _gameSettings.PriestHealth;
+        _aIPriest.MentalHealthMaxAmount = _gameSettings.PriestMaxMentalHealth;
     }
 
     void OnTriggerStay(Collider collider)
@@ -77,6 +91,11 @@ public class AIStatController : MonoBehaviour
     IEnumerator slowUpdate()
     {
         yield return new WaitForSeconds(0.7f);
+
+        if (_aIPriest.healthAmount <= 0 || _aIPriest.MentalHealthAmount == _aIPriest.MentalHealthMaxAmount)
+        {
+            _aIPriest.Die();
+        }
 
         if (_aIPriest.amIInFire)
         {

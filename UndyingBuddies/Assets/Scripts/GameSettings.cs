@@ -21,9 +21,10 @@ public class GameSettings : ScriptableObject
     public GameObject DemonPrefab;
     public int damageDemons = 5;
 
-    public int PriestHealth = 10;
-    public int PriestBuildingHealth = 50;
-    public int PriestAttackAmount = 5;
+    public int PriestHealth = 100;
+    public int PriestBuildingHealth = 500;
+    public int PriestAttackAmount = 10;
+    public int PriestMaxMentalHealth = 100;
 
     public SpellArchetype fireSpell;
 

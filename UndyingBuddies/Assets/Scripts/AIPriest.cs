@@ -54,32 +54,12 @@ public class AIPriest : MonoBehaviour
         {
             aiManager.Priest.Add(this.gameObject);
         }
-
-        if (PriestType == PriestType.soldier)
-        {
-            healthAmount = _gameSettings.PriestHealth;
-        }
-        else if (PriestType == PriestType.building)
-        {
-            healthAmount = _gameSettings.PriestBuildingHealth;
-        }
-
+        
         CheckClosestDemonToAttack();
-
-        maxHealth = healthAmount;
     }
 
     void Update()
     {
-        if (healthAmount <= 0)
-        {
-            Die();
-        }
-        else if (MentalHealthAmount <= 0)
-        {
-            Die();
-        }
-
         switch (PriestAttackerType)
         {
             case PriestAttackerType.defender:
@@ -220,7 +200,7 @@ public class AIPriest : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
         for (int i = 0; i < GameObject.FindGameObjectsWithTag("Floor").Length; i++)
         {

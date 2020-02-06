@@ -37632,10 +37632,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1115407519874888368}
   - component: {fileID: 8803593055677472339}
-  - component: {fileID: 8803593055677472340}
   - component: {fileID: 8803593055677472337}
   - component: {fileID: 8803593055677472341}
   - component: {fileID: 8803593055677472342}
+  - component: {fileID: 5145432212992725929}
   m_Layer: 0
   m_Name: PriestSmallHouse
   m_TagString: priest
@@ -37680,23 +37680,10 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
---- !u!65 &8803593055677472340
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8803593055677472336}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 5.08, y: 1, z: 4.31}
-  m_Center: {x: -0.6, y: -0.99, z: -0.5}
 --- !u!114 &8803593055677472337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37728,12 +37715,8 @@ MonoBehaviour:
   fearMaxAmount: 0
   MentalHealthAmount: 0
   MentalHealthMaxAmount: 0
-  LonelynessAmount: 0
-  LonelynessMaxAmount: 0
-  IntestineStatusAmount: 0
-  IntestineStatusMaxAmount: 0
   CanAttackBack: 0
-  AmIBuilding: 0
+  AmIBuilding: 1
   PriestType: 1
   CanAttackAgain: 0
   Target: {fileID: 0}
@@ -37756,6 +37739,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 1
+--- !u!114 &5145432212992725929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803593055677472336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08209a91dd79e0e47abb6eda3534cf5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PhysicalResistance: 2
+  MentalHealthResistance: 3
+  _aIPriest: {fileID: 8803593055677472341}
+  _gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
 --- !u!1001 &351079865763900768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37763,10 +37762,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
-    - target: {fileID: 111888, guid: 5d9e223d566966840a47e484271f8941, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Castle_Wood_Battlement_04
-      objectReference: {fileID: 0}
     - target: {fileID: 479606, guid: 5d9e223d566966840a47e484271f8941, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.92
@@ -37811,6 +37806,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 111888, guid: 5d9e223d566966840a47e484271f8941, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Castle_Wood_Battlement_04
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d9e223d566966840a47e484271f8941, type: 3}
 --- !u!4 &351079865763593238 stripped
@@ -37826,10 +37825,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
-    - target: {fileID: 174332, guid: a72279e3b12169c46bafba06303acf4b, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Church_Room_01
-      objectReference: {fileID: 0}
     - target: {fileID: 495830, guid: a72279e3b12169c46bafba06303acf4b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -37874,6 +37869,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 174332, guid: a72279e3b12169c46bafba06303acf4b, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Church_Room_01
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a72279e3b12169c46bafba06303acf4b, type: 3}
 --- !u!4 &909759123776819207 stripped
@@ -37889,14 +37888,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
-    - target: {fileID: 198414, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Church_TowerBase_01_Lite
-      objectReference: {fileID: 0}
-    - target: {fileID: 198414, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 452522, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -37940,6 +37931,14 @@ PrefabInstance:
     - target: {fileID: 452522, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198414, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Church_TowerBase_01_Lite
+      objectReference: {fileID: 0}
+    - target: {fileID: 198414, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
@@ -38149,10 +38148,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
-    - target: {fileID: 198514, guid: 5d4ced0355afd34439cce06d7e7012b5, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_House_Door_02
-      objectReference: {fileID: 0}
     - target: {fileID: 478972, guid: 5d4ced0355afd34439cce06d7e7012b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -38197,6 +38192,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198514, guid: 5d4ced0355afd34439cce06d7e7012b5, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_House_Door_02
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d4ced0355afd34439cce06d7e7012b5, type: 3}
 --- !u!4 &4969136927462830386 stripped
@@ -38212,11 +38211,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
-    - target: {fileID: 4741101803749598165, guid: 668d1833ec2d45a47ab209a8e7100367,
-        type: 3}
-      propertyPath: m_Name
-      value: UIHealth
-      objectReference: {fileID: 0}
     - target: {fileID: 9113972547635873580, guid: 668d1833ec2d45a47ab209a8e7100367,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -38272,6 +38266,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4741101803749598165, guid: 668d1833ec2d45a47ab209a8e7100367,
+        type: 3}
+      propertyPath: m_Name
+      value: UIHealth
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 668d1833ec2d45a47ab209a8e7100367, type: 3}
 --- !u!114 &5964331277577106466 stripped
@@ -38299,14 +38298,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
-    - target: {fileID: 169570, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Church_Tower_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 169570, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 458598, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -38351,6 +38342,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 169570, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Church_Tower_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 169570, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
 --- !u!4 &8781027004996872521 stripped
@@ -38366,10 +38365,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
-    - target: {fileID: 139122, guid: c3fe439701846474c97d417df0a9424a, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Church_Extension_01_Lite (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 470940, guid: c3fe439701846474c97d417df0a9424a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.01
@@ -38413,6 +38408,10 @@ PrefabInstance:
     - target: {fileID: 470940, guid: c3fe439701846474c97d417df0a9424a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 139122, guid: c3fe439701846474c97d417df0a9424a, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Church_Extension_01_Lite (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3fe439701846474c97d417df0a9424a, type: 3}

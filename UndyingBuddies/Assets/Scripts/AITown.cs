@@ -5,6 +5,7 @@ using UnityEngine;
 public class AITown : MonoBehaviour
 {
     [SerializeField] private List<AIPriest> AllRelatedAIOfThisTown = new List<AIPriest>();
+    [SerializeField] private List<AIPriest> AllPriestUnit = new List<AIPriest>();
 
     bool Revenge;
 
@@ -13,9 +14,32 @@ public class AITown : MonoBehaviour
     [SerializeField] private GameObject buildingToDestroy;
     [SerializeField] private GameObject visualsToShowActivation;
 
+    [SerializeField] private AiCityBonus[] AiCityBonus;
+    [SerializeField] private AiCityBonus ActiveAiCityBonus;
+
     void Awake()
     {
         waveController.GetComponent<WaveSpawner>().enabled = false;
+
+        foreach (var priest in AllRelatedAIOfThisTown)
+        {
+            if (!priest.GetComponent<AIPriest>().AmIBuilding) {
+
+                AllPriestUnit.Add(priest);
+            }
+        }
+
+        //select random bonus for city
+        int randCityBonus = Random.Range(0, AiCityBonus.Length);
+        ActiveAiCityBonus = AiCityBonus[randCityBonus];
+
+        if (AiCityBonus != null) {
+            for (int i = 0; i < AllPriestUnit.Count; i++)
+            {
+                AllPriestUnit[i].GetComponent<AIStatController>().PhysicalResistance = ActiveAiCityBonus.PhysicalResistanceBonus;
+                AllPriestUnit[i].GetComponent<AIStatController>().MentalHealthResistance = ActiveAiCityBonus.MentalHealthResistanceBonus;
+            }
+        }
     }
 
     // Update is called once per frame

@@ -160,9 +160,15 @@ MonoBehaviour:
   - {fileID: 262101697}
   - {fileID: 521245776}
   - {fileID: 1316241334}
+  AllPriestUnit: []
   waveController: {fileID: 1237052567}
   buildingToDestroy: {fileID: 1437918195}
   visualsToShowActivation: {fileID: 1841431171}
+  AiCityBonus:
+  - {fileID: 11400000, guid: ffe6ccbb81b5d3c46b73c333096b9aa7, type: 2}
+  - {fileID: 11400000, guid: d57e6ec80880f2047a41f070695c9d25, type: 2}
+  - {fileID: 11400000, guid: 72168b732d59aec429403e09af2b75d8, type: 2}
+  ActiveAiCityBonus: {fileID: 0}
 --- !u!4 &1314581
 Transform:
   m_ObjectHideFlags: 0
@@ -192,6 +198,7 @@ Transform:
   - {fileID: 262101698}
   - {fileID: 521245777}
   - {fileID: 1316241335}
+  - {fileID: 1351674985}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1024,11 +1031,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (9)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1083,6 +1085,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (9)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -1972,6 +1979,80 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 186618487}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &187206443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 187206444}
+  - component: {fileID: 187206446}
+  - component: {fileID: 187206445}
+  m_Layer: 0
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &187206444
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187206443}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1351674985}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &187206445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187206443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300020, guid: 1e627bcafe9e32d40ad554880f36b5eb, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &187206446
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187206443}
+  m_CullTransparentMesh: 0
 --- !u!1 &192946905 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6092849278970286903, guid: c27c6c1dc3feee747bdd4645da47eafc,
@@ -3136,11 +3217,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3195,6 +3271,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -6025,6 +6106,80 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c27c6c1dc3feee747bdd4645da47eafc, type: 3}
+--- !u!1 &746942669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 746942670}
+  - component: {fileID: 746942672}
+  - component: {fileID: 746942671}
+  m_Layer: 0
+  m_Name: Image (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &746942670
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746942669}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1351674985}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1.22, y: 0}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &746942671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746942669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 8a369766715a1ac488e6d44fbf65601b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &746942672
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746942669}
+  m_CullTransparentMesh: 0
 --- !u!1001 &746966988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6032,11 +6187,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (6)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6091,6 +6241,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (6)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -6188,11 +6343,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (10)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6247,6 +6397,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (10)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -11159,11 +11314,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11218,6 +11368,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -11296,11 +11451,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (11)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11356,6 +11506,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (11)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
 --- !u!4 &790466558 stripped
@@ -11371,11 +11526,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (12)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11430,6 +11580,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (12)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -13553,11 +13708,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13612,6 +13762,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -14183,21 +14338,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: demons (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 4586289881141120432, guid: 020809d02fe6672458738479d4b763bb,
-        type: 3}
-      propertyPath: m_AngularSpeed
-      value: 999
-      objectReference: {fileID: 0}
-    - target: {fileID: 4586289881141120432, guid: 020809d02fe6672458738479d4b763bb,
-        type: 3}
-      propertyPath: m_Speed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4586289881141120432, guid: 020809d02fe6672458738479d4b763bb,
-        type: 3}
-      propertyPath: m_Acceleration
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 5965878919500656306, guid: 020809d02fe6672458738479d4b763bb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14267,6 +14407,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586289881141120432, guid: 020809d02fe6672458738479d4b763bb,
+        type: 3}
+      propertyPath: m_AngularSpeed
+      value: 999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586289881141120432, guid: 020809d02fe6672458738479d4b763bb,
+        type: 3}
+      propertyPath: m_Speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586289881141120432, guid: 020809d02fe6672458738479d4b763bb,
+        type: 3}
+      propertyPath: m_Acceleration
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4907845931842773259, guid: 020809d02fe6672458738479d4b763bb,
         type: 3}
@@ -16118,11 +16273,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 105221796}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16177,6 +16327,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -16864,11 +17019,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 105221796}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16923,6 +17073,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -17013,6 +17168,106 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1343171943}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1351674984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1351674985}
+  - component: {fileID: 1351674988}
+  - component: {fileID: 1351674987}
+  - component: {fileID: 1351674986}
+  m_Layer: 0
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1351674985
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351674984}
+  m_LocalRotation: {x: 0.38268274, y: -0, z: -0, w: 0.9238798}
+  m_LocalPosition: {x: 0, y: 0, z: -10.07}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 187206444}
+  - {fileID: 746942670}
+  m_Father: {fileID: 1314581}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 45.000004, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 3.32, y: 10.41}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1351674986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351674984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1351674987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351674984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+--- !u!223 &1351674988
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351674984}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1001 &1362592414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18534,11 +18789,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 788915607}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18594,6 +18844,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (3)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
 --- !u!4 &1492986881 stripped
@@ -18615,11 +18870,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (13)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18674,6 +18924,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (13)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -19212,11 +19467,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19271,6 +19521,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -19457,11 +19712,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 788915607}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19516,6 +19766,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -20062,11 +20317,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -20121,6 +20371,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -21415,11 +21670,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21474,6 +21724,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -21880,11 +22135,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 788915607}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21939,6 +22189,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -22245,11 +22500,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (7)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22304,6 +22554,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (7)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -22636,11 +22891,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 788915607}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22695,6 +22945,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
@@ -29744,11 +29999,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 925162551}
     m_Modifications:
-    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
-        type: 3}
-      propertyPath: m_Name
-      value: Bush (8)
-      objectReference: {fileID: 0}
     - target: {fileID: 1911693703527974638, guid: c67609324b67cd44c95ec68f01b5464e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -29803,6 +30053,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911693703527974627, guid: c67609324b67cd44c95ec68f01b5464e,
+        type: 3}
+      propertyPath: m_Name
+      value: Bush (8)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c67609324b67cd44c95ec68f01b5464e, type: 3}
