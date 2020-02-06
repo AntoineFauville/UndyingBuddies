@@ -5,6 +5,7 @@ using UnityEngine;
 public class DestroyParticleAfterSec : MonoBehaviour
 {
     [SerializeField] private float seconds;
+    [SerializeField] private GameObject trigger;
 
     [SerializeField] private ParticleSystem[] particleSystems;
 
@@ -22,6 +23,7 @@ public class DestroyParticleAfterSec : MonoBehaviour
         {
             particleSystems[i].enableEmission = false;
         }
+        trigger.SetActive(false);
 
         yield return new WaitForSeconds(2);
         DestroyImmediate(this.gameObject);

@@ -14,7 +14,7 @@ public class AIStatController : MonoBehaviour
     void Start()
     {
         _aIPriest.maxHealth = _aIPriest.healthAmount;
-        
+        _aIPriest.MentalHealthMaxAmount = _gameSettings.PriestMaxMentalHealth;
 
         if (_aIPriest.PriestType == PriestType.soldier)
         {
@@ -26,7 +26,10 @@ public class AIStatController : MonoBehaviour
             _aIPriest.healthAmount = _gameSettings.PriestBuildingHealth;
         }
 
+        UpdateLifeBars();
+
         StartCoroutine(HealSlowlyOverTime());
+        StartCoroutine(slowUpdate());
     }
 
     public void TakeDamage(AiStatus aiStatus, SpellArchetype spellArchetype)
@@ -40,7 +43,7 @@ public class AIStatController : MonoBehaviour
             case AiStatus.Fear:
                 break;
             case AiStatus.MentalHealth:
-                _aIPriest.MentalHealthAmount -= spellArchetype.DamageToEnemy - MentalHealthResistance;
+                _aIPriest.MentalHealthAmount += spellArchetype.DamageToEnemy - MentalHealthResistance;
                 break;
             case AiStatus.Lonelyness:
                 break;
@@ -55,7 +58,6 @@ public class AIStatController : MonoBehaviour
     {
         _aIPriest.UiHealth.life = _aIPriest.healthAmount;
         _aIPriest.UiHealth.maxLife = _gameSettings.PriestHealth;
-        _aIPriest.MentalHealthMaxAmount = _gameSettings.PriestMaxMentalHealth;
     }
 
     void OnTriggerStay(Collider collider)
@@ -67,41 +69,90 @@ public class AIStatController : MonoBehaviour
                 StartCoroutine(waitToStopFire());
             }
         }
-    }
 
-    void OnTriggerExit()
-    {
-        _aIPriest.amIInFire = false;
+        if (collider.tag == "tentacleZone")
+        {
+            if (_aIPriest.attackedByTentacle == false)
+            {
+                StartCoroutine(waitForTentacleEffect());
+            }
+        }
+
+        if (collider.tag == "spikeZone")
+        {
+            if (_aIPriest.attackedBySpike == false)
+            {
+                StartCoroutine(Spikes());
+            }
+        }
     }
 
     IEnumerator HealSlowlyOverTime()
     {
         yield return new WaitForSeconds(1);
 
+        if (_aIPriest.healthAmount < _aIPriest.maxHealth)
+        {
+            _aIPriest.healthAmount += 1;
+        }
+
         StartCoroutine(HealSlowlyOverTime());
     }
 
     IEnumerator waitToStopFire()
     {
-        _aIPriest.amIInFire = true;
-        yield return new WaitForSeconds(1.4f);
+        for (int i = 0; i < 4; i++)
+        {
+            if (!_aIPriest.amIInFire)
+            {
+                TakeDamage(AiStatus.Physical, _gameSettings.fireSpell);
+            }
+            _aIPriest.amIInFire = true;
+            yield return new WaitForSeconds(0.5f);
+        }
+
+
+
         _aIPriest.amIInFire = false;
+    }
+
+    IEnumerator Spikes()
+    {
+        if (!_aIPriest.attackedBySpike)
+        {
+            TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell);
+        }
+
+        _aIPriest.attackedBySpike = true;
+
+        yield return new WaitForSeconds(1);
+
+        _aIPriest.attackedBySpike = false;
+    }
+
+    IEnumerator waitForTentacleEffect()
+    {
+        if (!_aIPriest.attackedByTentacle) //otherwise it checks infinitly
+        {
+            TakeDamage(AiStatus.MentalHealth, _gameSettings.tentacleSpell);
+        }
+
+        _aIPriest.attackedByTentacle = true;
+
+        yield return new WaitForSeconds(0.2f);
+
+        _aIPriest.attackedByTentacle = false;
     }
 
     IEnumerator slowUpdate()
     {
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.3f);
 
         if (_aIPriest.healthAmount <= 0 || _aIPriest.MentalHealthAmount == _aIPriest.MentalHealthMaxAmount)
         {
             _aIPriest.Die();
         }
 
-        if (_aIPriest.amIInFire)
-        {
-            TakeDamage(AiStatus.Physical, _gameSettings.fireSpell);
-        }
-        
         StartCoroutine(slowUpdate());
     }
 }

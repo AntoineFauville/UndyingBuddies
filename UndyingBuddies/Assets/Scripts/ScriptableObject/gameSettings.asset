@@ -26,10 +26,14 @@ MonoBehaviour:
   DemonPrefab: {fileID: 5965878919500901836, guid: 020809d02fe6672458738479d4b763bb,
     type: 3}
   damageDemons: 5
-  PriestHealth: 10
+  PriestHealth: 20
   PriestBuildingHealth: 100
   PriestAttackAmount: 1
+  PriestMaxMentalHealth: 100
   fireSpell: {fileID: 11400000, guid: 4e70b12a3bdb36c48aff27c10c76daa4, type: 2}
+  eyeSpell: {fileID: 11400000, guid: cf4f410c25723b14dbdd4aafc60f11fa, type: 2}
+  spikeSpell: {fileID: 11400000, guid: 7efa2cb3bcd4083469c10a9e05cf67a2, type: 2}
+  tentacleSpell: {fileID: 11400000, guid: c8bd00adabb52c34d842a3754ba7ba95, type: 2}
   woodSmallContainer: 20
   woodMediumContainer: 50
   foodSmallContainer: 30
@@ -41,3 +45,4 @@ MonoBehaviour:
     type: 3}
   AIFormationPrefab: {fileID: 4706081284599870127, guid: e7a5a3bef5413034fb8c7249da9389f0,
     type: 3}
+  CostSpell: 01000000010000000100000001000000

@@ -27,6 +27,9 @@ public class GameSettings : ScriptableObject
     public int PriestMaxMentalHealth = 100;
 
     public SpellArchetype fireSpell;
+    public SpellArchetype eyeSpell;
+    public SpellArchetype spikeSpell;
+    public SpellArchetype tentacleSpell;
 
     public int woodSmallContainer = 20;
     public int woodMediumContainer = 50;
@@ -41,4 +44,6 @@ public class GameSettings : ScriptableObject
     
     public GameObject PriestPrefab;
     public GameObject AIFormationPrefab;
+
+    public int[] CostSpell;
 }

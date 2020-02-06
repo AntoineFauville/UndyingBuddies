@@ -36,6 +36,9 @@ public class AIPriest : MonoBehaviour
     public NavMeshAgent NavMeshAgent;
 
     public bool amIInFire;
+    public bool attackedBySpike;
+    public bool attackedByEye;
+    public bool attackedByTentacle;
 
     public UiHealth UiHealth;
 
