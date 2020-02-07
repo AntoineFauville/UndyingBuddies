@@ -55,7 +55,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0
+    scalar: 0.05
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -337,8 +337,8 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1.5
-      minScalar: 1.2
+      scalar: 2.3
+      minScalar: 1.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5365,7 +5365,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 30
+    maxNumParticles: 50
     size3D: 0
     rotation3D: 1
     gravityModifier:
