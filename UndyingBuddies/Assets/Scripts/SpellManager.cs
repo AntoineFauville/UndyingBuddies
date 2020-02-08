@@ -24,6 +24,7 @@ public class SpellManager : MonoBehaviour
     public int indexOfCostSpells;
 
     [SerializeField] private GameSettings _gameSettings;
+    [SerializeField] private Text SpellCost;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +36,8 @@ public class SpellManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        SpellCost.text = _gameSettings.CostSpell[indexOfCostSpells].ToString();
+
         switch (unlockedFireSpell)
         {
             case 0:
