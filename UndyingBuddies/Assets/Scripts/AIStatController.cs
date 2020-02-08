@@ -52,6 +52,11 @@ public class AIStatController : MonoBehaviour
         }
 
         UpdateLifeBars();
+
+        if (_aIPriest.healthAmount <= 0 || _aIPriest.MentalHealthAmount >= _aIPriest.MentalHealthMaxAmount)
+        {
+            _aIPriest.Die();
+        }
     }
 
     void UpdateLifeBars()
@@ -110,9 +115,6 @@ public class AIStatController : MonoBehaviour
             _aIPriest.amIInFire = true;
             yield return new WaitForSeconds(0.5f);
         }
-
-
-
         _aIPriest.amIInFire = false;
     }
 
@@ -148,10 +150,7 @@ public class AIStatController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-        if (_aIPriest.healthAmount <= 0 || _aIPriest.MentalHealthAmount == _aIPriest.MentalHealthMaxAmount)
-        {
-            _aIPriest.Die();
-        }
+        UpdateLifeBars();
 
         StartCoroutine(slowUpdate());
     }

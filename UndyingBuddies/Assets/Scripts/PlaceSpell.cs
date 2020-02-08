@@ -133,7 +133,10 @@ public class PlaceSpell : MonoBehaviour
     {
         Spell newPrefab = Instantiate(activeSpell.spellPrefab, hit, new Quaternion());
 
-        GameObject stainsBlack = Instantiate(activeSpell.spellLeftAfterSpawned, hit, new Quaternion());
+        if (activeSpell.spellLeftAfterSpawned != null)
+        {
+            GameObject stainsBlack = Instantiate(activeSpell.spellLeftAfterSpawned, hit, new Quaternion());
+        }
 
         return newPrefab;
     }
