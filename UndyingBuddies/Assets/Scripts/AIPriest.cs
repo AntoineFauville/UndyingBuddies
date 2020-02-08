@@ -218,7 +218,7 @@ public class AIPriest : MonoBehaviour
         }
     }
 
-    public void Die()
+    public void Die(int diedByWhat)
     {
         for (int i = 0; i < GameObject.FindGameObjectsWithTag("Floor").Length; i++)
         {
@@ -233,7 +233,7 @@ public class AIPriest : MonoBehaviour
 
         aiManager.Priest.Remove(this.gameObject);
 
-        StartCoroutine(waitToDie());
+        StartCoroutine(waitToDie(diedByWhat));
     }
 
     public void CheckClosestDemonToAttack()
@@ -281,9 +281,19 @@ public class AIPriest : MonoBehaviour
         Target = bestDemon;
     } // check if there is an enemy to attack close up
     
-    IEnumerator waitToDie()
+    IEnumerator waitToDie(int diedByWhat)
     {
         yield return new WaitForSeconds(0.05f);
+
+        switch (diedByWhat)
+        {
+            case 0: // by mental health
+
+                break;
+            case 1: // by physical damage
+
+                break;
+        }
 
         DestroyImmediate(this.gameObject);
     }
