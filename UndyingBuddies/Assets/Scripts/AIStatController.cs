@@ -13,17 +13,18 @@ public class AIStatController : MonoBehaviour
     
     void Start()
     {
-        _aIPriest.maxHealth = _aIPriest.healthAmount;
         _aIPriest.MentalHealthMaxAmount = _gameSettings.PriestMaxMentalHealth;
 
         if (_aIPriest.PriestType == PriestType.soldier)
         {
             _aIPriest.healthAmount = _gameSettings.PriestHealth;
+            _aIPriest.maxHealth = _gameSettings.PriestHealth;
             _aIPriest.MentalHealthAmount = 0;
         }
         else if (_aIPriest.PriestType == PriestType.building)
         {
             _aIPriest.healthAmount = _gameSettings.PriestBuildingHealth;
+            _aIPriest.maxHealth = _gameSettings.PriestBuildingHealth;
         }
 
         UpdateLifeBars();
@@ -66,6 +67,9 @@ public class AIStatController : MonoBehaviour
     {
         _aIPriest.UiHealth.life = _aIPriest.healthAmount;
         _aIPriest.UiHealth.maxLife = _gameSettings.PriestHealth;
+
+        _aIPriest.UiHealth.MentalHealth = _aIPriest.MentalHealthAmount;
+        _aIPriest.UiHealth.maxMentalHealth = _gameSettings.PriestMaxMentalHealth;
     }
 
     void OnTriggerStay(Collider collider)

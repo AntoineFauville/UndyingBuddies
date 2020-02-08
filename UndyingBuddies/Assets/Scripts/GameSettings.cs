@@ -22,7 +22,7 @@ public class GameSettings : ScriptableObject
     public int damageDemons = 5;
 
     public int PriestHealth = 100;
-    public int PriestBuildingHealth = 500;
+    public int PriestBuildingHealth = 100;
     public int PriestAttackAmount = 10;
     public int PriestMaxMentalHealth = 100;
 

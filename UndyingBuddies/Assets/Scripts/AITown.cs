@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AITown : MonoBehaviour
 {
@@ -17,8 +18,15 @@ public class AITown : MonoBehaviour
     [SerializeField] private AiCityBonus[] AiCityBonus;
     [SerializeField] private AiCityBonus ActiveAiCityBonus;
 
+    [SerializeField] private Image CityResistanceMentalImage, CityResistancePhysicalImage;
+
+    [SerializeField] private GameObject[] BuildingToWalkTo;
+
     void Awake()
     {
+        CityResistanceMentalImage.enabled = false;
+        CityResistancePhysicalImage.enabled = false;
+
         waveController.GetComponent<WaveSpawner>().enabled = false;
 
         foreach (var priest in AllRelatedAIOfThisTown)
@@ -38,8 +46,19 @@ public class AITown : MonoBehaviour
             {
                 AllPriestUnit[i].GetComponent<AIStatController>().PhysicalResistance = ActiveAiCityBonus.PhysicalResistanceBonus;
                 AllPriestUnit[i].GetComponent<AIStatController>().MentalHealthResistance = ActiveAiCityBonus.MentalHealthResistanceBonus;
+
+                if (AiCityBonus[randCityBonus].MentalHealthResistanceBonus > 0)
+                {
+                    CityResistanceMentalImage.enabled = true;
+                }
+                if (AiCityBonus[randCityBonus].PhysicalResistanceBonus > 0)
+                {
+                    CityResistancePhysicalImage.enabled = true;
+                }
             }
         }
+
+        StartCoroutine(animateAIInCity());
     }
 
     // Update is called once per frame
@@ -55,7 +74,7 @@ public class AITown : MonoBehaviour
 
         for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
         {
-            if (AllRelatedAIOfThisTown[i].healthAmount < AllRelatedAIOfThisTown[i].maxHealth)
+            if (AllRelatedAIOfThisTown[i].healthAmount < AllRelatedAIOfThisTown[i].maxHealth || AllRelatedAIOfThisTown[i].MentalHealthAmount > 0)
             {
                 Revenge = true;
             }
@@ -66,6 +85,17 @@ public class AITown : MonoBehaviour
             for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
             {
                 AllRelatedAIOfThisTown[i].PriestAttackerType = PriestAttackerType.rusher;
+
+                AllRelatedAIOfThisTown[i].isAttacked = true;
+
+                if (AllPriestUnit[i].GetComponent<AIStatController>().PhysicalResistance > 0)
+                {
+                    AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.physicalResistance.enabled = true;
+                }
+                if (AllPriestUnit[i].GetComponent<AIStatController>().MentalHealthResistance > 0)
+                {
+                    AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.mentalResistance.enabled = true;
+                }
             }
 
             if (buildingToDestroy != null)
@@ -79,11 +109,24 @@ public class AITown : MonoBehaviour
             else
             {
                 waveController.GetComponent<WaveSpawner>().enabled = false;
+                DestroyImmediate(waveController);
             }
         }
         else
         {
             waveController.GetComponent<WaveSpawner>().enabled = false;
         }
+    }
+
+    IEnumerator animateAIInCity()
+    {
+        for (int i = 0; i < AllPriestUnit.Count; i++)
+        {
+            AllPriestUnit[i].buildingToWalkTo = BuildingToWalkTo[Random.Range(0, BuildingToWalkTo.Length)];
+        }
+
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(animateAIInCity());
     }
 }

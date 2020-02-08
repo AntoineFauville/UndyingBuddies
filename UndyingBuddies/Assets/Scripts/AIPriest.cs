@@ -49,6 +49,8 @@ public class AIPriest : MonoBehaviour
     public Animator animatorPriest;
 
     public bool Stun;
+    public bool isAttacked;
+    public GameObject buildingToWalkTo;
 
     void Start()
     {
@@ -76,16 +78,61 @@ public class AIPriest : MonoBehaviour
                 StartCoroutine(UnStun());
             }
         }
-        else {
-            switch (PriestAttackerType)
+        else
+        {
+            if (isAttacked)
             {
-                case PriestAttackerType.defender:
-                    if (!AmIBuilding && CanAttackBack)
-                    {
-                        CheckClosestDemonToAttack();
-
-                        if (Target != null)
+                switch (PriestAttackerType)
+                {
+                    case PriestAttackerType.defender:
+                        if (!AmIBuilding && CanAttackBack)
                         {
+                            CheckClosestDemonToAttack();
+
+                            if (Target != null)
+                            {
+                                if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
+                                {
+                                    NavMeshAgent.isStopped = true;
+
+                                    animatorPriest.Play("Attack");
+
+                                    CanAttackAgain = true;
+
+                                    if (Target.GetComponent<AIDemons>() != null)
+                                    {
+                                        Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
+                                    }
+                                    else if (Target.GetComponent<Building>() != null)
+                                    {
+                                        Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
+                                    }
+
+                                    StartCoroutine(waitToReAttack());
+                                }
+                                else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)
+                                {
+                                    NavMeshAgent.isStopped = false;
+
+                                    NavMeshAgent.destination = Target.transform.position;
+
+                                    animatorPriest.Play("Walk");
+                                }
+                                else
+                                {
+                                    animatorPriest.Play("Idle");
+
+                                    NavMeshAgent.isStopped = true;
+                                }
+                            }
+                        }
+                        break;
+
+                    case PriestAttackerType.rusher:
+                        if (!AmIBuilding && CanAttackBack)
+                        {
+                            CheckClosestDemonToAttack();
+
                             if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
                             {
                                 NavMeshAgent.isStopped = true;
@@ -105,91 +152,60 @@ public class AIPriest : MonoBehaviour
 
                                 StartCoroutine(waitToReAttack());
                             }
-                            else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)
-                            {
-                                NavMeshAgent.isStopped = false;
-
-                                NavMeshAgent.destination = Target.transform.position;
-
-                                animatorPriest.Play("Walk");
-                            }
                             else
                             {
-                                animatorPriest.Play("Idle");
-
-                                NavMeshAgent.isStopped = true;
-                            }
-                        }
-                    }
-                    break;
-
-                case PriestAttackerType.rusher:
-                    if (!AmIBuilding && CanAttackBack)
-                    {
-                        CheckClosestDemonToAttack();
-
-                        if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
-                        {
-                            NavMeshAgent.isStopped = true;
-
-                            animatorPriest.Play("Attack");
-
-                            CanAttackAgain = true;
-
-                            if (Target.GetComponent<AIDemons>() != null)
-                            {
-                                Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
-                            }
-                            else if (Target.GetComponent<Building>() != null)
-                            {
-                                Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
-                            }
-
-                            StartCoroutine(waitToReAttack());
-                        }
-                        else
-                        {
-                            NavMeshAgent.isStopped = false;
-
-                            NavMeshAgent.destination = Target.transform.position;
-
-                            animatorPriest.Play("Walk");
-                        }
-                    }
-                    break;
-                case PriestAttackerType.followFormation:
-                    if (!AmIBuilding && CanAttackBack)
-                    {
-                        CheckClosestDemonToAttack();
-
-                        if (Target != null)
-                        {
-                            if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)//if i'm close to an enemy i attack
-                            {
-                                NavMeshAgent.isStopped = true;
-
-                                animatorPriest.Play("Attack");
-
-                                CanAttackAgain = true;
-
-                                if (Target.GetComponent<AIDemons>() != null)
-                                {
-                                    Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
-                                }
-                                else if (Target.GetComponent<Building>() != null)
-                                {
-                                    Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
-                                }
-
-                                StartCoroutine(waitToReAttack());
-                            }
-                            else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)//if i've in my detection range an enemy target becomes the enemy
-                            {
                                 NavMeshAgent.isStopped = false;
 
                                 NavMeshAgent.destination = Target.transform.position;
 
                                 animatorPriest.Play("Walk");
+                            }
+                        }
+                        break;
+                    case PriestAttackerType.followFormation:
+                        if (!AmIBuilding && CanAttackBack)
+                        {
+                            CheckClosestDemonToAttack();
+
+                            if (Target != null)
+                            {
+                                if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)//if i'm close to an enemy i attack
+                                {
+                                    NavMeshAgent.isStopped = true;
+
+                                    animatorPriest.Play("Attack");
+
+                                    CanAttackAgain = true;
+
+                                    if (Target.GetComponent<AIDemons>() != null)
+                                    {
+                                        Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
+                                    }
+                                    else if (Target.GetComponent<Building>() != null)
+                                    {
+                                        Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
+                                    }
+
+                                    StartCoroutine(waitToReAttack());
+                                }
+                                else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)//if i've in my detection range an enemy target becomes the enemy
+                                {
+                                    NavMeshAgent.isStopped = false;
+
+                                    NavMeshAgent.destination = Target.transform.position;
+
+                                    animatorPriest.Play("Walk");
+                                }
+                                else //if i'm away from that tell me what i need to follow
+                                {
+                                    Target = aiFormationFollowPoint;
+
+                                    NavMeshAgent.isStopped = false;
+
+                                    NavMeshAgent.destination = aiFormationFollowPoint.transform.position;
+
+                                    animatorPriest.Play("Walk");
+                                }
                             }
                             else //if i'm away from that tell me what i need to follow
                             {
@@ -202,18 +218,28 @@ public class AIPriest : MonoBehaviour
                                 animatorPriest.Play("Walk");
                             }
                         }
-                        else //if i'm away from that tell me what i need to follow
-                        {
-                            Target = aiFormationFollowPoint;
+                        break;
+                }
+            }
+            else
+            {
+                if (!AmIBuilding && CanAttackBack)
+                {
+                    if (Vector3.Distance(this.transform.position, buildingToWalkTo.transform.position) <= _gameSettings.demonRangeOfDetection)
+                    {
+                        NavMeshAgent.isStopped = false;
 
-                            NavMeshAgent.isStopped = false;
+                        NavMeshAgent.destination = buildingToWalkTo.transform.position;
 
-                            NavMeshAgent.destination = aiFormationFollowPoint.transform.position;
-
-                            animatorPriest.Play("Walk");
-                        }
+                        animatorPriest.Play("Walk");
                     }
-                    break;
+                    else
+                    {
+                        animatorPriest.Play("Idle");
+
+                        NavMeshAgent.isStopped = true;
+                    }
+                }
             }
         }
     }
