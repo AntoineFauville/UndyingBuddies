@@ -59,7 +59,6 @@ GameObject:
   - component: {fileID: 2891304650232494574}
   - component: {fileID: 4215837112866168764}
   - component: {fileID: 1673318339054423851}
-  - component: {fileID: 5680428822453198087}
   - component: {fileID: 6046206322439569411}
   m_Layer: 0
   m_Name: Tree Medium
@@ -90,7 +89,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3476620542839902518}
-  m_Mesh: {fileID: 4300000, guid: 7b3c1ad6e1f4ba8408e7c277e5feac4a, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 136942ee48118b0468572312efd0133d, type: 3}
 --- !u!23 &3476620542841896118
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -108,7 +107,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: eb83b2b658dfc194e8b26c4421e3c748, type: 2}
+  - {fileID: 2100000, guid: 721aadf0358b16248bca382321fdf539, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -186,25 +185,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 2
---- !u!114 &5680428822453198087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3476620542839902518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a56f8881ac842d468b10b754e53d59d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myResourceType: 0
-  resourceSizeType: 1
-  gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
-  haveIGotGrabbed: 0
-  instantiateOnce: 0
-  spawnPoint: {fileID: 0}
-  BuildingWhereImPlaced: {fileID: 0}
 --- !u!136 &6046206322439569411
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -216,6 +196,6 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.48
-  m_Height: 6.58
+  m_Height: 2.77
   m_Direction: 1
-  m_Center: {x: -0.00000008940696, y: 3.58, z: -0.00000011920928}
+  m_Center: {x: -0.00000008940696, y: 1.49, z: -0.00000011920928}

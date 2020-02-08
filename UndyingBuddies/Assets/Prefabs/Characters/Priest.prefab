@@ -2156,10 +2156,14 @@ MonoBehaviour:
   Target: {fileID: 0}
   NavMeshAgent: {fileID: 4170596306738344779}
   amIInFire: 0
+  attackedBySpike: 0
+  attackedByEye: 0
+  attackedByTentacle: 0
   UiHealth: {fileID: 2464233365802528211}
   PriestAttackerType: 0
   aiFormationFollowPoint: {fileID: 0}
   animatorPriest: {fileID: 6092849278979877439}
+  Stun: 0
 --- !u!114 &2683776210274104171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2204,8 +2208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08209a91dd79e0e47abb6eda3534cf5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PhysicalResistance: 2
-  MentalHealthResistance: 3
+  PhysicalResistance: 0
+  MentalHealthResistance: 0
   _aIPriest: {fileID: 4780855472861588951}
   _gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
 --- !u!1 &6092849278970287187

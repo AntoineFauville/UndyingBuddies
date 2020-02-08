@@ -16,7 +16,9 @@ public class SpawnDemons : MonoBehaviour
             resourceManager.ManageCostOfPurchaseDemon();
 
             GameObject demon = Instantiate(gameSettings.DemonPrefab, GameObject.Find("CityHall").GetComponent<Building>().SpawningPoint_01.transform.position, new Quaternion());
-            
+
+            demon.transform.SetParent(GameObject.Find("CityHall").transform);
+
             demon.GetComponent<AIDemons>().Setup(demon.name, JobType.IdleVillager, gameSettings.demonLife, gameSettings.demonRangeOfDetection, gameSettings.demonRangeOfCloseBy);
 
             AiManager.Demons.Add(demon);

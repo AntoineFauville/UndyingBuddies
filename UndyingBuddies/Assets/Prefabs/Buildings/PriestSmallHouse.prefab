@@ -37722,10 +37722,14 @@ MonoBehaviour:
   Target: {fileID: 0}
   NavMeshAgent: {fileID: 0}
   amIInFire: 0
+  attackedBySpike: 0
+  attackedByEye: 0
+  attackedByTentacle: 0
   UiHealth: {fileID: 5964331277577106466}
   PriestAttackerType: 0
   aiFormationFollowPoint: {fileID: 0}
   animatorPriest: {fileID: 0}
+  Stun: 0
 --- !u!114 &8803593055677472342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37762,6 +37766,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
+    - target: {fileID: 111888, guid: 5d9e223d566966840a47e484271f8941, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Castle_Wood_Battlement_04
+      objectReference: {fileID: 0}
     - target: {fileID: 479606, guid: 5d9e223d566966840a47e484271f8941, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.92
@@ -37806,10 +37814,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 111888, guid: 5d9e223d566966840a47e484271f8941, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Castle_Wood_Battlement_04
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d9e223d566966840a47e484271f8941, type: 3}
 --- !u!4 &351079865763593238 stripped
@@ -37825,6 +37829,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
+    - target: {fileID: 174332, guid: a72279e3b12169c46bafba06303acf4b, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Church_Room_01
+      objectReference: {fileID: 0}
     - target: {fileID: 495830, guid: a72279e3b12169c46bafba06303acf4b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -37869,10 +37877,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 174332, guid: a72279e3b12169c46bafba06303acf4b, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Church_Room_01
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a72279e3b12169c46bafba06303acf4b, type: 3}
 --- !u!4 &909759123776819207 stripped
@@ -37888,6 +37892,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
+    - target: {fileID: 198414, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Church_TowerBase_01_Lite
+      objectReference: {fileID: 0}
+    - target: {fileID: 198414, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 452522, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -37931,14 +37943,6 @@ PrefabInstance:
     - target: {fileID: 452522, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 198414, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Church_TowerBase_01_Lite
-      objectReference: {fileID: 0}
-    - target: {fileID: 198414, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9459e0f93798ac2499a434a3359611df, type: 3}
@@ -38148,6 +38152,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
+    - target: {fileID: 198514, guid: 5d4ced0355afd34439cce06d7e7012b5, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_House_Door_02
+      objectReference: {fileID: 0}
     - target: {fileID: 478972, guid: 5d4ced0355afd34439cce06d7e7012b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -38192,10 +38200,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198514, guid: 5d4ced0355afd34439cce06d7e7012b5, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_House_Door_02
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d4ced0355afd34439cce06d7e7012b5, type: 3}
 --- !u!4 &4969136927462830386 stripped
@@ -38211,15 +38215,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
+    - target: {fileID: 4741101803749598165, guid: 668d1833ec2d45a47ab209a8e7100367,
+        type: 3}
+      propertyPath: m_Name
+      value: UIHealth
+      objectReference: {fileID: 0}
     - target: {fileID: 9113972547635873580, guid: 668d1833ec2d45a47ab209a8e7100367,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.76
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 9113972547635873580, guid: 668d1833ec2d45a47ab209a8e7100367,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.46
+      value: 8.99
       objectReference: {fileID: 0}
     - target: {fileID: 9113972547635873580, guid: 668d1833ec2d45a47ab209a8e7100367,
         type: 3}
@@ -38266,11 +38275,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4741101803749598165, guid: 668d1833ec2d45a47ab209a8e7100367,
-        type: 3}
-      propertyPath: m_Name
-      value: UIHealth
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 668d1833ec2d45a47ab209a8e7100367, type: 3}
 --- !u!114 &5964331277577106466 stripped
@@ -38298,6 +38302,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
+    - target: {fileID: 169570, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Church_Tower_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 169570, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 458598, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -38342,14 +38354,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 169570, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Church_Tower_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 169570, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 594d2b648448ef1458c5263b32ba1e1f, type: 3}
 --- !u!4 &8781027004996872521 stripped
@@ -38365,6 +38369,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1115407519874888368}
     m_Modifications:
+    - target: {fileID: 139122, guid: c3fe439701846474c97d417df0a9424a, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Church_Extension_01_Lite (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 470940, guid: c3fe439701846474c97d417df0a9424a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.01
@@ -38408,10 +38416,6 @@ PrefabInstance:
     - target: {fileID: 470940, guid: c3fe439701846474c97d417df0a9424a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 139122, guid: c3fe439701846474c97d417df0a9424a, type: 3}
-      propertyPath: m_Name
-      value: SM_Bld_Church_Extension_01_Lite (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3fe439701846474c97d417df0a9424a, type: 3}
