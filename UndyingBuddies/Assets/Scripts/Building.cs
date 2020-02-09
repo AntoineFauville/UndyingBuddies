@@ -83,6 +83,8 @@ public class Building : MonoBehaviour
             StockPileVisuals[i].SetActive(false);
         }
 
+        
+
         UpdateStockVisu();
 
         StartCoroutine(feedToNotLooseGame());

@@ -21,7 +21,7 @@ public class SpellManager : MonoBehaviour
     public GameObject eyeButton;
     public GameObject tentacleButton;
 
-    public int indexOfCostSpells;
+    public int indexOfCostSpells = 0;
 
     [SerializeField] private GameSettings _gameSettings;
     [SerializeField] private Text SpellCost;
@@ -36,7 +36,10 @@ public class SpellManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SpellCost.text = _gameSettings.CostSpell[indexOfCostSpells].ToString();
+        if (indexOfCostSpells < _gameSettings.CostSpell.Length)
+        {
+            SpellCost.text = _gameSettings.CostSpell[indexOfCostSpells].ToString();
+        }
 
         switch (unlockedFireSpell)
         {

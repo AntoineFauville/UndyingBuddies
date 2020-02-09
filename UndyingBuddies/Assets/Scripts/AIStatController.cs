@@ -21,11 +21,6 @@ public class AIStatController : MonoBehaviour
             _aIPriest.maxHealth = _gameSettings.PriestHealth;
             _aIPriest.MentalHealthAmount = 0;
         }
-        else if (_aIPriest.PriestType == PriestType.building)
-        {
-            _aIPriest.healthAmount = _gameSettings.PriestBuildingHealth;
-            _aIPriest.maxHealth = _gameSettings.PriestBuildingHealth;
-        }
 
         UpdateLifeBars();
 
@@ -65,36 +60,42 @@ public class AIStatController : MonoBehaviour
 
     void UpdateLifeBars()
     {
-        _aIPriest.UiHealth.life = _aIPriest.healthAmount;
-        _aIPriest.UiHealth.maxLife = _gameSettings.PriestHealth;
+        if (_aIPriest.UiHealth != null)
+        {
+            _aIPriest.UiHealth.life = _aIPriest.healthAmount;
+            _aIPriest.UiHealth.maxLife = _gameSettings.PriestHealth;
 
-        _aIPriest.UiHealth.MentalHealth = _aIPriest.MentalHealthAmount;
-        _aIPriest.UiHealth.maxMentalHealth = _gameSettings.PriestMaxMentalHealth;
+            _aIPriest.UiHealth.MentalHealth = _aIPriest.MentalHealthAmount;
+            _aIPriest.UiHealth.maxMentalHealth = _gameSettings.PriestMaxMentalHealth;
+        }
     }
 
     void OnTriggerStay(Collider collider)
     {
-        if (collider.tag == "FireZone")
+        if (_aIPriest.PriestType == PriestType.soldier)
         {
-            if (_aIPriest.amIInFire == false)
+            if (collider.tag == "FireZone")
             {
-                StartCoroutine(waitToStopFire());
+                if (_aIPriest.amIInFire == false)
+                {
+                    StartCoroutine(waitToStopFire());
+                }
             }
-        }
 
-        if (collider.tag == "tentacleZone")
-        {
-            if (_aIPriest.attackedByTentacle == false)
+            if (collider.tag == "tentacleZone")
             {
-                StartCoroutine(waitForTentacleEffect());
+                if (_aIPriest.attackedByTentacle == false)
+                {
+                    StartCoroutine(waitForTentacleEffect());
+                }
             }
-        }
 
-        if (collider.tag == "spikeZone")
-        {
-            if (_aIPriest.attackedBySpike == false)
+            if (collider.tag == "spikeZone")
             {
-                StartCoroutine(Spikes());
+                if (_aIPriest.attackedBySpike == false)
+                {
+                    StartCoroutine(Spikes());
+                }
             }
         }
     }

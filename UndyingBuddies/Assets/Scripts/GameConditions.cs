@@ -7,11 +7,12 @@ public class GameConditions : MonoBehaviour
 {
     [SerializeField] private GameObject cityHall;
 
-    [SerializeField] private GameObject DestroyToWin_01;
-    [SerializeField] private GameObject DestroyToWin_02;
+    [SerializeField] private AITown[] TownsToDestroy;
 
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject loosePanel;
+
+    [SerializeField] private int townLeft = 0;
 
     void Start()
     {
@@ -24,7 +25,16 @@ public class GameConditions : MonoBehaviour
     {
         if (cityHall != null)
         {
-            if (DestroyToWin_01 == null && DestroyToWin_02 == null)
+            int townLeft = 0;
+            for (int i = 0; i < TownsToDestroy.Length; i++)
+            {
+                if (TownsToDestroy[i].isTheVillageDestroyed == false)
+                {
+                    townLeft += 1;
+                }
+            }
+
+            if (townLeft <= 0)
             {
                 Win();
             }

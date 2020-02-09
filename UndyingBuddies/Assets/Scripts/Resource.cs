@@ -38,13 +38,19 @@ public class Resource : MonoBehaviour
             }
         }
 
-        uiHealth.life = amountOfResourceAvailable;
-        uiHealth.maxLife = amountOfResourceAvailable;
+        if (uiHealth != null)
+        {
+            uiHealth.life = amountOfResourceAvailable;
+            uiHealth.maxLife = amountOfResourceAvailable;
+        }
     }
 
     void Update()
     {
-        uiHealth.life = amountOfResourceAvailable;
+        if (uiHealth != null)
+        {
+            uiHealth.life = amountOfResourceAvailable;
+        }
 
         if (amountOfResourceAvailable <= 0)
         {

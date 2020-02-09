@@ -38,8 +38,12 @@ public class Sacrifice : MonoBehaviour
 
                 int rand;
                 rand = Random.Range(0, _aiManager.WoodStockageBuilding.Count);
-                _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().currentStockage += 1;
+                _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().currentStockage += 2;
                 _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().UpdateStockVisu();
+            }
+            else if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.energy)
+            {
+                resourceManager.amountOfEnergy += 5;
             }
         }
 
@@ -86,6 +90,10 @@ public class Sacrifice : MonoBehaviour
                 resourceManager.amountOfEnergy += 1;
             }
             else if (resourceType == ResourceType.wood)
+            {
+                resourceManager.amountOfEnergy += 1;
+            }
+            else if (resourceType == ResourceType.energy)
             {
                 resourceManager.amountOfEnergy += 1;
             }

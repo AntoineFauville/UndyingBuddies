@@ -9,9 +9,7 @@ public class AITown : MonoBehaviour
     [SerializeField] private List<AIPriest> AllPriestUnit = new List<AIPriest>();
 
     bool Revenge;
-
-    [SerializeField] private GameObject waveController;
-
+    
     [SerializeField] private GameObject buildingToDestroy;
     [SerializeField] private GameObject visualsToShowActivation;
 
@@ -22,12 +20,14 @@ public class AITown : MonoBehaviour
 
     [SerializeField] private GameObject[] BuildingToWalkTo;
 
+    public bool isTheVillageDestroyed;
+
+    [SerializeField] private AiBuilding[] buildingToTransformInEnergy;
+
     void Awake()
     {
         CityResistanceMentalImage.enabled = false;
         CityResistancePhysicalImage.enabled = false;
-
-        waveController.GetComponent<WaveSpawner>().enabled = false;
 
         foreach (var priest in AllRelatedAIOfThisTown)
         {
@@ -72,49 +72,64 @@ public class AITown : MonoBehaviour
             }
         }
 
+        for (int i = 0; i < AllPriestUnit.Count; i++)
+        {
+            if (AllPriestUnit[i] == null)
+            {
+                AllPriestUnit.Remove(AllPriestUnit[i]);
+            }
+        }
+
+        if (AllPriestUnit.Count <= 0)
+        {
+            isTheVillageDestroyed = true;
+        }
+        else
+        {
+            isTheVillageDestroyed = false;
+
+            if (Revenge)
+            {
+                for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
+                {
+                    AllRelatedAIOfThisTown[i].PriestAttackerType = PriestAttackerType.rusher;
+
+                    AllRelatedAIOfThisTown[i].isAttacked = true;
+
+                    if (AllPriestUnit[i].GetComponent<AIStatController>().PhysicalResistance > 0)
+                    {
+                        AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.physicalResistance.enabled = true;
+                    }
+                    if (AllPriestUnit[i].GetComponent<AIStatController>().MentalHealthResistance > 0)
+                    {
+                        AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.mentalResistance.enabled = true;
+                    }
+                }
+
+                if (buildingToDestroy != null)
+                {
+                    if (visualsToShowActivation != null)
+                    {
+                        visualsToShowActivation.SetActive(true);
+                    }
+                }
+            }
+        }
+
+        if (isTheVillageDestroyed)
+        {
+            for (int i = 0; i < buildingToTransformInEnergy.Length; i++)
+            {
+                buildingToTransformInEnergy[i].Destroy();
+            }
+        }
+
         for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
         {
             if (AllRelatedAIOfThisTown[i].healthAmount < AllRelatedAIOfThisTown[i].maxHealth || AllRelatedAIOfThisTown[i].MentalHealthAmount > 0)
             {
                 Revenge = true;
             }
-        }
-
-        if (Revenge)
-        {
-            for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
-            {
-                AllRelatedAIOfThisTown[i].PriestAttackerType = PriestAttackerType.rusher;
-
-                AllRelatedAIOfThisTown[i].isAttacked = true;
-
-                if (AllPriestUnit[i].GetComponent<AIStatController>().PhysicalResistance > 0)
-                {
-                    AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.physicalResistance.enabled = true;
-                }
-                if (AllPriestUnit[i].GetComponent<AIStatController>().MentalHealthResistance > 0)
-                {
-                    AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.mentalResistance.enabled = true;
-                }
-            }
-
-            if (buildingToDestroy != null)
-            {
-                if (visualsToShowActivation != null)
-                {
-                    visualsToShowActivation.SetActive(true);
-                }
-                waveController.GetComponent<WaveSpawner>().enabled = true;
-            }
-            else
-            {
-                waveController.GetComponent<WaveSpawner>().enabled = false;
-                DestroyImmediate(waveController);
-            }
-        }
-        else
-        {
-            waveController.GetComponent<WaveSpawner>().enabled = false;
         }
     }
 

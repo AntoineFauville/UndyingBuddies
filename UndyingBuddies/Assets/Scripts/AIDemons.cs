@@ -438,6 +438,14 @@ public class AIDemons : MonoBehaviour
         else //wood
             listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding;
 
+        for (int i = 0; i < listToCheck.Count; i++)
+        {
+            if (listToCheck[i].GetComponent<Building>().currentStockage >= listToCheck[i].GetComponent<Building>().maxStockage)
+            {
+                listToCheck.Remove(listToCheck[i]);
+            }
+        }
+
         foreach (GameObject potentialTarget in listToCheck)
         {
             Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
