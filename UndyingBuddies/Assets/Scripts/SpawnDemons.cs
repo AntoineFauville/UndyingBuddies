@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnDemons : MonoBehaviour
 {
@@ -9,9 +10,17 @@ public class SpawnDemons : MonoBehaviour
 
     [SerializeField] private AiManager AiManager;
 
+    [SerializeField] private string demonCost;
+    [SerializeField] private Text textCostDisplay;
+
+    void Start()
+    {
+        textCostDisplay.text = demonCost + "\n" + gameSettings.CostOfNewDemon.ToString() + " Energy";
+    }
+
     public void SpawnNewDemon()
     {
-        if (resourceManager.amountOfFood >= gameSettings.CostOfNewDemonFood)
+        if (resourceManager.amountOfEnergy >= gameSettings.CostOfNewDemon)
         {
             resourceManager.ManageCostOfPurchaseDemon();
 

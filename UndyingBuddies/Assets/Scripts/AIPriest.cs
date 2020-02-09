@@ -245,17 +245,6 @@ public class AIPriest : MonoBehaviour
 
     public void Die(int diedByWhat)
     {
-        for (int i = 0; i < GameObject.FindGameObjectsWithTag("Floor").Length; i++)
-        {
-            if (GameObject.FindGameObjectsWithTag("Floor")[i].GetComponent<TerrainManagerLock>() != null)
-            {
-                if (GameObject.FindGameObjectsWithTag("Floor")[i].GetComponent<TerrainManagerLock>().AIOnMe.Contains(this.gameObject))
-                {
-                    GameObject.FindGameObjectsWithTag("Floor")[i].GetComponent<TerrainManagerLock>().AIOnMe.Remove(this.gameObject);
-                }
-            }
-        }
-
         aiManager.Priest.Remove(this.gameObject);
 
         StartCoroutine(waitToDie(diedByWhat));
@@ -292,17 +281,22 @@ public class AIPriest : MonoBehaviour
             }
         }
 
-        foreach (GameObject potentialTarget in listToCheck)
+        for (int i = 0; i < listToCheck.Count; i++)
         {
-            Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
+            if (listToCheck[i] == null)
+            {
+                listToCheck.Remove(listToCheck[i]);
+            }
+
+            Vector3 directionToTarget = listToCheck[i].transform.position - currentPosition;
             float dSqrToTarget = directionToTarget.sqrMagnitude;
             if (dSqrToTarget < closestDistanceSqr)
             {
                 closestDistanceSqr = dSqrToTarget;
-                bestDemon = potentialTarget;
+                bestDemon = listToCheck[i];
             }
-        }
-
+        } 
+        
         Target = bestDemon;
     } // check if there is an enemy to attack close up
     

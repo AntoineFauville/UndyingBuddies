@@ -32,30 +32,31 @@ public class ResourceManager : MonoBehaviour
 
     public void ManageCostOfPurchaseDemon()
     {
-        if (AiManager.GameSettings.CostOfNewDemonFood > 0)
-        {
-            for (int i = 0; i < AiManager.GameSettings.CostOfNewDemonFood; i++)
-            {
-                List<GameObject> foodStockToTakeFrom = new List<GameObject>();
+        amountOfEnergy -= AiManager.GameSettings.CostOfNewDemon;
+        //if (AiManager.GameSettings.CostOfNewDemonFood > 0)
+        //{
+        //    for (int i = 0; i < AiManager.GameSettings.CostOfNewDemonFood; i++)
+        //    {
+        //        List<GameObject> foodStockToTakeFrom = new List<GameObject>();
 
-                foreach (var foodStock in AiManager.FoodStockageBuilding)
-                {
-                    if (foodStock.GetComponent<Building>().currentStockage > 0)
-                    {
-                        foodStockToTakeFrom.Add(foodStock);
-                    }
-                }
+        //        foreach (var foodStock in AiManager.FoodStockageBuilding)
+        //        {
+        //            if (foodStock.GetComponent<Building>().currentStockage > 0)
+        //            {
+        //                foodStockToTakeFrom.Add(foodStock);
+        //            }
+        //        }
 
-                int rand = Random.Range(0, foodStockToTakeFrom.Count);
-                foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage -= 1;
-                foodStockToTakeFrom[rand].GetComponent<Building>().UpdateStockVisu();
+        //        int rand = Random.Range(0, foodStockToTakeFrom.Count);
+        //        foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage -= 1;
+        //        foodStockToTakeFrom[rand].GetComponent<Building>().UpdateStockVisu();
 
-                if (foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage <= 0)
-                {
-                    foodStockToTakeFrom.Remove(foodStockToTakeFrom[rand]);
-                }
-            }
-        }
+        //        if (foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage <= 0)
+        //        {
+        //            foodStockToTakeFrom.Remove(foodStockToTakeFrom[rand]);
+        //        }
+        //    }
+        //}
     }
 
     public void ManageCostOfPurchaseForBuilding(BuildingArchetype buildingArchetype)
@@ -114,15 +115,29 @@ public class ResourceManager : MonoBehaviour
     IEnumerator SlowUpdate()
     {
         amountOfFood = 0;
-        for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count; i++)
+        if (GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count <= 0)
         {
-            amountOfFood += GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+            amountOfFood = 0;
+        }
+        else
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count; i++)
+            {
+                amountOfFood += GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+            }
         }
 
         amountOfWood = 0;
-        for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Count; i++)
+        if (GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Count <= 0)
         {
-            amountOfWood += GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+            amountOfWood = 0;
+        }
+        else
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Count; i++)
+            {
+                amountOfWood += GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+            }
         }
 
         textWood.text = amountOfWood.ToString();

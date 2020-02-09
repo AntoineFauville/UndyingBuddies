@@ -17,7 +17,7 @@ public class GameSettings : ScriptableObject
     public BuildingArchetype foodProcessor;
     public BuildingArchetype spellHouse;
     
-    public int CostOfNewDemonFood = 40;
+    public int CostOfNewDemon = 40;
     public GameObject DemonPrefab;
     public int damageDemons = 5;
 
@@ -29,20 +29,22 @@ public class GameSettings : ScriptableObject
     public SpellArchetype eyeSpell;
     public SpellArchetype spikeSpell;
     public SpellArchetype tentacleSpell;
-
-    public int woodSmallContainer = 20;
-    public int woodMediumContainer = 50;
-
-    public int foodSmallContainer = 20;
-    public int foodMediumContainer = 50;
-
-    public int energyAmount = 1;
-
-    public int foodAmountToUnlockTerrain = 100;
-    public int woodAmountToUnlockTerrain = 100;
     
     public GameObject PriestPrefab;
     public GameObject AIFormationPrefab;
+
+    public int FoodOnBush = 3;//local
+    public int FoodOnSacrificeBush = 1;// amount of food i get when i sacrifice a bush
+    public int FoodConversionOnStockpile = 4;// conversion if i left click on stockpile 
+    public int EnergyOnSacrificeBush = 5; // amount of energy i get when i sacrifice a bush
+
+    public int WoodOnTree = 3;//local
+    public int WoodOnSacrificeTree = 2;// amount of food i get when i sacrifice a bush
+    public int WoodConversionOnStockpile = 3;// conversion if i left click on stockpile 
+    public int EnergyOnSacrificeTree = 2; // amount of energy i get when i sacrifice a bush
+
+    public int EnergyGetOutOfSacrificingHouse = 20;
+    public int EnergyOutOfDemonSacrifice = 10;
 
     public int[] CostSpell;
 }

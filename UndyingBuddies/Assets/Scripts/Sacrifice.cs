@@ -25,31 +25,31 @@ public class Sacrifice : MonoBehaviour
         {
             if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.food)
             {
-                resourceManager.amountOfEnergy += 1;
+                resourceManager.amountOfEnergy += gameSettings.EnergyOnSacrificeBush;
 
                 int rand;
                 rand = Random.Range(0, _aiManager.FoodStockageBuilding.Count);
-                _aiManager.FoodStockageBuilding[rand].GetComponent<Building>().currentStockage += 1;
+                _aiManager.FoodStockageBuilding[rand].GetComponent<Building>().currentStockage += gameSettings.FoodOnSacrificeBush;
                 _aiManager.FoodStockageBuilding[rand].GetComponent<Building>().UpdateStockVisu();
             }
             else if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.wood)
             {
-                resourceManager.amountOfEnergy += 2;
+                resourceManager.amountOfEnergy += gameSettings.EnergyOnSacrificeTree;
 
                 int rand;
                 rand = Random.Range(0, _aiManager.WoodStockageBuilding.Count);
-                _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().currentStockage += 2;
+                _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().currentStockage += gameSettings.WoodOnSacrificeTree;
                 _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().UpdateStockVisu();
             }
             else if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.energy)
             {
-                resourceManager.amountOfEnergy += 5;
+                resourceManager.amountOfEnergy += gameSettings.EnergyGetOutOfSacrificingHouse;
             }
         }
 
         if (grabbedObject.GetComponent<AIDemons>() != null)
         {
-            resourceManager.amountOfEnergy += 5;
+            resourceManager.amountOfEnergy += gameSettings.EnergyOutOfDemonSacrifice;
         }
 
         CleanFromAiManagerAnyResidualInconveniences(grabbedObject);
@@ -87,15 +87,11 @@ public class Sacrifice : MonoBehaviour
 
             if (resourceType == ResourceType.food)
             {
-                resourceManager.amountOfEnergy += 1;
+                resourceManager.amountOfEnergy += gameSettings.FoodConversionOnStockpile;
             }
             else if (resourceType == ResourceType.wood)
             {
-                resourceManager.amountOfEnergy += 1;
-            }
-            else if (resourceType == ResourceType.energy)
-            {
-                resourceManager.amountOfEnergy += 1;
+                resourceManager.amountOfEnergy += gameSettings.WoodConversionOnStockpile;
             }
         }
     }

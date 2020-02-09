@@ -15,34 +15,36 @@ MonoBehaviour:
   demonLife: 10
   demonRangeOfDetection: 20
   demonRangeOfCloseBy: 4
-  Barrack: {fileID: 11400000, guid: b93fff988c0da1f46afa98ed13a96e91, type: 2}
+  Barrack: {fileID: 0}
   cityhall: {fileID: 11400000, guid: c1521c4134042a04ca856c69d2ca0c71, type: 2}
   foodHouse: {fileID: 11400000, guid: 21990a823d7ce414b9c3a906fdb91096, type: 2}
   woodHouse: {fileID: 11400000, guid: 1dfb7d35d6106f448a860116c5648c45, type: 2}
   woodCutter: {fileID: 11400000, guid: a1490643dcd46bc4ebb8e4bd8f68e113, type: 2}
   foodProcessor: {fileID: 11400000, guid: 4ad366c97c7326540b14217113d14d6a, type: 2}
   spellHouse: {fileID: 11400000, guid: 9246efe8921844c4ea175dccaebea61d, type: 2}
-  CostOfNewDemonFood: 10
+  CostOfNewDemon: 40
   DemonPrefab: {fileID: 5965878919500901836, guid: 020809d02fe6672458738479d4b763bb,
     type: 3}
   damageDemons: 5
-  PriestHealth: 20
-  PriestBuildingHealth: 100
-  PriestAttackAmount: 1
-  PriestMaxMentalHealth: 100
+  PriestHealth: 100
+  PriestAttackAmount: 5
+  PriestMaxMentalHealth: 200
   fireSpell: {fileID: 11400000, guid: 4e70b12a3bdb36c48aff27c10c76daa4, type: 2}
   eyeSpell: {fileID: 11400000, guid: cf4f410c25723b14dbdd4aafc60f11fa, type: 2}
   spikeSpell: {fileID: 11400000, guid: 7efa2cb3bcd4083469c10a9e05cf67a2, type: 2}
   tentacleSpell: {fileID: 11400000, guid: c8bd00adabb52c34d842a3754ba7ba95, type: 2}
-  woodSmallContainer: 20
-  woodMediumContainer: 50
-  foodSmallContainer: 30
-  foodMediumContainer: 60
-  energyAmount: 1
-  foodAmountToUnlockTerrain: 100
-  woodAmountToUnlockTerrain: 100
   PriestPrefab: {fileID: 6092849278970286903, guid: c27c6c1dc3feee747bdd4645da47eafc,
     type: 3}
   AIFormationPrefab: {fileID: 4706081284599870127, guid: e7a5a3bef5413034fb8c7249da9389f0,
     type: 3}
-  CostSpell: 05000000190000003c00000064000000
+  FoodOnBush: 3
+  FoodOnSacrificeBush: 1
+  FoodConversionOnStockpile: 4
+  EnergyOnSacrificeBush: 3
+  WoodOnTree: 3
+  WoodOnSacrificeTree: 2
+  WoodConversionOnStockpile: 3
+  EnergyOnSacrificeTree: 2
+  EnergyGetOutOfSacrificingHouse: 20
+  EnergyOutOfDemonSacrifice: 5
+  CostSpell: 1e0000006400000090010000e8030000
