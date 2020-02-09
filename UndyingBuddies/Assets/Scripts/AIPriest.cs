@@ -127,7 +127,6 @@ public class AIPriest : MonoBehaviour
                             }
                         }
                         break;
-
                     case PriestAttackerType.rusher:
                         if (!AmIBuilding && CanAttackBack)
                         {

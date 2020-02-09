@@ -134,10 +134,12 @@ public class AIStatController : MonoBehaviour
         }
 
         _aIPriest.attackedBySpike = true;
+        _aIPriest.Stun = true;
 
         yield return new WaitForSeconds(1);
 
         _aIPriest.attackedBySpike = false;
+        _aIPriest.Stun = false;
     }
 
     IEnumerator waitForTentacleEffect()
@@ -149,7 +151,13 @@ public class AIStatController : MonoBehaviour
 
         _aIPriest.attackedByTentacle = true;
 
-        yield return new WaitForSeconds(0.2f);
+        _aIPriest.Stun = true;
+
+        yield return new WaitForSeconds(0.03f);
+
+        _aIPriest.Stun = false;
+
+        yield return new WaitForSeconds(0.17f);
 
         _aIPriest.attackedByTentacle = false;
     }
