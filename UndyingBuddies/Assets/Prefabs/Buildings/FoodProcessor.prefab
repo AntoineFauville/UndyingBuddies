@@ -63,7 +63,7 @@ Transform:
   m_GameObject: {fileID: 744490022211402328}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1, y: 0.51, z: 4.61}
-  m_LocalScale: {x: 6, y: 1, z: 6}
+  m_LocalScale: {x: 6, y: 4.0032, z: 6}
   m_Children: []
   m_Father: {fileID: 2904495296871413100}
   m_RootOrder: 4
@@ -306,7 +306,7 @@ Transform:
   m_GameObject: {fileID: 4152855400238816647}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1, y: 0.51, z: 4.53}
-  m_LocalScale: {x: 6, y: 1, z: 6}
+  m_LocalScale: {x: 6, y: 4.0032, z: 6}
   m_Children: []
   m_Father: {fileID: 2904495296871413100}
   m_RootOrder: 0
@@ -531,6 +531,8 @@ MonoBehaviour:
   EmplacementWorker: {fileID: 1269636340424210269}
   visualsOnTable: {fileID: 675441744291817567}
   amountOfWorkerAllowed: 1
+  amountOfActiveWorker: 0
+  _aiManager: {fileID: 0}
 --- !u!114 &8970706844664228404
 MonoBehaviour:
   m_ObjectHideFlags: 0

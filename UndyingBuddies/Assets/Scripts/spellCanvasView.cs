@@ -9,17 +9,30 @@ public class spellCanvasView : MonoBehaviour
 
     public SpellArchetype spellArchetype;
 
+    public SpellManager _spellManager;
+
     void Start()
     {
-        this.transform.GetChild(0).GetComponent<Text>().text = spellArchetype.spellName + " " + spellArchetype.SpellCostInEnergy + " Energy";
+        _spellManager = GameObject.Find("Main Camera").GetComponent<SpellManager>();
+
+        this.transform.GetChild(0).GetComponent<Text>().text = spellArchetype.spellName + "\n" + spellArchetype.SpellCostInEnergy + " Energy";
+
+        _spellManager.spellCanvases.Add(this);
     }
     
     public void ActivateBool()
     {
-        isShowing = !isShowing;
+        for (int i = 0; i < _spellManager.spellCanvases.Count; i++)
+        {
+            _spellManager.spellCanvases[i].isShowing = false;
+        }
+        isShowing = true;
 
         GameObject.Find("Main Camera").GetComponent<PlaceSpell>().activateShowOfSpell = isShowing;
+    }
 
+    void Update()
+    {
         if (isShowing)
         {
             GameObject.Find("Main Camera").GetComponent<PlaceSpell>().SetSpellToActive(spellArchetype);

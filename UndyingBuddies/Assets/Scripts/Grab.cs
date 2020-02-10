@@ -190,10 +190,13 @@ public class Grab : MonoBehaviour
             PointerWhereMouseAt.SetActive(true);
             PointerWhereMouseAt.transform.position = posCurrentObject;
 
-            if (grabbedItem.transform.GetComponent<Building>() != null && Input.GetButtonDown("E"))
+            if (grabbedItem.transform.GetComponent<Building>() != null && Input.GetMouseButtonDown(1))
             {
                 DestroyImmediate(grabbedItem);
+                grabbedItem = null;
+                grabbing = false;
                 Debug.Log("canceled building placement");
+                handAnim.Play("hand anim holdrelease");
                 PointerWhereMouseAt.SetActive(false);
             }
         }

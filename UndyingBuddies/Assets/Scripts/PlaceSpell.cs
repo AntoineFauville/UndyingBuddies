@@ -35,8 +35,6 @@ public class PlaceSpell : MonoBehaviour
         spellCanvasView = Instantiate(spellArchetype.UIToSpawn, SpellHandler.transform);
         spellCanvasView.spellArchetype = spellArchetype;
         currentSpellCanvas = spellCanvasView;
-
-        resourceManager.amountOfEnergy -= spellArchetype.CostToUnlockEnergy;
     }
 
     public void SetSpellToActive(SpellArchetype spellArchetype)
@@ -84,12 +82,16 @@ public class PlaceSpell : MonoBehaviour
 
         if (Input.GetMouseButtonUp(1) && activeSpell != null)
         {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<SpellManager>().spellCanvases.Count; i++)
+            {
+                GameObject.Find("Main Camera").GetComponent<SpellManager>().spellCanvases[i].isShowing = false;
+            }
+
             ShowSpellDebug(false);
             grab.notUsingSpell = false;
             ableToSpawnAgain = false;
             activateShowOfSpell = false;
             activeSpell = null;
-            currentSpellCanvas.ActivateBool();
         }
     }
 

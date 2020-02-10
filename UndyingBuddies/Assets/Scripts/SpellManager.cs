@@ -26,6 +26,8 @@ public class SpellManager : MonoBehaviour
     [SerializeField] private GameSettings _gameSettings;
     [SerializeField] private Text SpellCost;
 
+    public List<spellCanvasView> spellCanvases = new List<spellCanvasView>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +53,7 @@ public class SpellManager : MonoBehaviour
                 if (!PlaceSpell.Spells.Contains(firePatchSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
                 {
                     PlaceSpell.SetupSpell(firePatchSpell);
+                    resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
                     indexOfCostSpells++;
                     fireButton.SetActive(false);
                 }
@@ -66,6 +69,7 @@ public class SpellManager : MonoBehaviour
                 if (!PlaceSpell.Spells.Contains(spikesSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
                 {
                     PlaceSpell.SetupSpell(spikesSpell);
+                    resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
                     indexOfCostSpells++;
                     spikeButton.SetActive(false);
                 }
@@ -81,6 +85,7 @@ public class SpellManager : MonoBehaviour
                 if (!PlaceSpell.Spells.Contains(chtulhuEyeSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
                 {
                     PlaceSpell.SetupSpell(chtulhuEyeSpell);
+                    resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
                     indexOfCostSpells++;
                     eyeButton.SetActive(false);
                 }
@@ -96,6 +101,7 @@ public class SpellManager : MonoBehaviour
                 if (!PlaceSpell.Spells.Contains(TentacleSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
                 {
                     PlaceSpell.SetupSpell(TentacleSpell);
+                    resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
                     indexOfCostSpells++;
                     tentacleButton.SetActive(false);
                 }
