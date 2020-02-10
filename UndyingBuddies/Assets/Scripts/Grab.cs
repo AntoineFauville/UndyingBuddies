@@ -19,6 +19,7 @@ public class Grab : MonoBehaviour
     GameObject parentOfGrabbedObject;
 
     [SerializeField] private Sacrifice Sacrifice;
+    [SerializeField] private bool canSacrificeAgain;
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +36,12 @@ public class Grab : MonoBehaviour
     void Update()
     {
         //if you over on top of resource building then you can sacrifice resource for energy
-        if (Input.GetMouseButtonDown(1) && !grabbing && !notUsingSpell)
+        if (Input.GetMouseButton(1) && !grabbing && !notUsingSpell && !canSacrificeAgain)
         {
+            canSacrificeAgain = true;
+
+            StartCoroutine(waitToBeAbleToSacrifice());
+
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -320,5 +325,15 @@ public class Grab : MonoBehaviour
 
         if(grabbedItem.transform.parent != null)
             parentOfGrabbedObject = grabbedItem.transform.parent.gameObject;
+    }
+
+    IEnumerator waitToBeAbleToSacrifice()
+    {
+        GameObject.Find("Main Camera").GetComponent<CameraDrag>().enabled = false;
+
+        yield return new WaitForSeconds(0.2f);
+
+        GameObject.Find("Main Camera").GetComponent<CameraDrag>().enabled = true;
+        canSacrificeAgain = false;
     }
 }
