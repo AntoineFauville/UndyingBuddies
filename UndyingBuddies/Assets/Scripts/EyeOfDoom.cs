@@ -15,6 +15,8 @@ public class EyeOfDoom : MonoBehaviour
     [SerializeField] private GameSettings gameSettings;
     private bool canDoDamage;
 
+    private bool OnlyOneCoroutineAtTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,8 +30,10 @@ public class EyeOfDoom : MonoBehaviour
                 }
             }
         }
-
-        StartCoroutine(EyeOfDooomTimers());
+        if (!OnlyOneCoroutineAtTime)
+        {
+            StartCoroutine(EyeOfDooomTimers());
+        }
     }
 
     public void CheckClosestPriestToAttack()
@@ -72,7 +76,10 @@ public class EyeOfDoom : MonoBehaviour
     {
         if (Target == null)
         {
-            CheckClosestPriestToAttack();
+            if (!OnlyOneCoroutineAtTime)
+            {
+                CheckClosestPriestToAttack();
+            }
         }
         else
         {
@@ -86,7 +93,6 @@ public class EyeOfDoom : MonoBehaviour
                     else
                     {
                         navMeshAgent.destination = Target.transform.position;
-
                     }
                     break;
 
@@ -108,6 +114,8 @@ public class EyeOfDoom : MonoBehaviour
     {
         CheckClosestPriestToAttack();
 
+        OnlyOneCoroutineAtTime = true;
+
         EyeState = 0;
 
         yield return new WaitForSeconds(3f);
@@ -118,6 +126,8 @@ public class EyeOfDoom : MonoBehaviour
         {
             listToCheck.Remove(Target);
         }
+
+        OnlyOneCoroutineAtTime = false;
 
         StartCoroutine(EyeOfDooomTimers());
     }
