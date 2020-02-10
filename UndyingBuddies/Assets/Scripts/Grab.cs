@@ -9,7 +9,7 @@ public class Grab : MonoBehaviour
     public GameObject grabbedItem;
     public bool notUsingSpell;
     [SerializeField] Vector3 posCurrentObject;
-    [SerializeField] GameObject HoldingAnything;
+    [SerializeField] GameObject PointerWhereMouseAt;
     [SerializeField] Animator handAnim;
 
     [SerializeField] ResourceManager ResourceManager;
@@ -23,12 +23,12 @@ public class Grab : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (HoldingAnything == null)
+        if (PointerWhereMouseAt == null)
         {
-            HoldingAnything = GameObject.Find("HoldingAnything");
+            PointerWhereMouseAt = GameObject.Find("HoldingAnything");
         }
 
-        HoldingAnything.SetActive(false);
+        PointerWhereMouseAt.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,6 +49,42 @@ public class Grab : MonoBehaviour
                 else if (hit.collider.tag == "woodStock")
                 {
                     Sacrifice.TransformIntoEnergy(ResourceType.wood, hit.transform.gameObject);
+                }
+
+                if (hit.collider.transform.GetComponent<Building>() == null)
+                {
+                    if (hit.collider.tag == "wood" || hit.collider.tag == "food" || hit.collider.tag == "demon")
+                    {
+                        if (AiManager.Demons.Count <= 1 && hit.collider.GetComponent<AIDemons>() != null) // if we have a demon and we only have one demon or less lol don't comit suicide
+                        {
+                            Debug.Log("Really man ? don't kill yourself like that");
+                        }
+                        else
+                        {
+                            Debug.Log("sacrifice");
+
+                            handAnim.Play("hand anim Sacrifice");
+
+                            for (int i = 0; i < AiManager.Buildings.Count; i++)
+                            {
+                                if (AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Contains(hit.collider.gameObject))
+                                {
+                                    AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Remove(hit.collider.gameObject);
+                                    hit.collider.transform.GetComponent<AIDemons>().ResetVisuals();
+                                }
+                            }
+
+                            parentOfGrabbedObject = null;
+
+                            PointerWhereMouseAt.SetActive(false);
+
+                            grabbing = false;
+
+                            Sacrifice.SacrificeForLordSavior(hit.collider.gameObject, AiManager);
+
+                            grabbedItem = null;
+                        }
+                    }
                 }
             }
         }
@@ -166,14 +202,14 @@ public class Grab : MonoBehaviour
                 grabbedItem.transform.localScale = new Vector3(1, 1, 1);
             }
             grabbedItem.layer = 2;
-            HoldingAnything.SetActive(true);
-            HoldingAnything.transform.position = posCurrentObject;
+            PointerWhereMouseAt.SetActive(true);
+            PointerWhereMouseAt.transform.position = posCurrentObject;
 
             if (grabbedItem.transform.GetComponent<Building>() != null && Input.GetButtonDown("E"))
             {
                 DestroyImmediate(grabbedItem);
                 Debug.Log("canceled building placement");
-                HoldingAnything.SetActive(false);
+                PointerWhereMouseAt.SetActive(false);
             }
         }
 
@@ -207,7 +243,7 @@ public class Grab : MonoBehaviour
 
                     parentOfGrabbedObject = null;
 
-                    HoldingAnything.SetActive(false);
+                    PointerWhereMouseAt.SetActive(false);
 
                     grabbing = false;
 
@@ -286,7 +322,7 @@ public class Grab : MonoBehaviour
 
             grabbedItem = null;
 
-            HoldingAnything.SetActive(false);
+            PointerWhereMouseAt.SetActive(false);
 
             grabbing = false;
         }
@@ -296,7 +332,7 @@ public class Grab : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
 
-        HoldingAnything.SetActive(true);
+        PointerWhereMouseAt.SetActive(true);
 
         grabbing = true;
         
