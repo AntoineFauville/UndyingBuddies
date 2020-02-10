@@ -7,6 +7,8 @@ public class AiBuilding : MonoBehaviour
     public GameObject normal;
     public GameObject destroyed;
 
+    bool hasBeenDestroyedOnce;
+
     [SerializeField] private CharacterTypeTagger characterTypeTagger;
 
     // Start is called before the first frame update
@@ -21,11 +23,16 @@ public class AiBuilding : MonoBehaviour
     // Update is called once per frame
     public void Destroy()
     {
-        normal.SetActive(false);
-        destroyed.SetActive(true);
+        if (!hasBeenDestroyedOnce)
+        {
+            hasBeenDestroyedOnce = true;
+            this.gameObject.tag = "priestHouse";
+            normal.SetActive(false);
+            destroyed.SetActive(true);
 
-        //i'm destroyed you can eat me now
+            //i'm destroyed you can eat me now
 
-        characterTypeTagger.characterType = CharacterType.demon;
+            characterTypeTagger.characterType = CharacterType.demon;
+        }
     }
 }

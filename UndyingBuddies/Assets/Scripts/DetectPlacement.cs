@@ -5,6 +5,22 @@ using UnityEngine;
 public class DetectPlacement : MonoBehaviour
 {
     public bool Detected;
+    public bool heightCorrect;
+
+    [SerializeField] private Transform transformToCheck;
+
+    void Update()
+    {
+        //checks the height of an object to ensure he's not too high up in the sky
+        if (transformToCheck.position.y < 0.2f)
+        {
+            heightCorrect = true;
+        }
+        else
+        {
+            heightCorrect = false;
+        }
+    }
 
     void OnTriggerStay(Collider coll)
     {
@@ -15,7 +31,7 @@ public class DetectPlacement : MonoBehaviour
             || coll.transform.tag == "food" || coll.transform.tag == "relic" 
             || coll.transform.tag == "priest" || coll.transform.tag == "demon" 
             || coll.transform.tag == "foodStock" || coll.transform.tag == "woodStock" 
-            || coll.transform.tag == "terrainWarFlagOnly" || coll.transform.tag == "Untagged")
+            || coll.transform.tag == "Untagged" || !heightCorrect)
         {
             Detected = true;
         }

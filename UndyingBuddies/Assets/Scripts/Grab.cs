@@ -53,7 +53,7 @@ public class Grab : MonoBehaviour
 
                 if (hit.collider.transform.GetComponent<Building>() == null)
                 {
-                    if (hit.collider.tag == "wood" || hit.collider.tag == "food" || hit.collider.tag == "demon")
+                    if (hit.collider.tag == "wood" || hit.collider.tag == "food" || hit.collider.tag == "demon" || hit.collider.tag == "priestHouse")
                     {
                         if (AiManager.Demons.Count <= 1 && hit.collider.GetComponent<AIDemons>() != null) // if we have a demon and we only have one demon or less lol don't comit suicide
                         {
@@ -210,7 +210,7 @@ public class Grab : MonoBehaviour
 
             if (grabbedItem.transform.GetComponent<Building>() == null)
             {
-                if (grabbedItem.tag == "wood" || grabbedItem.tag == "food" || grabbedItem.tag == "demon")
+                if (grabbedItem.tag == "wood" || grabbedItem.tag == "food" || grabbedItem.tag == "demon" || grabbedItem.tag == "priestHouse")
                 {
                     if (AiManager.Demons.Count <= 1 && grabbedItem.GetComponent<AIDemons>() != null) // if we have a demon and we only have one demon or less lol don't comit suicide
                     {
@@ -289,7 +289,7 @@ public class Grab : MonoBehaviour
             {
                 grabbedItem.transform.SetParent(parentOfGrabbedObject.transform);
             }
-            grabbedItem.transform.position = posCurrentObject;
+            grabbedItem.transform.position = new Vector3(posCurrentObject.x, 0, posCurrentObject.z);
             grabbedItem.transform.rotation = new Quaternion();
             grabbedItem.transform.localScale = new Vector3(1,1,1);
             

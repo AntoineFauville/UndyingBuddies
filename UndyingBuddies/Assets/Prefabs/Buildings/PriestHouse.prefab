@@ -50,7 +50,6 @@ GameObject:
   - component: {fileID: 8803593055677472337}
   - component: {fileID: 8803593055677472341}
   - component: {fileID: 8803593055677472342}
-  - component: {fileID: 5145432212992725929}
   - component: {fileID: 7863630835671152237}
   - component: {fileID: 347484773417941584}
   - component: {fileID: 134279156046589187}
@@ -154,22 +153,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 1
---- !u!114 &5145432212992725929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8803593055677472336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08209a91dd79e0e47abb6eda3534cf5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PhysicalResistance: 2
-  MentalHealthResistance: 3
-  _aIPriest: {fileID: 8803593055677472341}
-  _gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
 --- !u!65 &7863630835671152237
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -181,8 +164,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.31, y: 1, z: 3.41}
-  m_Center: {x: 0, y: 4.87, z: 0}
+  m_Size: {x: 7.01, y: 2.98, z: 7}
+  m_Center: {x: 0.71, y: 3.13, z: 0}
 --- !u!114 &347484773417941584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +194,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resourceType: 2
-  resourceSizeType: 0
   amountOfResourceAvailable: 1
   uiHealth: {fileID: 0}
   processedResource: 0

@@ -46,15 +46,22 @@ public class EyeOfDoom : MonoBehaviour
 
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
-        
-        foreach (GameObject potentialTarget in listToCheck)
+
+        for (int i = 0; i < listToCheck.Count; i++)
         {
-            Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
-            float dSqrToTarget = directionToTarget.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr)
+            if (listToCheck[i] == null)
             {
-                closestDistanceSqr = dSqrToTarget;
-                bestPriest = potentialTarget;
+                listToCheck.Remove(listToCheck[i]);
+            }
+            else
+            {
+                Vector3 directionToTarget = listToCheck[i].transform.position - currentPosition;
+                float dSqrToTarget = directionToTarget.sqrMagnitude;
+                if (dSqrToTarget < closestDistanceSqr)
+                {
+                    closestDistanceSqr = dSqrToTarget;
+                    bestPriest = listToCheck[i];
+                }
             }
         }
 

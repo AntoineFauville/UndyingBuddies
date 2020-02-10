@@ -120,16 +120,16 @@ public class ResourceManager : MonoBehaviour
     IEnumerator SlowUpdate()
     {
         amountOfFood = 0;
-        if (_aiManager.FoodStockageBuilding.Count <= 0)
-        {
-            amountOfFood = 0;
-        }
-        else
+        if (_aiManager.FoodStockageBuilding.Count > 0)
         {
             for (int i = 0; i < _aiManager.FoodStockageBuilding.Count; i++)
             {
                 amountOfFood += _aiManager.FoodStockageBuilding[i].GetComponent<Building>().currentStockage;
             }
+        }
+        else
+        {
+            amountOfFood = 0;
         }
 
         amountOfWood = 0;

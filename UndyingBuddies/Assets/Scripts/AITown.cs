@@ -21,6 +21,7 @@ public class AITown : MonoBehaviour
     [SerializeField] private GameObject[] BuildingToWalkTo;
 
     public bool isTheVillageDestroyed;
+    bool hasBeenDestroyedOnce;
 
     [SerializeField] private AiBuilding[] buildingToTransformInEnergy;
 
@@ -59,10 +60,11 @@ public class AITown : MonoBehaviour
         }
 
         StartCoroutine(animateAIInCity());
+
+        StartCoroutine(SlowUpdate());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator SlowUpdate()
     {
         for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
         {
@@ -90,19 +92,26 @@ public class AITown : MonoBehaviour
 
             if (Revenge)
             {
-                for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
+                for (int i = 0; i < AllPriestUnit.Count; i++)
                 {
-                    AllRelatedAIOfThisTown[i].PriestAttackerType = PriestAttackerType.rusher;
-
-                    AllRelatedAIOfThisTown[i].isAttacked = true;
-
-                    if (AllPriestUnit[i].GetComponent<AIStatController>().PhysicalResistance > 0)
+                    if (AllPriestUnit[i] == null)
                     {
-                        AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.physicalResistance.enabled = true;
+                        AllPriestUnit.Remove(AllPriestUnit[i]);
                     }
-                    if (AllPriestUnit[i].GetComponent<AIStatController>().MentalHealthResistance > 0)
+                    else
                     {
-                        AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.mentalResistance.enabled = true;
+                        AllPriestUnit[i].PriestAttackerType = PriestAttackerType.rusher;
+
+                        AllPriestUnit[i].isAttacked = true;
+
+                        if (AllPriestUnit[i].GetComponent<AIStatController>().PhysicalResistance > 0)
+                        {
+                            AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.physicalResistance.enabled = true;
+                        }
+                        if (AllPriestUnit[i].GetComponent<AIStatController>().MentalHealthResistance > 0)
+                        {
+                            AllPriestUnit[i].GetComponent<AIPriest>().UiHealth.mentalResistance.enabled = true;
+                        }
                     }
                 }
 
@@ -116,8 +125,12 @@ public class AITown : MonoBehaviour
             }
         }
 
-        if (isTheVillageDestroyed)
+        if (isTheVillageDestroyed && !hasBeenDestroyedOnce)
         {
+            hasBeenDestroyedOnce = true;
+
+            visualsToShowActivation.SetActive(false);
+
             for (int i = 0; i < buildingToTransformInEnergy.Length; i++)
             {
                 buildingToTransformInEnergy[i].Destroy();
@@ -131,6 +144,9 @@ public class AITown : MonoBehaviour
                 Revenge = true;
             }
         }
+
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(SlowUpdate());
     }
 
     IEnumerator animateAIInCity()
