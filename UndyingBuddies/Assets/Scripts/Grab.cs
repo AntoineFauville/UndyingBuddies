@@ -222,34 +222,37 @@ public class Grab : MonoBehaviour
 
             if (grabbedItem.transform.GetComponent<Building>() == null)
             {
-                if (AiManager.Demons.Count <= 1 && grabbedItem.GetComponent<AIDemons>() != null) // if we have a demon and we only have one demon or less lol don't comit suicide
+                if (grabbedItem.tag == "wood" || grabbedItem.tag == "food" || grabbedItem.tag == "demon")
                 {
-                    Debug.Log("Really man ? don't kill yourself like that");
-                }
-                else
-                {
-                    Debug.Log("sacrifice");
-
-                    handAnim.Play("hand anim Sacrifice");
-
-                    for (int i = 0; i < AiManager.Buildings.Count; i++)
+                    if (AiManager.Demons.Count <= 1 && grabbedItem.GetComponent<AIDemons>() != null) // if we have a demon and we only have one demon or less lol don't comit suicide
                     {
-                        if (AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Contains(grabbedItem))
-                        {
-                            AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Remove(grabbedItem);
-                            grabbedItem.transform.GetComponent<AIDemons>().ResetVisuals();
-                        }
+                        Debug.Log("Really man ? don't kill yourself like that");
                     }
+                    else
+                    {
+                        Debug.Log("sacrifice");
 
-                    parentOfGrabbedObject = null;
+                        handAnim.Play("hand anim Sacrifice");
 
-                    PointerWhereMouseAt.SetActive(false);
+                        for (int i = 0; i < AiManager.Buildings.Count; i++)
+                        {
+                            if (AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Contains(grabbedItem))
+                            {
+                                AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Remove(grabbedItem);
+                                grabbedItem.transform.GetComponent<AIDemons>().ResetVisuals();
+                            }
+                        }
 
-                    grabbing = false;
+                        parentOfGrabbedObject = null;
 
-                    Sacrifice.SacrificeForLordSavior(grabbedItem, AiManager);
+                        PointerWhereMouseAt.SetActive(false);
 
-                    grabbedItem = null;
+                        grabbing = false;
+
+                        Sacrifice.SacrificeForLordSavior(grabbedItem, AiManager);
+
+                        grabbedItem = null;
+                    }
                 }
             }
 

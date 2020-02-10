@@ -453,9 +453,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlockedFireSpell: 0
-  spellArchetype: {fileID: 11400000, guid: 4e70b12a3bdb36c48aff27c10c76daa4, type: 2}
+  firePatchSpell: {fileID: 0}
+  spikesSpell: {fileID: 0}
+  chtulhuEyeSpell: {fileID: 0}
+  TentacleSpell: {fileID: 0}
   PlaceSpell: {fileID: 0}
-  ButtonToPurchase: {fileID: 0}
+  fireButton: {fileID: 0}
+  spikeButton: {fileID: 0}
+  eyeButton: {fileID: 0}
+  tentacleButton: {fileID: 0}
+  indexOfCostSpells: 0
+  _gameSettings: {fileID: 0}
+  SpellCost: {fileID: 0}
 --- !u!114 &2856991644730602854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1463145153919145989
 Transform:
   m_ObjectHideFlags: 0
