@@ -8,6 +8,7 @@ public class AiManager : MonoBehaviour
 
     //all the AI
     public List<GameObject> Demons = new List<GameObject>();
+    public List<GameObject> IdlingDemons = new List<GameObject>();
 
     //All the AI and buildings!!
     public List<GameObject> Priest = new List<GameObject>();
@@ -20,9 +21,9 @@ public class AiManager : MonoBehaviour
     public List<GameObject> WoodStockageBuilding = new List<GameObject>();
 
     public List<GameObject> Buildings = new List<GameObject>();
+    public List<GameObject> BuildingWithJobs = new List<GameObject>();
     public bool AreBuildingShowned;
-
-    public GameObject FlagToFollow;
+    
     int nameID;
 
     //enemy
@@ -31,13 +32,8 @@ public class AiManager : MonoBehaviour
 
     void Start()
     {
-        if (FlagToFollow == null)
-        {
-            GameObject.Find("FlagToFollow");
-        }
-
         AddDemons();
-        AddPriest();
+        AddBuilding();
         AddAllTheInitialResource();
         StartCoroutine(SlowUpdate());
     }
@@ -58,6 +54,25 @@ public class AiManager : MonoBehaviour
             {
                 FoodToProcess.Add(food);
 
+            }
+        }
+    }
+
+    public void AddBuilding()
+    {
+        foreach (var building in GameObject.FindObjectsOfType<Building>())
+        {
+            if (!Buildings.Contains(building.gameObject))
+            {
+                Buildings.Add(building.gameObject);
+            }
+        }
+
+        foreach (var building in GameObject.FindObjectsOfType<Building>())
+        {
+            if (building.amountOfWorkerAllowed > building.amountOfActiveWorker && !Buildings.Contains(building.gameObject))
+            {
+                BuildingWithJobs.Add(building.gameObject);
             }
         }
     }
@@ -108,16 +123,47 @@ public class AiManager : MonoBehaviour
         }
     }
 
-    void AddPriest()
+    void CheckForJobLessDemon()
     {
-        //foreach (var priest in GameObject.FindGameObjectsWithTag("priest"))
-        //{
-        //    Priest.Add(priest);
-        //    priest.name = "priest_" + nameID;
-        //    nameID++;
-        //}
+        for (int i = 0; i < Demons.Count; i++)
+        {
+            if (Demons[i].GetComponent<AIDemons>().JobType == JobType.IdleVillager)
+            {
+                IdlingDemons.Add(Demons[i]);
+            }
+        }
     }
 
+    void AssignJobLessDemons()
+    {
+        if (BuildingWithJobs.Count > 0 && IdlingDemons.Count > 0)
+        {
+            AIDemons demon;
+            GameObject building;
+
+            demon = IdlingDemons[0].GetComponent<AIDemons>();
+            building = BuildingWithJobs[0];
+
+            demon.AssignedBuilding = BuildingWithJobs[0];
+
+            if (building.GetComponent<Building>().BuildingType == BuildingType.FoodProcessor)
+            {
+                demon.JobType = JobType.foodProcessor;
+            }
+            else if (building.GetComponent<Building>().BuildingType == BuildingType.WoodProcessor)
+            {
+                demon.JobType = JobType.woodProcessor;
+            }
+            else
+            {
+                Debug.Log("you're trying to assign a jobless demon to a uncapacitated building");
+            }
+
+            IdlingDemons.Remove(IdlingDemons[0]);
+            BuildingWithJobs.Remove(BuildingWithJobs[0]);
+        }
+    }
+    
     void CleanTheListFromEmptyObjects()
     {
         for (int i = 0; i < FoodStockageBuilding.Count; i++)
@@ -164,7 +210,23 @@ public class AiManager : MonoBehaviour
         {
             if (Priest[i] == null)
             {
-                Priest.Remove(Demons[i]);
+                Priest.Remove(Priest[i]);
+            }
+        }
+
+        for (int i = 0; i < Buildings.Count; i++)
+        {
+            if (Buildings[i] == null)
+            {
+                Buildings.Remove(Buildings[i]);
+            }
+        }
+
+        for (int i = 0; i < BuildingWithJobs.Count; i++)
+        {
+            if (BuildingWithJobs[i] == null)
+            {
+                BuildingWithJobs.Remove(BuildingWithJobs[i]);
             }
         }
     }
@@ -172,6 +234,10 @@ public class AiManager : MonoBehaviour
     IEnumerator SlowUpdate()
     {
         CleanTheListFromEmptyObjects();
+
+        CheckForJobLessDemon();
+
+        AssignJobLessDemons();
 
         for (int i = 0; i < Demons.Count; i++)
         {
@@ -185,59 +251,10 @@ public class AiManager : MonoBehaviour
             {
                 switch (demonJobType)
                 {
-                    case JobType.followFlag:
-                        if (Priest.Count <= 0)
-                        {
-                            if (FlagToFollow == null)
-                            {
-                                FlagToFollow = GameObject.FindGameObjectWithTag("flag");
-                            }
-
-                            if (currentAiDemon.checkIfGivenObjectIscloseBy(FlagToFollow))
-                            {
-                                currentAiDemon.Idle();
-                            }
-                            else
-                            {
-                                currentAiDemon.Walk();
-                            }
-                        }
-                        else
-                        {
-                            if (currentAiDemon.CheckIfAnythingWithPriestNearBy())
-                            {
-                                if (currentAiDemon.CheckIfPriestIsCloseToAttack())
-                                {
-                                    currentAiDemon.Attack();
-                                }
-                                else
-                                {
-                                    currentAiDemon.Walk();
-                                }
-                            }
-                            else
-                            {
-                                if (FlagToFollow == null)
-                                {
-                                    FlagToFollow = GameObject.FindGameObjectWithTag("flag");
-                                }
-
-                                if (currentAiDemon.checkIfGivenObjectIscloseBy(FlagToFollow))
-                                {
-                                    currentAiDemon.Idle();
-                                }
-                                else
-                                {
-                                    currentAiDemon.Walk();
-                                }
-                            }
-                        }
-                        break;
-
                     case JobType.foodProcessor:
-                        if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.WhatsBeenWorkedOnTheTableExist)
+                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist)
                         {
-                            if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.WorkedOnTableBeenProcessed)
+                            if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed)
                             {
                                 if (currentAiDemon.BerryBasketAmount > 0)
                                 {
@@ -268,7 +285,7 @@ public class AiManager : MonoBehaviour
                                 if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
                                 {
                                     currentAiDemon.Process(); // change process to transform the item on table into processed
-                                    currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.WorkedOnTableBeenProcessed = true;
+                                    currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = true;
                                 }
                                 else
                                 {
@@ -319,9 +336,9 @@ public class AiManager : MonoBehaviour
                         break;
 
                     case JobType.woodProcessor:
-                        if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.WhatsBeenWorkedOnTheTableExist)
+                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist)
                         {
-                            if (currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.WorkedOnTableBeenProcessed)
+                            if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed)
                             {
                                 if (currentAiDemon.PlankAmount > 0)
                                 {
@@ -352,7 +369,7 @@ public class AiManager : MonoBehaviour
                                 if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
                                 {
                                     currentAiDemon.Process(); // change process to transform the item on table into processed
-                                    currentAiDemon.AssignedBuilding.GetComponent<jobSwitcher>().Building.WorkedOnTableBeenProcessed = true;
+                                    currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = true;
                                 }
                                 else
                                 {
@@ -399,17 +416,6 @@ public class AiManager : MonoBehaviour
                                     }
                                 }
                             }
-                        }
-                        break;
-
-                    case JobType.energyProcessor:
-                        if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
-                        {
-                            currentAiDemon.Prey();
-                        }
-                        else
-                        {
-                            currentAiDemon.Walk();
                         }
                         break;
                 }

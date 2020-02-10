@@ -33,6 +33,4 @@ public class SpawnDemons : MonoBehaviour
             AiManager.Demons.Add(demon);
         }
     }
-
- 
 }

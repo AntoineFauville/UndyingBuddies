@@ -15,7 +15,7 @@ public class ResourceManager : MonoBehaviour
 
     public List<GameObject> Resource = new List<GameObject>();
 
-    [SerializeField] private AiManager AiManager;
+    [SerializeField] private AiManager _aiManager;
 
     void Start()
     {
@@ -27,12 +27,17 @@ public class ResourceManager : MonoBehaviour
             }
         }
 
+        if (_aiManager == null)
+        {
+            _aiManager = GameObject.Find("Main Camera").GetComponent<AiManager>();
+        }
+
         StartCoroutine(SlowUpdate());
     }
 
     public void ManageCostOfPurchaseDemon()
     {
-        amountOfEnergy -= AiManager.GameSettings.CostOfNewDemon;
+        amountOfEnergy -= _aiManager.GameSettings.CostOfNewDemon;
         //if (AiManager.GameSettings.CostOfNewDemonFood > 0)
         //{
         //    for (int i = 0; i < AiManager.GameSettings.CostOfNewDemonFood; i++)
@@ -67,7 +72,7 @@ public class ResourceManager : MonoBehaviour
             {
                 List<GameObject> foodStockToTakeFrom = new List<GameObject>();
 
-                foreach (var foodStock in AiManager.FoodStockageBuilding)
+                foreach (var foodStock in _aiManager.FoodStockageBuilding)
                 {
                     if (foodStock.GetComponent<Building>().currentStockage > 0)
                     {
@@ -92,7 +97,7 @@ public class ResourceManager : MonoBehaviour
             {
                 List<GameObject> woodStockToTakeFrom = new List<GameObject>();
 
-                foreach (var woodStock in AiManager.WoodStockageBuilding)
+                foreach (var woodStock in _aiManager.WoodStockageBuilding)
                 {
                     if (woodStock.GetComponent<Building>().currentStockage > 0)
                     {
@@ -115,28 +120,28 @@ public class ResourceManager : MonoBehaviour
     IEnumerator SlowUpdate()
     {
         amountOfFood = 0;
-        if (GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count <= 0)
+        if (_aiManager.FoodStockageBuilding.Count <= 0)
         {
             amountOfFood = 0;
         }
         else
         {
-            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count; i++)
+            for (int i = 0; i < _aiManager.FoodStockageBuilding.Count; i++)
             {
-                amountOfFood += GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+                amountOfFood += _aiManager.FoodStockageBuilding[i].GetComponent<Building>().currentStockage;
             }
         }
 
         amountOfWood = 0;
-        if (GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Count <= 0)
+        if (_aiManager.WoodStockageBuilding.Count <= 0)
         {
             amountOfWood = 0;
         }
         else
         {
-            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Count; i++)
+            for (int i = 0; i < _aiManager.WoodStockageBuilding.Count; i++)
             {
-                amountOfWood += GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+                amountOfWood += _aiManager.WoodStockageBuilding[i].GetComponent<Building>().currentStockage;
             }
         }
 

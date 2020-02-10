@@ -7,6 +7,8 @@ public class BuildingCreator : MonoBehaviour
 {
     BuildingType buildingType;
 
+    int valueForName;
+
     [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private GameSettings gameSettings;
     
@@ -96,6 +98,10 @@ public class BuildingCreator : MonoBehaviour
     void InstantiateBuilding(GameObject gameObject, BuildingArchetype buildingArchetype)
     {
         GameObject newObj = Instantiate(gameObject);
+
+        valueForName++;
+
+        newObj.name = valueForName.ToString();
 
         newObj.GetComponent<Building>().buildingArchetype = buildingArchetype;
 

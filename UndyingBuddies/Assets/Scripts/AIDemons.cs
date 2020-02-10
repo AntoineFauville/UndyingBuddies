@@ -150,29 +150,12 @@ public class AIDemons : MonoBehaviour
         NavMeshAgent.isStopped = true;
         animatorDemon.Play("Gather");
 
-        if (AssignedBuilding.GetComponent<jobSwitcher>().Building.BuildingType == BuildingType.WoodProcessor || AssignedBuilding.GetComponent<jobSwitcher>().Building.BuildingType == BuildingType.FoodProcessor)
+        if (AssignedBuilding.GetComponentInParent<Building>().BuildingType == BuildingType.WoodProcessor || AssignedBuilding.GetComponentInParent<Building>().BuildingType == BuildingType.FoodProcessor)
         {
-            this.gameObject.transform.position = AssignedBuilding.GetComponent<jobSwitcher>().Building.EmplacementWorker.transform.position;
-            this.gameObject.transform.rotation = AssignedBuilding.GetComponent<jobSwitcher>().Building.EmplacementWorker.transform.rotation;
+            this.gameObject.transform.position = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.position;
+            this.gameObject.transform.rotation = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.rotation;
 
-            AssignedBuilding.GetComponent<jobSwitcher>().Building.visualsOnTable.SetActive(true);
-        }
-    }
-
-    public void Prey()
-    {
-        NavMeshAgent.isStopped = true;
-        animatorDemon.Play("Prey");
-
-        if (AssignedBuilding.GetComponent<jobSwitcher>().Building.BuildingType == BuildingType.EnergyGenerator && !AbleToPerformAction)
-        {
-            AbleToPerformAction = true;
-
-            this.gameObject.transform.position = AssignedBuilding.GetComponent<jobSwitcher>().Building.EmplacementWorker.transform.position;
-            this.gameObject.transform.rotation = AssignedBuilding.GetComponent<jobSwitcher>().Building.EmplacementWorker.transform.rotation;
-
-            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfEnergy += 1;
-            StartCoroutine(TransferingTime());
+            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.SetActive(true);
         }
     }
 
@@ -265,9 +248,9 @@ public class AIDemons : MonoBehaviour
             }
         }
 
-        if (AssignedBuilding.GetComponent<jobSwitcher>().Building.visualsOnTable != null)
+        if (AssignedBuilding.GetComponentInParent<Building>().visualsOnTable != null)
         {
-            AssignedBuilding.GetComponent<jobSwitcher>().Building.visualsOnTable.SetActive(false);
+            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.SetActive(false);
         }
     }
     
@@ -560,7 +543,7 @@ public class AIDemons : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        AssignedBuilding.GetComponent<jobSwitcher>().Building.WhatsBeenWorkedOnTheTableExist = false;
+        AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist = false;
         BerryBasketAmount = 0;
         PlankAmount = 0;
 
@@ -597,7 +580,7 @@ public class AIDemons : MonoBehaviour
 
         BushAmount = 0;
         LogAmount = 0;
-        AssignedBuilding.GetComponent<jobSwitcher>().Building.WhatsBeenWorkedOnTheTableExist = true; //there is smthg on the table
-        AssignedBuilding.GetComponent<jobSwitcher>().Building.WorkedOnTableBeenProcessed = false; //but it hasn't been processed yet
+        AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist = true; //there is smthg on the table
+        AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = false; //but it hasn't been processed yet
     }
 }

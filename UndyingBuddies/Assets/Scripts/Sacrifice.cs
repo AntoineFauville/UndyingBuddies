@@ -78,7 +78,7 @@ public class Sacrifice : MonoBehaviour
         DestroyImmediate(grabbedObject);
     }
 
-    public void TransformIntoEnergy(ResourceType resourceType, GameObject stockGameObject)
+    public void TransformIntoEnergy(ResourceType resourceType, GameObject stockGameObject, Animator handAnim)
     {
         if (stockGameObject.GetComponent<Building>().currentStockage > 0)
         {
@@ -87,11 +87,23 @@ public class Sacrifice : MonoBehaviour
 
             if (resourceType == ResourceType.food)
             {
+                handAnim.Play("hand anim Sacrifice");
                 resourceManager.amountOfEnergy += gameSettings.FoodConversionOnStockpile;
+
+                for (int i = 0; i < _particleSystem.Length; i++)
+                {
+                    _particleSystem[i].GetComponent<ParticleSystem>().Play();
+                }
             }
             else if (resourceType == ResourceType.wood)
             {
+                handAnim.Play("hand anim Sacrifice");
                 resourceManager.amountOfEnergy += gameSettings.WoodConversionOnStockpile;
+
+                for (int i = 0; i < _particleSystem.Length; i++)
+                {
+                    _particleSystem[i].GetComponent<ParticleSystem>().Play();
+                }
             }
         }
     }

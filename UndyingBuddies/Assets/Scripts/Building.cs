@@ -33,6 +33,9 @@ public class Building : MonoBehaviour
     public GameObject visualsOnTable;
 
     public int amountOfWorkerAllowed = 1;
+    public int amountOfActiveWorker = 0;
+
+    [SerializeField] private AiManager _aiManager;
 
     void Start()
     {
@@ -42,32 +45,35 @@ public class Building : MonoBehaviour
         if (visualsOnTable != null)
             visualsOnTable.SetActive(false);
 
-        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Add(this.gameObject);
+        if (_aiManager == null)
+        {
+            _aiManager = GameObject.Find("Main Camera").GetComponent<AiManager>();
+        }
 
         if (BuildingType == BuildingType.Barrack)
         {
-            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.Barrack.BuildingHealth;
+            Health = _aiManager.GameSettings.Barrack.BuildingHealth;
         }
         else if (BuildingType == BuildingType.CityHall)
         {
-            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.cityhall.BuildingHealth;
+            Health = _aiManager.GameSettings.cityhall.BuildingHealth;
         }
         else if (BuildingType == BuildingType.FoodStock)
         {
-            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodHouse.BuildingHealth;
-            GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Add(this.gameObject);
+            Health = _aiManager.GameSettings.foodHouse.BuildingHealth;
+            _aiManager.FoodStockageBuilding.Add(this.gameObject);
         }
         else if(BuildingType == BuildingType.WoodStock)
         {
-            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodHouse.BuildingHealth;
-            GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Add(this.gameObject);
+            Health = _aiManager.GameSettings.woodHouse.BuildingHealth;
+            _aiManager.WoodStockageBuilding.Add(this.gameObject);
         }
         else if(BuildingType == BuildingType.WoodProcessor)
-            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.woodCutter.BuildingHealth;
+            Health = _aiManager.GameSettings.woodCutter.BuildingHealth;
         else if(BuildingType == BuildingType.FoodProcessor)
-            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.foodProcessor.BuildingHealth;
+            Health = _aiManager.GameSettings.foodProcessor.BuildingHealth;
         else if(BuildingType == BuildingType.EnergyGenerator)
-            Health = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.spellHouse.BuildingHealth;
+            Health = _aiManager.GameSettings.spellHouse.BuildingHealth;
 
         maxHealth = Health;
 
@@ -82,8 +88,6 @@ public class Building : MonoBehaviour
         {
             StockPileVisuals[i].SetActive(false);
         }
-
-        
 
         UpdateStockVisu();
 
@@ -106,7 +110,10 @@ public class Building : MonoBehaviour
 
     void DestroyBuilding()
     {
-        GameObject.Find("Main Camera").GetComponent<AiManager>().Buildings.Remove(this.gameObject);
+        if (_aiManager.Buildings.Contains(this.gameObject))
+        {
+            _aiManager.Buildings.Remove(this.gameObject);
+        }
 
         DestroyImmediate(this.gameObject);
     }
@@ -137,13 +144,11 @@ public class Building : MonoBehaviour
     {
         yield return new WaitForSeconds(6);
 
-        if (BuildingType == BuildingType.CityHall)
+        if (Health < 0)
         {
-            //GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfFood += 3;
-            //GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfWood += 3;
+            DestroyBuilding();
         }
 
         StartCoroutine(feedToNotLooseGame());
     }
-    
 }

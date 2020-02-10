@@ -44,11 +44,11 @@ public class Grab : MonoBehaviour
             {
                 if (hit.collider.tag == "foodStock")
                 {
-                    Sacrifice.TransformIntoEnergy(ResourceType.food, hit.transform.gameObject);
+                    Sacrifice.TransformIntoEnergy(ResourceType.food, hit.transform.gameObject, handAnim);
                 }
                 else if (hit.collider.tag == "woodStock")
                 {
-                    Sacrifice.TransformIntoEnergy(ResourceType.wood, hit.transform.gameObject);
+                    Sacrifice.TransformIntoEnergy(ResourceType.wood, hit.transform.gameObject, handAnim);
                 }
 
                 if (hit.collider.transform.GetComponent<Building>() == null)
@@ -130,21 +130,6 @@ public class Grab : MonoBehaviour
                     else
                     {
                         conditionToReleaseMet = false;
-                    }
-                }
-                else if (hitPos.collider.tag == "switchJobArea" && grabbedItem.transform.GetComponent<AIDemons>() != null)
-                {
-                    if (hitPos.collider.GetComponent<jobSwitcher>() != null)
-                    {
-                        if (hitPos.collider.gameObject.transform.GetComponentInParent<Building>().AiAttributedToBuilding.Count < hitPos.collider.GetComponent<jobSwitcher>().Building.amountOfWorkerAllowed)
-                        {
-                            conditionToReleaseMet = true;
-                        }
-                        else
-                        {
-                            conditionToReleaseMet = false;
-                            Debug.Log("Build More Building, you already have a worker there");
-                        }
                     }
                 }
                 else if (grabbedItem.transform.GetComponent<Building>() != null)//if i'm a building i want to make sure the ground is working to be placed
@@ -273,8 +258,17 @@ public class Grab : MonoBehaviour
             if (grabbedItem.transform.GetComponent<Building>() != null)
             {
                 ResourceManager.ManageCostOfPurchaseForBuilding(grabbedItem.transform.GetComponent<Building>().buildingArchetype);
-                
-                AiManager.Buildings.Add(grabbedItem);
+
+                if (!AiManager.Buildings.Contains(grabbedItem))
+                {
+                    AiManager.Buildings.Add(grabbedItem);
+                }
+
+                if (grabbedItem.transform.GetComponent<Building>().amountOfActiveWorker < grabbedItem.transform.GetComponent<Building>().amountOfWorkerAllowed 
+                    && !AiManager.BuildingWithJobs.Contains(grabbedItem))
+                {
+                    AiManager.BuildingWithJobs.Add(grabbedItem);
+                }
 
                 if (grabbedItem.transform.GetComponent<Building>().detectPlacement != null)
                 {
@@ -285,32 +279,7 @@ public class Grab : MonoBehaviour
             handAnim.Play("hand anim holdrelease");
 
             grabbedItem.GetComponent<Grabable>().grabbed = false;
-
-            RaycastHit hitWhenRelease;
-            Ray rayWhenRelease = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(rayWhenRelease, out hitWhenRelease))
-            {
-                //certain that i'm carrying a demon
-                if (grabbedItem.transform.GetComponent<AIDemons>() != null && hitWhenRelease.collider.tag == "switchJobArea" && hitWhenRelease.collider.GetComponent<jobSwitcher>() != null)
-                {
-                    grabbedItem.transform.GetComponent<AIDemons>().SwitchJob(hitWhenRelease.collider.GetComponent<jobSwitcher>().jobSwitcherType);
-                    grabbedItem.transform.GetComponent<AIDemons>().AssignedBuilding = hitWhenRelease.collider.gameObject;
-
-                    //since we just moved the ai from 1 house to an other we need to clean that ai from whatever other building he was in
-                    for (int i = 0; i < AiManager.Buildings.Count; i++)
-                    {
-                        if (AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Contains(grabbedItem))
-                        {
-                            AiManager.Buildings[i].GetComponent<Building>().AiAttributedToBuilding.Remove(grabbedItem);
-                            grabbedItem.transform.GetComponent<AIDemons>().ResetVisuals();
-                        }
-                    }
-
-                    hitWhenRelease.collider.gameObject.transform.GetComponentInParent<Building>().AiAttributedToBuilding.Add(grabbedItem);
-                }
-            }
-
+            
             grabbedItem.layer = 0;
 
             if (parentOfGrabbedObject != null)
