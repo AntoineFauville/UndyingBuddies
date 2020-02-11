@@ -28,11 +28,15 @@ public class SpellManager : MonoBehaviour
 
     public List<spellCanvasView> spellCanvases = new List<spellCanvasView>();
 
+    public GameObject spellPanelSection;
+
     // Start is called before the first frame update
     void Start()
     {
         PlaceSpell = GameObject.Find("Main Camera").GetComponent<PlaceSpell>();
         resourceManager = GameObject.Find("Main Camera").GetComponent<ResourceManager>();
+
+        spellPanelSection.SetActive(false);
     }
 
     // Update is called once per frame
@@ -41,6 +45,51 @@ public class SpellManager : MonoBehaviour
         if (indexOfCostSpells < _gameSettings.CostSpell.Length)
         {
             SpellCost.text = _gameSettings.CostSpell[indexOfCostSpells].ToString();
+        }
+
+        if (Input.GetKeyDown("1") && spellCanvases.Count > 0)
+        {
+            Debug.Log("spell 1");
+
+            for (int i = 0; i < spellCanvases.Count; i++)
+            {
+                spellCanvases[i].isShowing = false;
+            }
+
+            spellCanvases[0].ActivateBool();
+        }
+        else if (Input.GetKeyDown("2") && spellCanvases.Count > 1)
+        {
+            Debug.Log("spell 2");
+
+            for (int i = 0; i < spellCanvases.Count; i++)
+            {
+                spellCanvases[i].isShowing = false;
+            }
+
+            spellCanvases[1].ActivateBool();
+        }
+        else if (Input.GetKeyDown("3") && spellCanvases.Count > 2)
+        {
+            Debug.Log("spell 3");
+
+            for (int i = 0; i < spellCanvases.Count; i++)
+            {
+                spellCanvases[i].isShowing = false;
+            }
+
+            spellCanvases[2].ActivateBool();
+        }
+        else if (Input.GetKeyDown("4") && spellCanvases.Count > 3)
+        {
+            Debug.Log("spell 4");
+
+            for (int i = 0; i < spellCanvases.Count; i++)
+            {
+                spellCanvases[i].isShowing = false;
+            }
+
+            spellCanvases[3].ActivateBool();
         }
 
         switch (unlockedFireSpell)
@@ -118,5 +167,10 @@ public class SpellManager : MonoBehaviour
     public void UnlockFireSpell(int index)
     {
         unlockedFireSpell = index;
+
+        if (spellPanelSection.activeSelf == false)
+        {
+            spellPanelSection.SetActive(true);
+        }
     }
 }

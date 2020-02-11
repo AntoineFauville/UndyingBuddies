@@ -115,6 +115,11 @@ public class Building : MonoBehaviour
             _aiManager.Buildings.Remove(this.gameObject);
         }
 
+        if (_aiManager.BuildingWithJobs.Contains(this.gameObject))
+        {
+            _aiManager.BuildingWithJobs.Remove(this.gameObject);
+        }
+
         DestroyImmediate(this.gameObject);
     }
 

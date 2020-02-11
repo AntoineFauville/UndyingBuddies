@@ -18,4 +18,6 @@ public class SpellArchetype : ScriptableObject
 
     public int SpellCostInEnergy;
     public int CostToUnlockEnergy;
+
+    public Sprite backGroundImage;
 }

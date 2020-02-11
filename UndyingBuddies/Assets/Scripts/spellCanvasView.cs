@@ -11,6 +11,8 @@ public class spellCanvasView : MonoBehaviour
 
     public SpellManager _spellManager;
 
+    public Image backGroundImage;
+
     void Start()
     {
         _spellManager = GameObject.Find("Main Camera").GetComponent<SpellManager>();
@@ -18,6 +20,8 @@ public class spellCanvasView : MonoBehaviour
         this.transform.GetChild(0).GetComponent<Text>().text = spellArchetype.spellName + "\n" + spellArchetype.SpellCostInEnergy + " Energy";
 
         _spellManager.spellCanvases.Add(this);
+
+        backGroundImage.sprite = spellArchetype.backGroundImage;
     }
     
     public void ActivateBool()

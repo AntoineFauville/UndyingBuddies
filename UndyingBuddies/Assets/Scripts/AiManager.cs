@@ -129,7 +129,10 @@ public class AiManager : MonoBehaviour
         {
             if (Demons[i].GetComponent<AIDemons>().JobType == JobType.IdleVillager)
             {
-                IdlingDemons.Add(Demons[i]);
+                if (!IdlingDemons.Contains(Demons[i]))
+                {
+                    IdlingDemons.Add(Demons[i]);
+                }
             }
         }
     }
@@ -249,20 +252,79 @@ public class AiManager : MonoBehaviour
 
             if (currentAiDemon.life > 0)
             {
+                
+
                 switch (demonJobType)
                 {
                     case JobType.foodProcessor:
-                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist)
+                        if (currentAiDemon.AssignedBuilding == null)
                         {
-                            if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed)
+                            currentAiDemon.JobType = JobType.IdleVillager;
+                        }
+                        else
+                        {
+                            if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist)
                             {
-                                if (currentAiDemon.BerryBasketAmount > 0)
+                                if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed)
                                 {
-                                    if (currentAiDemon.CheckIfThereIsStockageAvailable())
+                                    if (currentAiDemon.BerryBasketAmount > 0)
                                     {
-                                        if (currentAiDemon.CheckForClosestBuildingToPlaceStockage())//check the closest and if i'm nearby returns true
+                                        if (currentAiDemon.CheckIfThereIsStockageAvailable())
                                         {
-                                            currentAiDemon.PlaceInStockpile();
+                                            if (currentAiDemon.CheckForClosestBuildingToPlaceStockage())//check the closest and if i'm nearby returns true
+                                            {
+                                                currentAiDemon.PlaceInStockpile();
+                                            }
+                                            else
+                                            {
+                                                currentAiDemon.Walk();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Debug.Log("No More Stockage Units");
+                                            currentAiDemon.Idle();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.TakeFromTable();
+                                    }
+                                }
+                                else
+                                {
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                    {
+                                        currentAiDemon.Process(); // change process to transform the item on table into processed
+                                        currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = true;
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (currentAiDemon.BushAmount >= 3)
+                                {
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                    {
+                                        currentAiDemon.PlaceOnTable();
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                    }
+                                }
+                                else
+                                {
+                                    if (FoodToProcess.Count > 0)
+                                    {
+                                        GameObject food = currentAiDemon.FindClosestResourceSupply(ResourceType.food);
+                                        if (currentAiDemon.checkIfGivenObjectIscloseBy(food))
+                                        {
+                                            currentAiDemon.Gather(ResourceType.food);
                                         }
                                         else
                                         {
@@ -271,64 +333,14 @@ public class AiManager : MonoBehaviour
                                     }
                                     else
                                     {
-                                        Debug.Log("No More Stockage Units");
-                                        currentAiDemon.Idle();
-                                    }
-                                }
-                                else
-                                {
-                                    currentAiDemon.TakeFromTable();
-                                }                                    
-                            }
-                            else
-                            {
-                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
-                                {
-                                    currentAiDemon.Process(); // change process to transform the item on table into processed
-                                    currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = true;
-                                }
-                                else
-                                {
-                                    currentAiDemon.Walk();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (currentAiDemon.BushAmount >= 3)
-                            {
-                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
-                                {
-                                    currentAiDemon.PlaceOnTable();
-                                }
-                                else
-                                {
-                                    currentAiDemon.Walk();
-                                }
-                            }
-                            else
-                            {
-                                if (FoodToProcess.Count > 0)
-                                {
-                                    GameObject food = currentAiDemon.FindClosestResourceSupply(ResourceType.food);
-                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(food))
-                                    {
-                                        currentAiDemon.Gather(ResourceType.food);
-                                    }
-                                    else
-                                    {
-                                        currentAiDemon.Walk();
-                                    }
-                                }
-                                else
-                                {
-                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
-                                    {
-                                        currentAiDemon.Idle();
-                                    }
-                                    else
-                                    {
-                                        currentAiDemon.Walk();
+                                        if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                        {
+                                            currentAiDemon.Idle();
+                                        }
+                                        else
+                                        {
+                                            currentAiDemon.Walk();
+                                        }
                                     }
                                 }
                             }
@@ -336,17 +348,74 @@ public class AiManager : MonoBehaviour
                         break;
 
                     case JobType.woodProcessor:
-                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist)
+                        if (currentAiDemon.AssignedBuilding == null)
                         {
-                            if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed)
+                            currentAiDemon.JobType = JobType.IdleVillager;
+                        }
+                        else
+                        {
+                            if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist)
                             {
-                                if (currentAiDemon.PlankAmount > 0)
+                                if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed)
                                 {
-                                    if (currentAiDemon.CheckIfThereIsStockageAvailable())
+                                    if (currentAiDemon.PlankAmount > 0)
                                     {
-                                        if (currentAiDemon.CheckForClosestBuildingToPlaceStockage())//check the closest and if i'm nearby returns true
+                                        if (currentAiDemon.CheckIfThereIsStockageAvailable())
                                         {
-                                            currentAiDemon.PlaceInStockpile();
+                                            if (currentAiDemon.CheckForClosestBuildingToPlaceStockage())//check the closest and if i'm nearby returns true
+                                            {
+                                                currentAiDemon.PlaceInStockpile();
+                                            }
+                                            else
+                                            {
+                                                currentAiDemon.Walk();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Debug.Log("No More Stockage Units");
+                                            currentAiDemon.Idle();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.TakeFromTable();
+                                    }
+                                }
+                                else
+                                {
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                    {
+                                        currentAiDemon.Process(); // change process to transform the item on table into processed
+                                        currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = true;
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (currentAiDemon.LogAmount >= 3)
+                                {
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                    {
+                                        currentAiDemon.PlaceOnTable();
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                    }
+                                }
+                                else
+                                {
+                                    if (WoodToProcess.Count > 0)
+                                    {
+                                        GameObject wood = currentAiDemon.FindClosestResourceSupply(ResourceType.wood);
+                                        if (currentAiDemon.checkIfGivenObjectIscloseBy(wood))
+                                        {
+                                            currentAiDemon.Gather(ResourceType.wood);
                                         }
                                         else
                                         {
@@ -355,64 +424,14 @@ public class AiManager : MonoBehaviour
                                     }
                                     else
                                     {
-                                        Debug.Log("No More Stockage Units");
-                                        currentAiDemon.Idle();
-                                    }
-                                }
-                                else
-                                {
-                                    currentAiDemon.TakeFromTable();
-                                }
-                            }
-                            else
-                            {
-                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
-                                {
-                                    currentAiDemon.Process(); // change process to transform the item on table into processed
-                                    currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = true;
-                                }
-                                else
-                                {
-                                    currentAiDemon.Walk();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (currentAiDemon.LogAmount >= 3)
-                            {
-                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
-                                {
-                                    currentAiDemon.PlaceOnTable();
-                                }
-                                else
-                                {
-                                    currentAiDemon.Walk();
-                                }
-                            }
-                            else
-                            {
-                                if (WoodToProcess.Count > 0)
-                                {
-                                    GameObject wood = currentAiDemon.FindClosestResourceSupply(ResourceType.wood);
-                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(wood))
-                                    {
-                                        currentAiDemon.Gather(ResourceType.wood);
-                                    }
-                                    else
-                                    {
-                                        currentAiDemon.Walk();
-                                    }
-                                }
-                                else
-                                {
-                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
-                                    {
-                                        currentAiDemon.Idle();
-                                    }
-                                    else
-                                    {
-                                        currentAiDemon.Walk();
+                                        if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                        {
+                                            currentAiDemon.Idle();
+                                        }
+                                        else
+                                        {
+                                            currentAiDemon.Walk();
+                                        }
                                     }
                                 }
                             }
