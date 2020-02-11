@@ -10,6 +10,8 @@ public class AIStatController : MonoBehaviour
 
     [SerializeField] private AIPriest _aIPriest;
     [SerializeField] private GameSettings _gameSettings;
+
+    [SerializeField] private GameObject spawnPointCanvas;
     
     void Start()
     {
@@ -30,22 +32,31 @@ public class AIStatController : MonoBehaviour
 
     public void TakeDamage(AiStatus aiStatus, SpellArchetype spellArchetype)
     {
+        int finalDamage = 0;
         //
         switch (aiStatus)
         {
             case AiStatus.Physical:
-                _aIPriest.healthAmount -= spellArchetype.DamageToEnemy - PhysicalResistance;
+                finalDamage = spellArchetype.DamageToEnemy - PhysicalResistance;
+                _aIPriest.healthAmount -= finalDamage;
                 break;
             case AiStatus.Fear:
+                finalDamage = 0;
                 break;
             case AiStatus.MentalHealth:
-                _aIPriest.MentalHealthAmount += spellArchetype.DamageToEnemy - MentalHealthResistance;
+                finalDamage = spellArchetype.DamageToEnemy - MentalHealthResistance;
+                _aIPriest.MentalHealthAmount += finalDamage;
                 break;
             case AiStatus.Lonelyness:
+                finalDamage = 0;
                 break;
             case AiStatus.IntestineStatus:
+                finalDamage = 0;
                 break;
         }
+
+        CanvasDamage canvasDamage = Instantiate(_gameSettings.CanvasDamagePrefab, spawnPointCanvas.transform.position, new Quaternion());
+        canvasDamage.SetupCanvasDamage(aiStatus, finalDamage);
 
         UpdateLifeBars();
 

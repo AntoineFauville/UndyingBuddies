@@ -2048,7 +2048,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6092849278970286903}
   m_LocalRotation: {x: -0, y: -0.9316846, z: -0, w: 0.36326823}
-  m_LocalPosition: {x: 14.44, y: 0.09, z: 1.68}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6092849278970016805}
@@ -2164,6 +2164,8 @@ MonoBehaviour:
   aiFormationFollowPoint: {fileID: 0}
   animatorPriest: {fileID: 6092849278979877439}
   Stun: 0
+  isAttacked: 0
+  buildingToWalkTo: {fileID: 0}
 --- !u!114 &2683776210274104171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2212,6 +2214,7 @@ MonoBehaviour:
   MentalHealthResistance: 0
   _aIPriest: {fileID: 4780855472861588951}
   _gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
+  spawnPointCanvas: {fileID: 6302360396858518724}
 --- !u!1 &6092849278970287187
 GameObject:
   m_ObjectHideFlags: 0
@@ -4052,12 +4055,18 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1638674313475821329}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6302360396858518724}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ce0effffdbdacb479601477a07deea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6302360396858518724 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4741101803749598165, guid: 668d1833ec2d45a47ab209a8e7100367,
+    type: 3}
+  m_PrefabInstance: {fileID: 1638674313475821329}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2932718017111252408
 PrefabInstance:
   m_ObjectHideFlags: 0

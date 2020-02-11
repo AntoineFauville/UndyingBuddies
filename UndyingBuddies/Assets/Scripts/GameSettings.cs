@@ -47,4 +47,6 @@ public class GameSettings : ScriptableObject
     public int EnergyOutOfDemonSacrifice = 10;
 
     public int[] CostSpell;
+
+    public CanvasDamage CanvasDamagePrefab;
 }
