@@ -33,10 +33,12 @@ public class AIStatController : MonoBehaviour
     public void TakeDamage(AiStatus aiStatus, SpellArchetype spellArchetype)
     {
         int finalDamage = 0;
+        int resistance = 0;
         //
         switch (aiStatus)
         {
             case AiStatus.Physical:
+                resistance = PhysicalResistance;
                 finalDamage = spellArchetype.DamageToEnemy - PhysicalResistance;
                 _aIPriest.healthAmount -= finalDamage;
                 break;
@@ -44,6 +46,7 @@ public class AIStatController : MonoBehaviour
                 finalDamage = 0;
                 break;
             case AiStatus.MentalHealth:
+                resistance = MentalHealthResistance;
                 finalDamage = spellArchetype.DamageToEnemy - MentalHealthResistance;
                 _aIPriest.MentalHealthAmount += finalDamage;
                 break;
@@ -56,7 +59,7 @@ public class AIStatController : MonoBehaviour
         }
 
         CanvasDamage canvasDamage = Instantiate(_gameSettings.CanvasDamagePrefab, spawnPointCanvas.transform.position, new Quaternion());
-        canvasDamage.SetupCanvasDamage(aiStatus, finalDamage);
+        canvasDamage.SetupCanvasDamage(aiStatus, finalDamage, resistance);
 
         UpdateLifeBars();
 

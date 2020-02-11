@@ -6,13 +6,17 @@ using UnityEngine.UI;
 public class CanvasDamage : MonoBehaviour
 {
     public Text text;
+    public Text resistanceText;
     public GameObject Sanity;
     public GameObject Physical;
 
-    public void SetupCanvasDamage(AiStatus aiStatus, int DamageAmount)
+    public void SetupCanvasDamage(AiStatus aiStatus, int DamageAmount, int resistance)
     {
         Sanity.SetActive(false);
         Physical.SetActive(false);
+
+        resistanceText.text = "";
+        text.text = "";
 
         if (aiStatus == AiStatus.MentalHealth)
         {
@@ -23,6 +27,11 @@ public class CanvasDamage : MonoBehaviour
         {
             Physical.SetActive(true);
             text.text = "-" + DamageAmount;
+        }
+
+        if (resistance > 0)
+        {
+            resistanceText.text = "Res " + resistance;
         }
     }
 }

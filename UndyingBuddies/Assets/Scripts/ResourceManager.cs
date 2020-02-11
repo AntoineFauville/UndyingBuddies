@@ -120,16 +120,23 @@ public class ResourceManager : MonoBehaviour
     IEnumerator SlowUpdate()
     {
         amountOfFood = 0;
-        if (_aiManager.FoodStockageBuilding.Count > 0)
+        if (_aiManager.FoodStockageBuilding.Count <=  0)
         {
-            for (int i = 0; i < _aiManager.FoodStockageBuilding.Count; i++)
-            {
-                amountOfFood += _aiManager.FoodStockageBuilding[i].GetComponent<Building>().currentStockage;
-            }
+            amountOfFood = 0;
         }
         else
         {
-            amountOfFood = 0;
+            for (int i = 0; i < _aiManager.FoodStockageBuilding.Count; i++)
+            {
+                if (_aiManager.FoodStockageBuilding[i] == null)
+                {
+                    _aiManager.FoodStockageBuilding.Remove(_aiManager.FoodStockageBuilding[i]);
+                }
+                else if (_aiManager.FoodStockageBuilding[i] != null)
+                {
+                    amountOfFood += _aiManager.FoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+                }
+            }
         }
 
         amountOfWood = 0;
@@ -141,7 +148,14 @@ public class ResourceManager : MonoBehaviour
         {
             for (int i = 0; i < _aiManager.WoodStockageBuilding.Count; i++)
             {
-                amountOfWood += _aiManager.WoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+                if (_aiManager.FoodStockageBuilding[i] == null)
+                {
+                    _aiManager.FoodStockageBuilding.Remove(_aiManager.FoodStockageBuilding[i]);
+                }
+                else if (_aiManager.FoodStockageBuilding[i] != null)
+                {
+                    amountOfWood += _aiManager.WoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+                }
             }
         }
 
@@ -149,7 +163,7 @@ public class ResourceManager : MonoBehaviour
         textFood.text = amountOfFood.ToString();
         textEnergy.text = amountOfEnergy.ToString();
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.02f);
 
         StartCoroutine(SlowUpdate());
     }
