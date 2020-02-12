@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8c0b95d8802a64f825c3973ae9597e, type: 3}
   m_Name: gameSettings
   m_EditorClassIdentifier: 
-  demonLife: 10
+  demonLife: 100
   demonRangeOfDetection: 20
   demonRangeOfCloseBy: 4
   Barrack: {fileID: 0}
@@ -22,7 +22,7 @@ MonoBehaviour:
   woodCutter: {fileID: 11400000, guid: a1490643dcd46bc4ebb8e4bd8f68e113, type: 2}
   foodProcessor: {fileID: 11400000, guid: 4ad366c97c7326540b14217113d14d6a, type: 2}
   spellHouse: {fileID: 11400000, guid: 9246efe8921844c4ea175dccaebea61d, type: 2}
-  CostOfNewDemon: 40
+  CostOfNewDemon: 20
   DemonPrefab: {fileID: 5965878919500901836, guid: 020809d02fe6672458738479d4b763bb,
     type: 3}
   damageDemons: 5
@@ -46,7 +46,7 @@ MonoBehaviour:
   WoodConversionOnStockpile: 3
   EnergyOnSacrificeTree: 2
   EnergyGetOutOfSacrificingHouse: 20
-  EnergyOutOfDemonSacrifice: 5
-  CostSpell: 1e0000006400000090010000e8030000
+  EnergyOutOfDemonSacrifice: 10
+  CostSpell: 280000006400000090010000e8030000
   CanvasDamagePrefab: {fileID: 6582635350120803795, guid: 2e225b92b57713642ae71e425279791d,
     type: 3}
