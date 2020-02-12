@@ -130,6 +130,17 @@ public class AiManager : MonoBehaviour
         }
     }
 
+    void CheckForJobLessBuilding()
+    {
+        for (int i = 0; i < Buildings.Count; i++)
+        {
+            if (Buildings[i].GetComponent<Building>().amountOfWorkerAllowed > Buildings[i].GetComponent<Building>().amountOfActiveWorker && !BuildingWithJobs.Contains(Buildings[i]))
+            {
+                BuildingWithJobs.Add(Buildings[i]);
+            }
+        }
+    }
+
     void CheckForJobLessDemon()
     {
         for (int i = 0; i < Demons.Count; i++)
@@ -168,6 +179,8 @@ public class AiManager : MonoBehaviour
             {
                 Debug.Log("you're trying to assign a jobless demon to a uncapacitated building");
             }
+
+            BuildingWithJobs[0].GetComponent<Building>().amountOfActiveWorker++;
 
             IdlingDemons.Remove(IdlingDemons[0]);
             BuildingWithJobs.Remove(BuildingWithJobs[0]);
@@ -246,6 +259,8 @@ public class AiManager : MonoBehaviour
         CleanTheListFromEmptyObjects();
 
         CheckForJobLessDemon();
+
+        CheckForJobLessBuilding();
 
         AssignJobLessDemons();
 

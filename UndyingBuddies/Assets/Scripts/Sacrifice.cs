@@ -50,6 +50,12 @@ public class Sacrifice : MonoBehaviour
         if (grabbedObject.GetComponent<AIDemons>() != null)
         {
             resourceManager.amountOfEnergy += gameSettings.EnergyOutOfDemonSacrifice;
+
+            if (grabbedObject.GetComponent<AIDemons>().AssignedBuilding != null)
+            {
+                grabbedObject.GetComponent<AIDemons>().AssignedBuilding.GetComponent<Building>().amountOfActiveWorker -= 1;
+                grabbedObject.GetComponent<AIDemons>().AssignedBuilding = null;
+            }
         }
 
         CleanFromAiManagerAnyResidualInconveniences(grabbedObject);

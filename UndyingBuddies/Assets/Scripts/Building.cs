@@ -110,6 +110,11 @@ public class Building : MonoBehaviour
 
     void DestroyBuilding()
     {
+        if (currentStockage > 0)
+        {
+            GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfEnergy += (currentStockage / 2);
+        }
+
         if (_aiManager.Buildings.Contains(this.gameObject))
         {
             _aiManager.Buildings.Remove(this.gameObject);
