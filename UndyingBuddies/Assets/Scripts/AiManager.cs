@@ -66,13 +66,20 @@ public class AiManager : MonoBehaviour
             {
                 Buildings.Add(building.gameObject);
             }
-        }
 
-        foreach (var building in GameObject.FindObjectsOfType<Building>())
-        {
-            if (building.amountOfWorkerAllowed > building.amountOfActiveWorker && !Buildings.Contains(building.gameObject))
+            if (building.amountOfWorkerAllowed > building.amountOfActiveWorker && !BuildingWithJobs.Contains(building.gameObject))
             {
                 BuildingWithJobs.Add(building.gameObject);
+            }
+
+            if (building.BuildingType == BuildingType.FoodStock && !FoodStockageBuilding.Contains(building.gameObject))
+            {
+                FoodStockageBuilding.Add(building.gameObject);
+            }
+
+            if (building.BuildingType == BuildingType.WoodStock && !WoodStockageBuilding.Contains(building.gameObject))
+            {
+                WoodStockageBuilding.Add(building.gameObject);
             }
         }
     }
@@ -242,6 +249,9 @@ public class AiManager : MonoBehaviour
 
         AssignJobLessDemons();
 
+        //check if all buildings are in list, they disapear sometimes..
+        //AddBuilding();
+
         for (int i = 0; i < Demons.Count; i++)
         {
             JobType demonJobType;
@@ -252,8 +262,6 @@ public class AiManager : MonoBehaviour
 
             if (currentAiDemon.life > 0)
             {
-                
-
                 switch (demonJobType)
                 {
                     case JobType.foodProcessor:

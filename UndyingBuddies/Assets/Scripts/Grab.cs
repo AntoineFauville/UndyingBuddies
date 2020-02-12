@@ -284,6 +284,16 @@ public class Grab : MonoBehaviour
                 {
                     grabbedItem.transform.GetComponent<Building>().detectPlacement.gameObject.SetActive(false);
                 }
+
+                if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodStock)
+                {
+                    AiManager.FoodStockageBuilding.Add(grabbedItem);
+                }
+
+                if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodStock)
+                {
+                    AiManager.WoodStockageBuilding.Add(grabbedItem);
+                }
             }
 
             handAnim.Play("hand anim holdrelease");

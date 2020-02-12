@@ -38,30 +38,6 @@ public class ResourceManager : MonoBehaviour
     public void ManageCostOfPurchaseDemon()
     {
         amountOfEnergy -= _aiManager.GameSettings.CostOfNewDemon;
-        //if (AiManager.GameSettings.CostOfNewDemonFood > 0)
-        //{
-        //    for (int i = 0; i < AiManager.GameSettings.CostOfNewDemonFood; i++)
-        //    {
-        //        List<GameObject> foodStockToTakeFrom = new List<GameObject>();
-
-        //        foreach (var foodStock in AiManager.FoodStockageBuilding)
-        //        {
-        //            if (foodStock.GetComponent<Building>().currentStockage > 0)
-        //            {
-        //                foodStockToTakeFrom.Add(foodStock);
-        //            }
-        //        }
-
-        //        int rand = Random.Range(0, foodStockToTakeFrom.Count);
-        //        foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage -= 1;
-        //        foodStockToTakeFrom[rand].GetComponent<Building>().UpdateStockVisu();
-
-        //        if (foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage <= 0)
-        //        {
-        //            foodStockToTakeFrom.Remove(foodStockToTakeFrom[rand]);
-        //        }
-        //    }
-        //}
     }
 
     public void ManageCostOfPurchaseForBuilding(BuildingArchetype buildingArchetype)
@@ -148,11 +124,11 @@ public class ResourceManager : MonoBehaviour
         {
             for (int i = 0; i < _aiManager.WoodStockageBuilding.Count; i++)
             {
-                if (_aiManager.FoodStockageBuilding[i] == null)
+                if (_aiManager.WoodStockageBuilding[i] == null)
                 {
-                    _aiManager.FoodStockageBuilding.Remove(_aiManager.FoodStockageBuilding[i]);
+                    _aiManager.WoodStockageBuilding.Remove(_aiManager.WoodStockageBuilding[i]);
                 }
-                else if (_aiManager.FoodStockageBuilding[i] != null)
+                else if (_aiManager.WoodStockageBuilding[i] != null)
                 {
                     amountOfWood += _aiManager.WoodStockageBuilding[i].GetComponent<Building>().currentStockage;
                 }

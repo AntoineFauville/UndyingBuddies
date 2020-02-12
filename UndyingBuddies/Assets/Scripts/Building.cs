@@ -61,12 +61,12 @@ public class Building : MonoBehaviour
         else if (BuildingType == BuildingType.FoodStock)
         {
             Health = _aiManager.GameSettings.foodHouse.BuildingHealth;
-            _aiManager.FoodStockageBuilding.Add(this.gameObject);
+            //_aiManager.FoodStockageBuilding.Add(this.gameObject);
         }
         else if(BuildingType == BuildingType.WoodStock)
         {
             Health = _aiManager.GameSettings.woodHouse.BuildingHealth;
-            _aiManager.WoodStockageBuilding.Add(this.gameObject);
+            //_aiManager.WoodStockageBuilding.Add(this.gameObject);
         }
         else if(BuildingType == BuildingType.WoodProcessor)
             Health = _aiManager.GameSettings.woodCutter.BuildingHealth;

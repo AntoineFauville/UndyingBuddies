@@ -414,12 +414,28 @@ public class AIDemons : MonoBehaviour
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
 
-        List<GameObject> listToCheck;
+        List<GameObject> listToCheck = new List<GameObject>();
 
-        if(JobType == JobType.foodProcessor)
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding;
-        else //wood
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding;
+        if (JobType == JobType.foodProcessor)
+        {
+            if (GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count > 0)
+            {
+                for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count; i++)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding[i]);
+                }
+            }
+        }
+        else if (JobType == JobType.woodProcessor)
+        {
+            if (GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Count > 0)
+            {
+                for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Count; i++)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding[i]);
+                }
+            }
+        } 
 
         for (int i = 0; i < listToCheck.Count; i++)
         {
