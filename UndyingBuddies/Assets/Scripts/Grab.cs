@@ -182,7 +182,9 @@ public class Grab : MonoBehaviour
             grabbedItem.GetComponent<Grabable>().grabbed = true;
             if (grabbedItem.transform.GetComponent<Building>() != null)
             {
-                grabbedItem.transform.position = posCurrentObject;
+                Vector3 newVector = new Vector3(Mathf.Round(posCurrentObject.x), 0, Mathf.Round(posCurrentObject.z));
+
+                grabbedItem.transform.position = newVector;
             }
             else
             {
