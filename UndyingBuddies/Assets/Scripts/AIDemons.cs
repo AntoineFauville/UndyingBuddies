@@ -15,13 +15,10 @@ public class AIDemons : MonoBehaviour
     public NavMeshAgent NavMeshAgent;
 
     public GameObject TargetToGoTo;
-
-    public int LogAmount;
-    public int MaxLog = 9;
-    public int BushAmount;
-    public int MaxBush = 3;
-    public int PlankAmount;
-    public int BerryBasketAmount;
+    
+    public int SoulAmount;
+    public int MaxSouls = 3;
+    public int SoulBasketAmount;
     public GameObject AssignedBuilding;
 
     bool AbleToPerformAction;
@@ -32,11 +29,8 @@ public class AIDemons : MonoBehaviour
 
     //visuals
     public GameObject Wagon;
-    public GameObject[] BushObject;
-    public GameObject[] BerryContainerObject;
-    public GameObject[] LogObject;
-    public GameObject[] PlankObject;
-    public bool runCoroutineBerryOnce;
+    public GameObject[] SoulObjects;
+    public bool runCoroutineSoulsOnce;
 
     public void Setup(string name, JobType initialJobtype, int initiallife, int demonRangeOfDetection, int demonRangeOfAttack)
     {
@@ -78,25 +72,13 @@ public class AIDemons : MonoBehaviour
 
     public void ResetVisuals()
     {
-        for (int i = 0; i < BushObject.Length; i++)
+        for (int i = 0; i < SoulObjects.Length; i++)
         {
-            BushObject[i].SetActive(false);
-        }
-        for (int i = 0; i < LogObject.Length; i++)
-        {
-            LogObject[i].SetActive(false);
+            SoulObjects[i].SetActive(false);
         }
         if (Wagon != null)
         {
             Wagon.SetActive(false);
-        }
-        for (int i = 0; i < BerryContainerObject.Length; i++)
-        {
-            BerryContainerObject[i].SetActive(false);
-        }
-        for (int i = PlankObject.Length - 1; i > -1; i--)
-        {
-            PlankObject[i].SetActive(false);
         }
     }
 
@@ -150,7 +132,7 @@ public class AIDemons : MonoBehaviour
         NavMeshAgent.isStopped = true;
         animatorDemon.Play("Gather");
 
-        if (AssignedBuilding.GetComponentInParent<Building>().BuildingType == BuildingType.WoodProcessor || AssignedBuilding.GetComponentInParent<Building>().BuildingType == BuildingType.FoodProcessor)
+        if (AssignedBuilding.GetComponentInParent<Building>().BuildingType == BuildingType.Processor)
         {
             this.gameObject.transform.position = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.position;
             this.gameObject.transform.rotation = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.rotation;
@@ -175,27 +157,15 @@ public class AIDemons : MonoBehaviour
         {
             AbleToPerformAction = true;
             
-            if (resourceToGather == ResourceType.wood)
+            if (resourceToGather == ResourceType.whiteSoul)
             {
                 if (TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable > 0)
                 {
-                    if (LogAmount < MaxLog)
+                    if (SoulAmount < MaxSouls)
                     {
                         TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
-                        LogAmount += 1;
-                        LogObject[LogAmount - 1].SetActive(true);
-                    }
-                }
-            }
-            else if (resourceToGather == ResourceType.food)
-            {
-                if (TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable > 0)
-                {
-                    if (BushAmount < MaxBush)
-                    {
-                        TargetToGoTo.GetComponent<Resource>().amountOfResourceAvailable -= 1;
-                        BushAmount += 1;
-                        BushObject[BushAmount-1].SetActive(true);
+                        SoulAmount += 1;
+                        SoulObjects[SoulAmount-1].SetActive(true);
                     }
                 }
             }
@@ -229,25 +199,16 @@ public class AIDemons : MonoBehaviour
             Wagon.SetActive(true);
         }
 
-        if (JobType == JobType.foodProcessor)
+        if (JobType == JobType.processor)
         {
-            BerryBasketAmount = 1;
+            SoulBasketAmount = 1;
 
-            for (int i = 0; i < BerryContainerObject.Length; i++)
-            {
-                BerryContainerObject[i].SetActive(true);
-            }
+            //for (int i = 0; i < SoulContainerObject.Length; i++)
+            //{
+            //    SoulContainerObject[i].SetActive(true);
+            //}
         }
-        else if (JobType == JobType.woodProcessor)
-        {
-            PlankAmount = 1;
-
-            for (int i = 0; i < PlankObject.Length; i++)
-            {
-                PlankObject[i].SetActive(true);
-            }
-        }
-
+        
         if (AssignedBuilding.GetComponentInParent<Building>().visualsOnTable != null)
         {
             AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.SetActive(false);
@@ -260,7 +221,7 @@ public class AIDemons : MonoBehaviour
         animatorDemon.Play("Place");
         NavMeshAgent.isStopped = true;
 
-        if(!runCoroutineBerryOnce)
+        if(!runCoroutineSoulsOnce)
             StartCoroutine(PlaceInStockpileWait());
     }
     
@@ -368,13 +329,8 @@ public class AIDemons : MonoBehaviour
         Vector3 currentPosition = transform.position;
 
         List<GameObject> listToCheck;
-
-        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WoodToProcess;
-
-        if (resourceType == ResourceType.wood)
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WoodToProcess;
-        else if (resourceType == ResourceType.food)
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().FoodToProcess;
+        
+        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess;
 
         foreach (GameObject potentialTarget in listToCheck)
         {
@@ -416,26 +372,16 @@ public class AIDemons : MonoBehaviour
 
         List<GameObject> listToCheck = new List<GameObject>();
 
-        if (JobType == JobType.foodProcessor)
+        if (JobType == JobType.processor)
         {
-            if (GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count > 0)
+            if (GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage.Count > 0)
             {
-                for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding.Count; i++)
+                for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage.Count; i++)
                 {
-                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding[i]);
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage[i]);
                 }
             }
         }
-        else if (JobType == JobType.woodProcessor)
-        {
-            if (GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Count > 0)
-            {
-                for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding.Count; i++)
-                {
-                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding[i]);
-                }
-            }
-        } 
 
         for (int i = 0; i < listToCheck.Count; i++)
         {
@@ -478,10 +424,8 @@ public class AIDemons : MonoBehaviour
 
         List<GameObject> listToCheck;
 
-        if (JobType == JobType.foodProcessor)
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().FoodStockageBuilding;
-        else //wood
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WoodStockageBuilding;
+       
+        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage;
 
         for (int i = 0; i < listToCheck.Count; i++)
         {
@@ -520,38 +464,24 @@ public class AIDemons : MonoBehaviour
 
     IEnumerator PlaceInStockpileWait()
     {
-        runCoroutineBerryOnce = true;
+        runCoroutineSoulsOnce = true;
 
         yield return new WaitForSeconds(0.4f);
 
-        if (JobType == JobType.foodProcessor)
+        if (JobType == JobType.processor)
         {
-            for (int i = 0; i < BerryContainerObject.Length; i++)
-            {
-                BerryContainerObject[i].SetActive(false);
+            //for (int i = 0; i < SoulContainerObject.Length; i++)
+            //{
+            //    SoulContainerObject[i].SetActive(false);
 
-                if (TargetToGoTo.GetComponent<Building>().currentStockage < TargetToGoTo.GetComponent<Building>().maxStockage)
-                {
-                    TargetToGoTo.GetComponent<Building>().AddToStockage();
-                }
-                yield return new WaitForSeconds(0.4f);
-            }
+            //    if (TargetToGoTo.GetComponent<Building>().currentStockage < TargetToGoTo.GetComponent<Building>().maxStockage)
+            //    {
+            //        TargetToGoTo.GetComponent<Building>().AddToStockage();
+            //    }
+            //    yield return new WaitForSeconds(0.4f);
+            //}
         }
-        else if(JobType == JobType.woodProcessor)
-        {
-
-            for(int i = PlankObject.Length-1; i > -1; i--)
-            {
-                PlankObject[i].SetActive(false);
-
-                if (TargetToGoTo.GetComponent<Building>().currentStockage < TargetToGoTo.GetComponent<Building>().maxStockage)
-                {
-                    TargetToGoTo.GetComponent<Building>().AddToStockage();
-                }
-                yield return new WaitForSeconds(0.4f);
-            }
-        }
-       
+        
         if (Wagon != null)
         {
             Wagon.SetActive(false);
@@ -560,10 +490,9 @@ public class AIDemons : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist = false;
-        BerryBasketAmount = 0;
-        PlankAmount = 0;
+        SoulBasketAmount = 0;
 
-        runCoroutineBerryOnce = false;
+        runCoroutineSoulsOnce = false;
     }
 
     IEnumerator PlaceOnTableWait()
@@ -572,17 +501,9 @@ public class AIDemons : MonoBehaviour
 
         if (JobType == JobType.foodProcessor)
         {
-            for (int i = 0; i < BushObject.Length; i++)
+            for (int i = 0; i < SoulObjects.Length; i++)
             {
-                BushObject[i].SetActive(false);
-                yield return new WaitForSeconds(0.4f);
-            }
-        }
-        else if (JobType == JobType.woodProcessor)
-        {
-            for (int i = 0; i < LogObject.Length; i++)
-            {
-                LogObject[i].SetActive(false);
+                SoulObjects[i].SetActive(false);
                 yield return new WaitForSeconds(0.4f);
             }
         }
@@ -594,8 +515,7 @@ public class AIDemons : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        BushAmount = 0;
-        LogAmount = 0;
+        SoulAmount = 0;
         AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist = true; //there is smthg on the table
         AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = false; //but it hasn't been processed yet
     }

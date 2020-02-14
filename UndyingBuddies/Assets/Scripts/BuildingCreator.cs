@@ -18,40 +18,10 @@ public class BuildingCreator : MonoBehaviour
         {
             switch (building)
             {
-                case (int)BuildingType.FoodStock: //1
-                    if (resourceManager.amountOfWood >= gameSettings.foodHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.foodHouse.BuildingCostInFood)
+                case (int)BuildingType.Processor: //0
+                    if (resourceManager.amountOfEnergy >= gameSettings.CostOfNewBuilding)
                     {
-                        InstantiateBuilding(gameSettings.foodHouse.PrefabBuilding, gameSettings.foodHouse);
-                    }
-                    else
-                    {
-                        Debug.Log("not enought resources");
-                    }
-                    break;
-                case (int)BuildingType.WoodStock: //2
-                    if (resourceManager.amountOfWood >= gameSettings.woodHouse.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.woodHouse.BuildingCostInFood)
-                    {
-                        InstantiateBuilding(gameSettings.woodHouse.PrefabBuilding, gameSettings.woodHouse);
-                    }
-                    else
-                    {
-                        Debug.Log("not enought resources");
-                    }
-                    break;
-                case (int)BuildingType.WoodProcessor: //4
-                    if (resourceManager.amountOfWood >= gameSettings.woodCutter.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.woodCutter.BuildingCostInFood)
-                    {
-                        InstantiateBuilding(gameSettings.woodCutter.PrefabBuilding, gameSettings.woodCutter);
-                    }
-                    else
-                    {
-                        Debug.Log("not enought resources");
-                    }
-                    break;
-                case (int)BuildingType.FoodProcessor: //5
-                    if (resourceManager.amountOfWood >= gameSettings.foodProcessor.BuildingCostInWood && resourceManager.amountOfFood >= gameSettings.foodProcessor.BuildingCostInFood)
-                    {
-                        InstantiateBuilding(gameSettings.foodProcessor.PrefabBuilding, gameSettings.foodProcessor);
+                        InstantiateBuilding(gameSettings.processorBuilding.PrefabBuilding);
                     }
                     else
                     {
@@ -66,15 +36,13 @@ public class BuildingCreator : MonoBehaviour
         }
     }
 
-    void InstantiateBuilding(GameObject gameObject, BuildingArchetype buildingArchetype)
+    void InstantiateBuilding(GameObject gameObject)
     {
         GameObject newObj = Instantiate(gameObject);
 
         valueForName++;
 
         newObj.name = valueForName.ToString();
-
-        newObj.GetComponent<Building>().buildingArchetype = buildingArchetype;
 
         StartCoroutine(waitForFeedback(newObj));        
     }

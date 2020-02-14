@@ -7,10 +7,11 @@ public class CostDisplay : MonoBehaviour
 {
     [SerializeField] private BuildingArchetype building;
     [SerializeField] private Text text;
+    [SerializeField] private GameSettings gameSettings;
 
     // Start is called before the first frame update
     void Start()
     {
-        text.text = building.TheName + "\n" + building.BuildingCostInFood + " Food" + "\n" + building.BuildingCostInWood + " Wood";
+        text.text = building.TheName + "\n" + gameSettings.CostOfNewBuilding + " Energy";
     }
 }

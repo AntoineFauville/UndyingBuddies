@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 1950813033152610870}
   - component: {fileID: 2732625799964413681}
   - component: {fileID: 2033549334857359946}
+  - component: {fileID: 3761142198587941583}
   m_Layer: 0
   m_Name: BushForGroup
-  m_TagString: food
+  m_TagString: Resource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -88,6 +89,19 @@ MonoBehaviour:
   amountOfResourceAvailable: 100
   uiHealth: {fileID: 7658678425761526441}
   processedResource: 0
+--- !u!114 &3761142198587941583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911693703527974627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467afc3b8d5b8bb49a01a5c3d0e2a346, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterType: 2
 --- !u!1 &5096375337375764023
 GameObject:
   m_ObjectHideFlags: 0

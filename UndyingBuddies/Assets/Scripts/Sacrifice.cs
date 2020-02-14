@@ -23,23 +23,14 @@ public class Sacrifice : MonoBehaviour
 
         if (grabbedObject.GetComponent<Resource>() != null)
         {
-            if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.food)
+            if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.whiteSoul)
             {
-                resourceManager.amountOfEnergy += gameSettings.EnergyOnSacrificeBush;
+                resourceManager.amountOfEnergy += gameSettings.EnergyOnSacrificeSouls;
 
                 int rand;
-                rand = Random.Range(0, _aiManager.FoodStockageBuilding.Count);
-                _aiManager.FoodStockageBuilding[rand].GetComponent<Building>().currentStockage += gameSettings.FoodOnSacrificeBush;
-                _aiManager.FoodStockageBuilding[rand].GetComponent<Building>().UpdateStockVisu();
-            }
-            else if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.wood)
-            {
-                resourceManager.amountOfEnergy += gameSettings.EnergyOnSacrificeTree;
-
-                int rand;
-                rand = Random.Range(0, _aiManager.WoodStockageBuilding.Count);
-                _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().currentStockage += gameSettings.WoodOnSacrificeTree;
-                _aiManager.WoodStockageBuilding[rand].GetComponent<Building>().UpdateStockVisu();
+                rand = Random.Range(0, _aiManager.WhiteSoulStockage.Count);
+                _aiManager.WhiteSoulStockage[rand].GetComponent<Building>().currentStockage += gameSettings.SoulsOnSacrificeResource;
+                _aiManager.WhiteSoulStockage[rand].GetComponent<Building>().UpdateStockVisu();
             }
             else if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.energy)
             {
@@ -67,13 +58,9 @@ public class Sacrifice : MonoBehaviour
         {
             _aiManager.Demons.Remove(grabbedObject);
         }
-        else if (_aiManager.WoodToProcess.Contains(grabbedObject))
+        else if (_aiManager.ResourceToProcess.Contains(grabbedObject))
         {
-            _aiManager.WoodToProcess.Remove(grabbedObject);
-        }
-        else if (_aiManager.FoodToProcess.Contains(grabbedObject))
-        {
-            _aiManager.FoodToProcess.Remove(grabbedObject);
+            _aiManager.ResourceToProcess.Remove(grabbedObject);
         }
 
         for (int i = 0; i < _particleSystem.Length; i++)
@@ -91,20 +78,10 @@ public class Sacrifice : MonoBehaviour
             stockGameObject.GetComponent<Building>().currentStockage -= 1;
             stockGameObject.GetComponent<Building>().UpdateStockVisu();
 
-            if (resourceType == ResourceType.food)
+            if (resourceType == ResourceType.whiteSoul)
             {
                 handAnim.Play("hand anim Sacrifice");
-                resourceManager.amountOfEnergy += gameSettings.FoodConversionOnStockpile;
-
-                for (int i = 0; i < _particleSystem.Length; i++)
-                {
-                    _particleSystem[i].GetComponent<ParticleSystem>().Play();
-                }
-            }
-            else if (resourceType == ResourceType.wood)
-            {
-                handAnim.Play("hand anim Sacrifice");
-                resourceManager.amountOfEnergy += gameSettings.WoodConversionOnStockpile;
+                resourceManager.amountOfEnergy += gameSettings.SoulConversionOnStockpile;
 
                 for (int i = 0; i < _particleSystem.Length; i++)
                 {

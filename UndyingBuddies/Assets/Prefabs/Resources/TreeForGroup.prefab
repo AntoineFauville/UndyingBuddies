@@ -58,9 +58,10 @@ GameObject:
   - component: {fileID: 4189754562882492039}
   - component: {fileID: 797641011816649553}
   - component: {fileID: 99949074732817494}
+  - component: {fileID: 5937843558261925611}
   m_Layer: 0
   m_Name: TreeForGroup
-  m_TagString: wood
+  m_TagString: Resource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,6 +172,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: -0.00000008940697, y: 1.05, z: -0.00000011920929}
+--- !u!114 &5937843558261925611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3476620542839902518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467afc3b8d5b8bb49a01a5c3d0e2a346, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterType: 2
 --- !u!1001 &5895172631136510350
 PrefabInstance:
   m_ObjectHideFlags: 0

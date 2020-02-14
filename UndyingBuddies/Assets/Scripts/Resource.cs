@@ -14,13 +14,9 @@ public class Resource : MonoBehaviour
 
     void Start()
     {
-        if (resourceType == ResourceType.food)
+        if (resourceType == ResourceType.whiteSoul)
         {
-            amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.FoodOnBush;
-        }
-        else if (resourceType == ResourceType.wood)
-        {
-            amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.WoodOnTree;
+            amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.BrokenSoulsOnResource;
         }
 
         if (uiHealth != null)
@@ -45,14 +41,10 @@ public class Resource : MonoBehaviour
 
     void Die()
     {
-        if (resourceType == ResourceType.wood)
+        if (resourceType == ResourceType.whiteSoul)
         {
-            GameObject.Find("Main Camera").GetComponent<AiManager>().WoodToProcess.Remove(this.gameObject);
+            GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess.Remove(this.gameObject);
 
-        }
-        else if (resourceType == ResourceType.food)
-        {
-            GameObject.Find("Main Camera").GetComponent<AiManager>().FoodToProcess.Remove(this.gameObject);
         }
 
         DestroyImmediate(this.gameObject);

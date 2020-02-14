@@ -4,7 +4,10 @@ using UnityEngine;
 
 public enum ResourceType
 {
-    wood = 0,
-    food = 1,
-    energy = 2
+    whiteSoul = 0,
+    energy = 1,
+    blueVioletSoul = 2,
+    violetSoul = 3,
+    blueSoul = 4,
+    redSoul = 5
 }

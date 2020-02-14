@@ -7,7 +7,7 @@ public class Building : MonoBehaviour
     public int Health;
     public int maxHealth;
     public BuildingType BuildingType;
-    public BuildingArchetype buildingArchetype;
+    public ResourceType resourceProducedAtBuilding;
 
     public bool canBeInteractable;
 
@@ -50,30 +50,7 @@ public class Building : MonoBehaviour
             _aiManager = GameObject.Find("Main Camera").GetComponent<AiManager>();
         }
 
-        if (BuildingType == BuildingType.Barrack)
-        {
-            Health = _aiManager.GameSettings.Barrack.BuildingHealth;
-        }
-        else if (BuildingType == BuildingType.CityHall)
-        {
-            Health = _aiManager.GameSettings.cityhall.BuildingHealth;
-        }
-        else if (BuildingType == BuildingType.FoodStock)
-        {
-            Health = _aiManager.GameSettings.foodHouse.BuildingHealth;
-            //_aiManager.FoodStockageBuilding.Add(this.gameObject);
-        }
-        else if(BuildingType == BuildingType.WoodStock)
-        {
-            Health = _aiManager.GameSettings.woodHouse.BuildingHealth;
-            //_aiManager.WoodStockageBuilding.Add(this.gameObject);
-        }
-        else if(BuildingType == BuildingType.WoodProcessor)
-            Health = _aiManager.GameSettings.woodCutter.BuildingHealth;
-        else if(BuildingType == BuildingType.FoodProcessor)
-            Health = _aiManager.GameSettings.foodProcessor.BuildingHealth;
-        else if(BuildingType == BuildingType.EnergyGenerator)
-            Health = _aiManager.GameSettings.spellHouse.BuildingHealth;
+        Health = _aiManager.GameSettings.processorBuilding.BuildingHealth;
 
         maxHealth = Health;
 

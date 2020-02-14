@@ -40,97 +40,49 @@ public class ResourceManager : MonoBehaviour
         amountOfEnergy -= _aiManager.GameSettings.CostOfNewDemon;
     }
 
-    public void ManageCostOfPurchaseForBuilding(BuildingArchetype buildingArchetype)
+    public void ManageCostOfPurchaseForBuilding()
     {
-        if (buildingArchetype.BuildingCostInFood > 0)
-        {
-            for (int i = 0; i < buildingArchetype.BuildingCostInFood; i++)
-            {
-                List<GameObject> foodStockToTakeFrom = new List<GameObject>();
-
-                foreach (var foodStock in _aiManager.FoodStockageBuilding)
-                {
-                    if (foodStock.GetComponent<Building>().currentStockage > 0)
-                    {
-                        foodStockToTakeFrom.Add(foodStock);
-                    }
-                }
-
-                int rand = Random.Range(0, foodStockToTakeFrom.Count);
-                foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage -= 1;
-                foodStockToTakeFrom[rand].GetComponent<Building>().UpdateStockVisu();
-
-                if (foodStockToTakeFrom[rand].GetComponent<Building>().currentStockage <= 0)
-                {
-                    foodStockToTakeFrom.Remove(foodStockToTakeFrom[rand]);
-                }
-            }
-        }
-
-        if (buildingArchetype.BuildingCostInWood > 0)
-        {
-            for (int i = 0; i < buildingArchetype.BuildingCostInWood; i++)
-            {
-                List<GameObject> woodStockToTakeFrom = new List<GameObject>();
-
-                foreach (var woodStock in _aiManager.WoodStockageBuilding)
-                {
-                    if (woodStock.GetComponent<Building>().currentStockage > 0)
-                    {
-                        woodStockToTakeFrom.Add(woodStock);
-                    }
-                }
-
-                int rand = Random.Range(0, woodStockToTakeFrom.Count);
-                woodStockToTakeFrom[rand].GetComponent<Building>().currentStockage -= 1;
-                woodStockToTakeFrom[rand].GetComponent<Building>().UpdateStockVisu();
-
-                if (woodStockToTakeFrom[rand].GetComponent<Building>().currentStockage <= 0)
-                {
-                    woodStockToTakeFrom.Remove(woodStockToTakeFrom[rand]);
-                }
-            }
-        }
+        amountOfEnergy -= _aiManager.GameSettings.CostOfNewBuilding;
     }
 
     IEnumerator SlowUpdate()
     {
         amountOfFood = 0;
-        if (_aiManager.FoodStockageBuilding.Count <=  0)
+        if (_aiManager.WhiteSoulStockage.Count <=  0)
         {
             amountOfFood = 0;
         }
         else
         {
-            for (int i = 0; i < _aiManager.FoodStockageBuilding.Count; i++)
+            for (int i = 0; i < _aiManager.WhiteSoulStockage.Count; i++)
             {
-                if (_aiManager.FoodStockageBuilding[i] == null)
+                if (_aiManager.WhiteSoulStockage[i] == null)
                 {
-                    _aiManager.FoodStockageBuilding.Remove(_aiManager.FoodStockageBuilding[i]);
+                    _aiManager.WhiteSoulStockage.Remove(_aiManager.WhiteSoulStockage[i]);
                 }
-                else if (_aiManager.FoodStockageBuilding[i] != null)
+                else if (_aiManager.WhiteSoulStockage[i] != null)
                 {
-                    amountOfFood += _aiManager.FoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+                    amountOfFood += _aiManager.WhiteSoulStockage[i].GetComponent<Building>().currentStockage;
                 }
             }
         }
 
         amountOfWood = 0;
-        if (_aiManager.WoodStockageBuilding.Count <= 0)
+        if (_aiManager.BlueVioletSoulStockage.Count <= 0)
         {
             amountOfWood = 0;
         }
         else
         {
-            for (int i = 0; i < _aiManager.WoodStockageBuilding.Count; i++)
+            for (int i = 0; i < _aiManager.BlueVioletSoulStockage.Count; i++)
             {
-                if (_aiManager.WoodStockageBuilding[i] == null)
+                if (_aiManager.BlueVioletSoulStockage[i] == null)
                 {
-                    _aiManager.WoodStockageBuilding.Remove(_aiManager.WoodStockageBuilding[i]);
+                    _aiManager.BlueVioletSoulStockage.Remove(_aiManager.BlueVioletSoulStockage[i]);
                 }
-                else if (_aiManager.WoodStockageBuilding[i] != null)
+                else if (_aiManager.BlueVioletSoulStockage[i] != null)
                 {
-                    amountOfWood += _aiManager.WoodStockageBuilding[i].GetComponent<Building>().currentStockage;
+                    amountOfWood += _aiManager.BlueVioletSoulStockage[i].GetComponent<Building>().currentStockage;
                 }
             }
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum JobType
 {
+    processor = 1,
     followFlag = 3,
     IdleVillager = 4,
     woodProcessor = 5,

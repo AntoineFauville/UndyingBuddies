@@ -13,6 +13,7 @@ public class ParticleFlowManager : MonoBehaviour
     [SerializeField] private ParticleFactory particleFactory;
 
     [SerializeField] private int intervals = 2;
+    [SerializeField] private int particleHeight = 5;
 
     [SerializeField] private GameObject particle;
 
@@ -24,7 +25,7 @@ public class ParticleFlowManager : MonoBehaviour
 
         particleFactory.Setup(particle, StartingPoint.transform, this);
 
-        pathAddaptor.Setup(StartingPoint, EndingPoint, this);
+        pathAddaptor.Setup(StartingPoint, EndingPoint, this, particleHeight);
     }
 
     void Update()

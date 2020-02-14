@@ -15,13 +15,7 @@ MonoBehaviour:
   demonLife: 100
   demonRangeOfDetection: 20
   demonRangeOfCloseBy: 4
-  Barrack: {fileID: 0}
-  cityhall: {fileID: 11400000, guid: c1521c4134042a04ca856c69d2ca0c71, type: 2}
-  foodHouse: {fileID: 11400000, guid: 21990a823d7ce414b9c3a906fdb91096, type: 2}
-  woodHouse: {fileID: 11400000, guid: 1dfb7d35d6106f448a860116c5648c45, type: 2}
-  woodCutter: {fileID: 11400000, guid: a1490643dcd46bc4ebb8e4bd8f68e113, type: 2}
-  foodProcessor: {fileID: 11400000, guid: 4ad366c97c7326540b14217113d14d6a, type: 2}
-  spellHouse: {fileID: 11400000, guid: 9246efe8921844c4ea175dccaebea61d, type: 2}
+  processorBuilding: {fileID: 11400000, guid: c1521c4134042a04ca856c69d2ca0c71, type: 2}
   CostOfNewDemon: 20
   DemonPrefab: {fileID: 5965878919500901836, guid: 020809d02fe6672458738479d4b763bb,
     type: 3}
@@ -37,16 +31,13 @@ MonoBehaviour:
     type: 3}
   AIFormationPrefab: {fileID: 4706081284599870127, guid: e7a5a3bef5413034fb8c7249da9389f0,
     type: 3}
-  FoodOnBush: 3
-  FoodOnSacrificeBush: 1
-  FoodConversionOnStockpile: 4
-  EnergyOnSacrificeBush: 3
-  WoodOnTree: 3
-  WoodOnSacrificeTree: 2
-  WoodConversionOnStockpile: 3
-  EnergyOnSacrificeTree: 2
+  BrokenSoulsOnResource: 3
+  SoulsOnSacrificeResource: 1
+  SoulConversionOnStockpile: 4
+  EnergyOnSacrificeSouls: 5
   EnergyGetOutOfSacrificingHouse: 20
   EnergyOutOfDemonSacrifice: 10
   CostSpell: 280000006400000090010000e8030000
   CanvasDamagePrefab: {fileID: 6582635350120803795, guid: 2e225b92b57713642ae71e425279791d,
     type: 3}
+  CostOfNewBuilding: 30

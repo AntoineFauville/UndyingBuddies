@@ -49,16 +49,12 @@ public class Grab : MonoBehaviour
             {
                 if (hit.collider.tag == "foodStock")
                 {
-                    Sacrifice.TransformIntoEnergy(ResourceType.food, hit.transform.gameObject, handAnim);
-                }
-                else if (hit.collider.tag == "woodStock")
-                {
-                    Sacrifice.TransformIntoEnergy(ResourceType.wood, hit.transform.gameObject, handAnim);
+                    Sacrifice.TransformIntoEnergy(ResourceType.whiteSoul, hit.transform.gameObject, handAnim);
                 }
 
                 if (hit.collider.transform.GetComponent<Building>() == null)
                 {
-                    if (hit.collider.tag == "wood" || hit.collider.tag == "food" || hit.collider.tag == "demon" || hit.collider.tag == "priestHouse")
+                    if (hit.collider.tag == "Resource" || hit.collider.tag == "demon" || hit.collider.tag == "priestHouse")
                     {
                         if (AiManager.Demons.Count <= 1 && hit.collider.GetComponent<AIDemons>() != null) // if we have a demon and we only have one demon or less lol don't comit suicide
                         {
@@ -267,7 +263,7 @@ public class Grab : MonoBehaviour
 
             if (grabbedItem.transform.GetComponent<Building>() != null)
             {
-                ResourceManager.ManageCostOfPurchaseForBuilding(grabbedItem.transform.GetComponent<Building>().buildingArchetype);
+                ResourceManager.ManageCostOfPurchaseForBuilding();
 
                 if (!AiManager.Buildings.Contains(grabbedItem))
                 {
@@ -285,14 +281,14 @@ public class Grab : MonoBehaviour
                     grabbedItem.transform.GetComponent<Building>().detectPlacement.gameObject.SetActive(false);
                 }
 
-                if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.FoodStock)
+                if (grabbedItem.transform.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
                 {
-                    AiManager.FoodStockageBuilding.Add(grabbedItem);
+                    AiManager.WhiteSoulStockage.Add(grabbedItem);
                 }
 
-                if (grabbedItem.transform.GetComponent<Building>().BuildingType == BuildingType.WoodStock)
+                if (grabbedItem.transform.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
                 {
-                    AiManager.WoodStockageBuilding.Add(grabbedItem);
+                    AiManager.BlueVioletSoulStockage.Add(grabbedItem);
                 }
             }
 
