@@ -283,7 +283,6 @@ public class AiManager : MonoBehaviour
                                     if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
                                     {
                                         currentAiDemon.Process(); // change process to transform the item on table into processed
-                                        currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = true;
                                     }
                                     else
                                     {
@@ -308,8 +307,8 @@ public class AiManager : MonoBehaviour
                                 {
                                     if (ResourceToProcess.Count > 0)
                                     {
-                                        GameObject food = currentAiDemon.FindClosestResourceSupply(ResourceType.whiteSoul);
-                                        if (currentAiDemon.checkIfGivenObjectIscloseBy(food))
+                                        GameObject whiteSoul = currentAiDemon.FindClosestResourceSupply(ResourceType.whiteSoul);
+                                        if (currentAiDemon.checkIfGivenObjectIscloseBy(whiteSoul))
                                         {
                                             currentAiDemon.Gather(ResourceType.whiteSoul);
                                         }

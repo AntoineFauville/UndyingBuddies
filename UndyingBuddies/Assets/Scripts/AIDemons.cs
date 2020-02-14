@@ -130,7 +130,9 @@ public class AIDemons : MonoBehaviour
     public void Process()
     {
         NavMeshAgent.isStopped = true;
-        animatorDemon.Play("Gather");
+        animatorDemon.Play("Prey");
+
+        StartCoroutine(processing());
 
         if (AssignedBuilding.GetComponentInParent<Building>().BuildingType == BuildingType.Processor)
         {
@@ -203,10 +205,10 @@ public class AIDemons : MonoBehaviour
         {
             SoulBasketAmount = 1;
 
-            //for (int i = 0; i < SoulContainerObject.Length; i++)
-            //{
-            //    SoulContainerObject[i].SetActive(true);
-            //}
+            for (int i = 0; i < SoulObjects.Length; i++)
+            {
+                SoulObjects[i].SetActive(true);
+            }
         }
         
         if (AssignedBuilding.GetComponentInParent<Building>().visualsOnTable != null)
@@ -470,16 +472,16 @@ public class AIDemons : MonoBehaviour
 
         if (JobType == JobType.processor)
         {
-            //for (int i = 0; i < SoulContainerObject.Length; i++)
-            //{
-            //    SoulContainerObject[i].SetActive(false);
+            for (int i = 0; i < SoulObjects.Length; i++)
+            {
+                SoulObjects[i].SetActive(false);
 
-            //    if (TargetToGoTo.GetComponent<Building>().currentStockage < TargetToGoTo.GetComponent<Building>().maxStockage)
-            //    {
-            //        TargetToGoTo.GetComponent<Building>().AddToStockage();
-            //    }
-            //    yield return new WaitForSeconds(0.4f);
-            //}
+                if (TargetToGoTo.GetComponent<Building>().currentStockage < TargetToGoTo.GetComponent<Building>().maxStockage)
+                {
+                    TargetToGoTo.GetComponent<Building>().AddToStockage();
+                }
+                yield return new WaitForSeconds(0.4f);
+            }
         }
         
         if (Wagon != null)
@@ -518,5 +520,12 @@ public class AIDemons : MonoBehaviour
         SoulAmount = 0;
         AssignedBuilding.GetComponentInParent<Building>().WhatsBeenWorkedOnTheTableExist = true; //there is smthg on the table
         AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = false; //but it hasn't been processed yet
+    }
+
+    IEnumerator processing()
+    {
+        yield return new WaitForSeconds(3f);
+
+        AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = true;
     }
 }
