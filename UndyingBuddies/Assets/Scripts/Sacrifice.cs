@@ -25,12 +25,7 @@ public class Sacrifice : MonoBehaviour
         {
             if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.whiteSoul)
             {
-                resourceManager.amountOfEnergy += gameSettings.EnergyOnSacrificeSouls;
-
-                int rand;
-                rand = Random.Range(0, _aiManager.WhiteSoulStockage.Count);
-                _aiManager.WhiteSoulStockage[rand].GetComponent<Building>().currentStockage += gameSettings.SoulsOnSacrificeResource;
-                _aiManager.WhiteSoulStockage[rand].GetComponent<Building>().UpdateStockVisu();
+                resourceManager.amountOfEnergy += gameSettings.BrokenSoulValueInEnergy;
             }
             else if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.energy)
             {
@@ -81,7 +76,18 @@ public class Sacrifice : MonoBehaviour
             if (resourceType == ResourceType.whiteSoul)
             {
                 handAnim.Play("hand anim Sacrifice");
-                resourceManager.amountOfEnergy += gameSettings.SoulConversionOnStockpile;
+                resourceManager.amountOfEnergy += gameSettings.WhiteSoulValueInEnergy;
+
+                for (int i = 0; i < _particleSystem.Length; i++)
+                {
+                    _particleSystem[i].GetComponent<ParticleSystem>().Play();
+                }
+            }
+
+            if (resourceType == ResourceType.blueVioletSoul)
+            {
+                handAnim.Play("hand anim Sacrifice");
+                resourceManager.amountOfEnergy += gameSettings.BlueVioletSoulValueInEnergy;
 
                 for (int i = 0; i < _particleSystem.Length; i++)
                 {

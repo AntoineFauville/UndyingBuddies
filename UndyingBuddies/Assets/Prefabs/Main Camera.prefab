@@ -1916,6 +1916,7 @@ MonoBehaviour:
   AiManager: {fileID: 813676334979895093}
   demonCost: Demon
   textCostDisplay: {fileID: 1625995318202294569}
+  spawnPoint: {fileID: 0}
 --- !u!114 &1913630255359734644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1977,6 +1978,8 @@ MonoBehaviour:
   white: {fileID: 2973054841008059257}
   blueViolet: {fileID: 4075437747177867258}
   _aiManager: {fileID: 813676334979895093}
+  _resourceManager: {fileID: 813676334979895092}
+  _gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
 --- !u!1 &813676334989587623
 GameObject:
   m_ObjectHideFlags: 0

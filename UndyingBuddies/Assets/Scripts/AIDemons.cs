@@ -316,17 +316,24 @@ public class AIDemons : MonoBehaviour
     {
         bool check = false;
 
-        TargetToGoTo = gameObject;
-
-        //Debug.Log(Vector3.Distance(this.transform.position, gameObject.transform.position));
-
-        if (Vector3.Distance(this.transform.position, gameObject.transform.position) < _demonRangeOfCloseBy)
+        if (gameObject == null)
         {
-            check = true;
+            check = false;
         }
         else
         {
-            check = false;
+            TargetToGoTo = gameObject;
+
+            //Debug.Log(Vector3.Distance(this.transform.position, gameObject.transform.position));
+
+            if (Vector3.Distance(this.transform.position, gameObject.transform.position) < _demonRangeOfCloseBy)
+            {
+                check = true;
+            }
+            else
+            {
+                check = false;
+            }
         }
 
         return check;
@@ -339,14 +346,26 @@ public class AIDemons : MonoBehaviour
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
 
-        List<GameObject> listToCheck;
+        List<GameObject> listToCheck = new List<GameObject>();
         
-        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess;
-
-        if(resourceType == ResourceType.whiteSoul)
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess;
+        if (resourceType == ResourceType.whiteSoul)
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess.Count; i++)
+            {
+                listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess[i]);
+            }
+        }
+            
         else if (resourceType == ResourceType.blueVioletSoul) // check for a stock
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage;
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage.Count; i++)
+            {
+                if (GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage[i].GetComponent<Building>().currentStockage > 0)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage[i]);
+                }
+            }
+        }
 
         foreach (GameObject potentialTarget in listToCheck)
         {
@@ -441,29 +460,96 @@ public class AIDemons : MonoBehaviour
         return check;
     } // check if there is an enemy to attack close up
 
-    public bool CheckIfThereIsStockageAvailable(ResourceType resourceType)
+    public bool CheckIfThereIsAWayToPlaceStockage(ResourceType resourceType)
+    {
+        bool check;
+
+        check = false;
+
+        int freeStock = 0;
+
+        List<GameObject> listToCheck = new List<GameObject>();
+
+        if (resourceType == ResourceType.whiteSoul)
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage.Count; i++)
+            {
+                listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage[i]);
+            }
+        }
+        else if (resourceType == ResourceType.blueVioletSoul)
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage.Count; i++)
+            {
+                listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage[i]);
+            }
+        }
+
+        if (listToCheck.Count > 0)
+        {
+            for (int i = 0; i < listToCheck.Count; i++)
+            {
+                freeStock += (listToCheck[i].GetComponent<Building>().maxStockage - listToCheck[i].GetComponent<Building>().currentStockage);
+            }
+        }
+
+        if (freeStock > 0)
+        {
+            check = true;
+        }
+        else
+        {
+            check = false;
+        }
+
+        return check;
+    }
+
+    public bool CheckIfCurrentStockInStockIsMoreThanZero(ResourceType resourceType)
     {
         bool check = false;
 
         int stockage = 0;
 
-        List<GameObject> listToCheck;
-
-        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage;
-
+        List<GameObject> listToCheck = new List<GameObject>();
+        
         if (resourceType == ResourceType.whiteSoul)
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage;
-        else if (resourceType == ResourceType.blueVioletSoul)
-            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage;
-
-        for (int i = 0; i < listToCheck.Count; i++)
         {
-            int stock;
-
-            stock = listToCheck[i].GetComponent<Building>().maxStockage - listToCheck[i].GetComponent<Building>().currentStockage;
-
-            stockage += stock;
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage.Count; i++)
+            {
+                if (GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage[i].GetComponent<Building>().currentStockage > 0)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage[i]);
+                }
+            }
         }
+        else if (resourceType == ResourceType.blueVioletSoul)
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage.Count; i++)
+            {
+                if (GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage[i].GetComponent<Building>().currentStockage > 0)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage[i]);
+                }
+            }
+        }
+
+        if (listToCheck.Count > 0)
+        {
+            for (int i = 0; i < listToCheck.Count; i++)
+            {
+                int stock;
+
+                stock = listToCheck[i].GetComponent<Building>().maxStockage - listToCheck[i].GetComponent<Building>().currentStockage;
+
+                stockage += stock;
+            }
+        }
+        else
+        {
+            stockage = 0;
+        }
+       
 
         if (stockage > 0)
         {

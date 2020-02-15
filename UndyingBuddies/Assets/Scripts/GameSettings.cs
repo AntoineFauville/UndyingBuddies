@@ -30,7 +30,7 @@ public class GameSettings : ScriptableObject
     public int BrokenSoulsOnResource = 3;//local
     public int SoulsOnSacrificeResource = 1;// amount of food i get when i sacrifice a bush
     public int SoulConversionOnStockpile = 4;// conversion if i left click on stockpile 
-    public int EnergyOnSacrificeSouls = 5; // amount of energy i get when i sacrifice a bush
+    public int BrokenSoulValueInEnergy = 5; // amount of energy i get when i sacrifice a bush
 
     public int EnergyGetOutOfSacrificingHouse = 20;
     public int EnergyOutOfDemonSacrifice = 10;
@@ -40,4 +40,8 @@ public class GameSettings : ScriptableObject
     public CanvasDamage CanvasDamagePrefab;
 
     public int CostOfNewBuilding = 30;
+
+
+    public int WhiteSoulValueInEnergy = 2;
+    public int BlueVioletSoulValueInEnergy = 9;
 }

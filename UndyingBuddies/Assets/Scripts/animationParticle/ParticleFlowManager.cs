@@ -31,5 +31,7 @@ public class ParticleFlowManager : MonoBehaviour
     void Update()
     {
         particleFactory.activate = active;
+
+        pathAddaptor.UpdateStartEnd(StartingPoint, EndingPoint);
     }
 }

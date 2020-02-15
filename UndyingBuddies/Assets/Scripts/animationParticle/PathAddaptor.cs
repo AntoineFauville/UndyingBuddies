@@ -10,7 +10,13 @@ public class PathAddaptor : MonoBehaviour
     private ParticleFlowManager _particleFlowManager;
 
     private int _particleHeight;
-    
+
+    public void UpdateStartEnd(GameObject startingPoint, GameObject endingPoint)
+    {
+        _startingPoint = startingPoint;
+        _endingPoint = endingPoint;
+    }
+
     public void Setup(GameObject startingPoint, GameObject endingPoint, ParticleFlowManager particleFlowManager, int particleHeight)
     {
         _startingPoint = startingPoint;
@@ -23,11 +29,14 @@ public class PathAddaptor : MonoBehaviour
 
     void AdjustPosition()
     {
-        _particleFlowManager.Points[0].transform.position = _startingPoint.transform.position;
-        _particleFlowManager.Points[1].transform.position = new Vector3(_startingPoint.transform.position.x, _startingPoint.transform.position.y + _particleHeight, _startingPoint.transform.position.z);
+        if (_particleFlowManager.StartingPoint != null && _particleFlowManager.EndingPoint != null)
+        {
+            _particleFlowManager.Points[0].transform.position = _startingPoint.transform.position;
+            _particleFlowManager.Points[1].transform.position = new Vector3(_startingPoint.transform.position.x, _startingPoint.transform.position.y + _particleHeight, _startingPoint.transform.position.z);
 
-        _particleFlowManager.Points[2].transform.position = new Vector3(_endingPoint.transform.position.x, _endingPoint.transform.position.y + _particleHeight, _endingPoint.transform.position.z);
-        _particleFlowManager.Points[3].transform.position = _endingPoint.transform.position;
+            _particleFlowManager.Points[2].transform.position = new Vector3(_endingPoint.transform.position.x, _endingPoint.transform.position.y + _particleHeight, _endingPoint.transform.position.z);
+            _particleFlowManager.Points[3].transform.position = _endingPoint.transform.position;
+        }
     }
 
     IEnumerator AdjustPositionSlowly()

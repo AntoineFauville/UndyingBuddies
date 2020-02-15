@@ -47,9 +47,13 @@ public class Grab : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.tag == "foodStock")
+                if (hit.collider.tag == "whiteSoulsStock")
                 {
                     Sacrifice.TransformIntoEnergy(ResourceType.whiteSoul, hit.transform.gameObject, handAnim);
+                }
+                else if (hit.collider.tag == "blueVioletSoulsStock")
+                {
+                    Sacrifice.TransformIntoEnergy(ResourceType.blueVioletSoul, hit.transform.gameObject, handAnim);
                 }
 
                 if (hit.collider.transform.GetComponent<Building>() == null)

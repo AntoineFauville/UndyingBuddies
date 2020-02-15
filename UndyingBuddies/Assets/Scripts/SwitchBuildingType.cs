@@ -8,6 +8,8 @@ public class SwitchBuildingType : MonoBehaviour
     [SerializeField] private GameObject white;
     [SerializeField] private GameObject blueViolet;
     [SerializeField] private AiManager _aiManager;
+    [SerializeField] private ResourceManager _resourceManager;
+    [SerializeField] private GameSettings _gameSettings;
 
     private Building building;
 
@@ -21,7 +23,7 @@ public class SwitchBuildingType : MonoBehaviour
             //hit is the object that i want to grab
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.tag == "foodStock")
+                if (hit.collider.tag == "whiteSoulsStock" || hit.collider.tag == "blueVioletSoulsStock")
                 {
                     building = hit.collider.GetComponentInParent<Building>();
                     if (building.resourceProducedAtBuilding == ResourceType.whiteSoul)
@@ -50,10 +52,18 @@ public class SwitchBuildingType : MonoBehaviour
     {
         if (_aiManager.BlueVioletSoulStockage.Contains(building.gameObject))
         {
+            _resourceManager.amountOfEnergy += building.currentStockage * _gameSettings.BlueVioletSoulValueInEnergy;
+            _resourceManager.amountOfBlueViolet -= building.currentStockage;
+            building.currentStockage = 0;
+            building.UpdateStockVisu();
             _aiManager.BlueVioletSoulStockage.Remove(building.gameObject);
         }
         if (_aiManager.WhiteSoulStockage.Contains(building.gameObject))
         {
+            _resourceManager.amountOfEnergy += building.currentStockage * _gameSettings.WhiteSoulValueInEnergy;
+            _resourceManager.amountOfWhite -= building.currentStockage;
+            building.currentStockage = 0;
+            building.UpdateStockVisu();
             _aiManager.WhiteSoulStockage.Remove(building.gameObject);
         }
     }
@@ -65,12 +75,14 @@ public class SwitchBuildingType : MonoBehaviour
             case 0:
                 building.resourceProducedAtBuilding = ResourceType.whiteSoul;
                 RemoveFromAnyStock();
+                building.StockPileTrigger.tag = "whiteSoulsStock";
                 _aiManager.WhiteSoulStockage.Add(building.gameObject);
                 break;
 
             case 1:
                 building.resourceProducedAtBuilding = ResourceType.blueVioletSoul;
                 RemoveFromAnyStock();
+                building.StockPileTrigger.tag = "blueVioletSoulsStock";
                 _aiManager.BlueVioletSoulStockage.Add(building.gameObject);
                 break;
         }

@@ -37,6 +37,12 @@ public class Building : MonoBehaviour
 
     [SerializeField] private AiManager _aiManager;
 
+    public GameObject StartVisuStockPileFlow;
+    public GameObject EndVisuStockPileFlow;
+    public ParticleFlowManager visuFlowParticle;
+
+    public GameObject StockPileTrigger;
+
     void Start()
     {
         BoudingBoxTag.SetActive(false);
@@ -67,6 +73,8 @@ public class Building : MonoBehaviour
         }
 
         UpdateStockVisu();
+
+        ResetFlowVisu();
 
         StartCoroutine(feedToNotLooseGame());
     }
@@ -127,9 +135,18 @@ public class Building : MonoBehaviour
         }
     }
 
+    void ResetFlowVisu()
+    {
+        visuFlowParticle.EndingPoint = null;
+        visuFlowParticle.StartingPoint = StartVisuStockPileFlow;
+        visuFlowParticle.active = false;
+    }
+
     IEnumerator feedToNotLooseGame()
     {
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(3);
+
+        ResetFlowVisu();
 
         if (Health < 0)
         {
