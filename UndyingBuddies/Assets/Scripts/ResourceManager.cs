@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class ResourceManager : MonoBehaviour
 {
-    public int amountOfWood;
-    public int amountOfFood;
+    public int amountOfWhite;
+    public int amountOfBlueViolet;
     public int amountOfEnergy;
 
     public Text textWood;
@@ -47,10 +47,10 @@ public class ResourceManager : MonoBehaviour
 
     IEnumerator SlowUpdate()
     {
-        amountOfFood = 0;
+        amountOfWhite = 0;
         if (_aiManager.WhiteSoulStockage.Count <=  0)
         {
-            amountOfFood = 0;
+            amountOfWhite = 0;
         }
         else
         {
@@ -62,15 +62,15 @@ public class ResourceManager : MonoBehaviour
                 }
                 else if (_aiManager.WhiteSoulStockage[i] != null)
                 {
-                    amountOfFood += _aiManager.WhiteSoulStockage[i].GetComponent<Building>().currentStockage;
+                    amountOfWhite += _aiManager.WhiteSoulStockage[i].GetComponent<Building>().currentStockage;
                 }
             }
         }
 
-        amountOfWood = 0;
+        amountOfBlueViolet = 0;
         if (_aiManager.BlueVioletSoulStockage.Count <= 0)
         {
-            amountOfWood = 0;
+            amountOfBlueViolet = 0;
         }
         else
         {
@@ -82,13 +82,13 @@ public class ResourceManager : MonoBehaviour
                 }
                 else if (_aiManager.BlueVioletSoulStockage[i] != null)
                 {
-                    amountOfWood += _aiManager.BlueVioletSoulStockage[i].GetComponent<Building>().currentStockage;
+                    amountOfBlueViolet += _aiManager.BlueVioletSoulStockage[i].GetComponent<Building>().currentStockage;
                 }
             }
         }
 
-        textWood.text = amountOfWood.ToString();
-        textFood.text = amountOfFood.ToString();
+        textWood.text = amountOfBlueViolet.ToString();
+        textFood.text = amountOfWhite.ToString();
         textEnergy.text = amountOfEnergy.ToString();
 
         yield return new WaitForSeconds(0.02f);

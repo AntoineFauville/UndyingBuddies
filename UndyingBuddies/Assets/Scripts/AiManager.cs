@@ -256,21 +256,44 @@ public class AiManager : MonoBehaviour
                                 {
                                     if (currentAiDemon.SoulBasketAmount > 0)
                                     {
-                                        if (currentAiDemon.CheckIfThereIsStockageAvailable())
+                                        //once produced you need to place these somewhere check if the correct stock exists somewhere
+                                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
                                         {
-                                            if (currentAiDemon.CheckForClosestBuildingToPlaceStockage())//check the closest and if i'm nearby returns true
+                                            if (currentAiDemon.CheckIfThereIsStockageAvailable(ResourceType.whiteSoul))
                                             {
-                                                currentAiDemon.PlaceInStockpile();
+                                                if (currentAiDemon.CheckForClosestBuildingToPlaceStockage())//check the closest and if i'm nearby returns true
+                                                {
+                                                    currentAiDemon.PlaceInStockpile();
+                                                }
+                                                else
+                                                {
+                                                    currentAiDemon.Walk();
+                                                }
                                             }
                                             else
                                             {
-                                                currentAiDemon.Walk();
+                                                Debug.Log("No More Stockage Units for " + ResourceType.whiteSoul);
+                                                currentAiDemon.Idle();
                                             }
                                         }
-                                        else
+                                        else if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
                                         {
-                                            Debug.Log("No More Stockage Units");
-                                            currentAiDemon.Idle();
+                                            if (currentAiDemon.CheckIfThereIsStockageAvailable(ResourceType.blueVioletSoul))
+                                            {
+                                                if (currentAiDemon.CheckForClosestBuildingToPlaceStockage())//check the closest and if i'm nearby returns true
+                                                {
+                                                    currentAiDemon.PlaceInStockpile();
+                                                }
+                                                else
+                                                {
+                                                    currentAiDemon.Walk();
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Debug.Log("No More Stockage Units for " + ResourceType.blueVioletSoul);
+                                                currentAiDemon.Idle();
+                                            }
                                         }
                                     }
                                     else
@@ -305,27 +328,57 @@ public class AiManager : MonoBehaviour
                                 }
                                 else
                                 {
-                                    if (ResourceToProcess.Count > 0)
+                                    //define in two part one for taking in storage one for taking in the wild
+                                    if (currentAiDemon.AssignedBuilding.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
                                     {
-                                        GameObject whiteSoul = currentAiDemon.FindClosestResourceSupply(ResourceType.whiteSoul);
-                                        if (currentAiDemon.checkIfGivenObjectIscloseBy(whiteSoul))
+                                        if (ResourceToProcess.Count > 0)//if they are resource in the nature
                                         {
-                                            currentAiDemon.Gather(ResourceType.whiteSoul);
+                                            GameObject whiteSoul = currentAiDemon.FindClosestResourceSupply(ResourceType.whiteSoul);
+                                            if (currentAiDemon.checkIfGivenObjectIscloseBy(whiteSoul))
+                                            {
+                                                currentAiDemon.Gather(ResourceType.whiteSoul);
+                                            }
+                                            else
+                                            {
+                                                currentAiDemon.Walk();
+                                            }
                                         }
-                                        else
+                                        else//otherwise idle
                                         {
-                                            currentAiDemon.Walk();
+                                            if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                            {
+                                                currentAiDemon.Idle();
+                                            }
+                                            else
+                                            {
+                                                currentAiDemon.Walk();
+                                            }
                                         }
                                     }
-                                    else
+                                    else if(currentAiDemon.AssignedBuilding.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
                                     {
-                                        if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                        if (currentAiDemon.CheckIfThereIsStockageAvailable(ResourceType.blueVioletSoul)) //is there a stock to take from ?
                                         {
-                                            currentAiDemon.Idle();
+                                            GameObject blueVioletSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.blueVioletSoul); //check for stockage
+                                            if (currentAiDemon.checkIfGivenObjectIscloseBy(blueVioletSoulStockage))//am i close to closest stockage 
+                                            {
+                                                currentAiDemon.TakeFromStockpile();
+                                            }
+                                            else
+                                            {
+                                                currentAiDemon.Walk();
+                                            }
                                         }
-                                        else
+                                        else //otherwise idle
                                         {
-                                            currentAiDemon.Walk();
+                                            if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                            {
+                                                currentAiDemon.Idle();
+                                            }
+                                            else
+                                            {
+                                                currentAiDemon.Walk();
+                                            }
                                         }
                                     }
                                 }

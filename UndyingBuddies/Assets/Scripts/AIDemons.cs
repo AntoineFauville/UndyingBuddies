@@ -226,6 +226,15 @@ public class AIDemons : MonoBehaviour
         if(!runCoroutineSoulsOnce)
             StartCoroutine(PlaceInStockpileWait());
     }
+
+    public void TakeFromStockpile()
+    {
+        animatorDemon.Play("Place");
+        NavMeshAgent.isStopped = true;
+
+        if (!runCoroutineSoulsOnce)
+            StartCoroutine(TakeFromStockpileWait());
+    }
     
     public bool CheckIfAnythingWithPriestNearBy()
     {
@@ -334,6 +343,11 @@ public class AIDemons : MonoBehaviour
         
         listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess;
 
+        if(resourceType == ResourceType.whiteSoul)
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess;
+        else if (resourceType == ResourceType.blueVioletSoul) // check for a stock
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage;
+
         foreach (GameObject potentialTarget in listToCheck)
         {
             Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
@@ -374,13 +388,22 @@ public class AIDemons : MonoBehaviour
 
         List<GameObject> listToCheck = new List<GameObject>();
 
-        if (JobType == JobType.processor)
+        if (AssignedBuilding.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
         {
             if (GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage.Count > 0)
             {
                 for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage.Count; i++)
                 {
                     listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage[i]);
+                }
+            }
+        } else if (AssignedBuilding.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
+        {
+            if (GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage.Count > 0)
+            {
+                for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage.Count; i++)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage[i]);
                 }
             }
         }
@@ -418,7 +441,7 @@ public class AIDemons : MonoBehaviour
         return check;
     } // check if there is an enemy to attack close up
 
-    public bool CheckIfThereIsStockageAvailable()
+    public bool CheckIfThereIsStockageAvailable(ResourceType resourceType)
     {
         bool check = false;
 
@@ -426,8 +449,12 @@ public class AIDemons : MonoBehaviour
 
         List<GameObject> listToCheck;
 
-       
         listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage;
+
+        if (resourceType == ResourceType.whiteSoul)
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().WhiteSoulStockage;
+        else if (resourceType == ResourceType.blueVioletSoul)
+            listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().BlueVioletSoulStockage;
 
         for (int i = 0; i < listToCheck.Count; i++)
         {
@@ -470,18 +497,15 @@ public class AIDemons : MonoBehaviour
 
         yield return new WaitForSeconds(0.4f);
 
-        if (JobType == JobType.processor)
+        for (int i = 0; i < SoulObjects.Length; i++)
         {
-            for (int i = 0; i < SoulObjects.Length; i++)
-            {
-                SoulObjects[i].SetActive(false);
+            SoulObjects[i].SetActive(false);
 
-                if (TargetToGoTo.GetComponent<Building>().currentStockage < TargetToGoTo.GetComponent<Building>().maxStockage)
-                {
-                    TargetToGoTo.GetComponent<Building>().AddToStockage();
-                }
-                yield return new WaitForSeconds(0.4f);
+            if (TargetToGoTo.GetComponent<Building>().currentStockage < TargetToGoTo.GetComponent<Building>().maxStockage)
+            {
+                TargetToGoTo.GetComponent<Building>().AddToStockage();
             }
+            yield return new WaitForSeconds(0.4f);
         }
         
         if (Wagon != null)
@@ -497,17 +521,46 @@ public class AIDemons : MonoBehaviour
         runCoroutineSoulsOnce = false;
     }
 
+    IEnumerator TakeFromStockpileWait()
+    {
+        runCoroutineSoulsOnce = true;
+        yield return new WaitForSeconds(0.4f);
+
+        if (Wagon != null)
+        {
+            Wagon.SetActive(true);
+
+            for (int i = 0; i < SoulObjects.Length; i++)
+            {
+                SoulObjects[i].SetActive(false);
+            }
+        }
+
+        for (int i = 0; i < SoulObjects.Length; i++)
+        {
+            SoulObjects[i].SetActive(true);
+
+            if (TargetToGoTo.GetComponent<Building>().currentStockage > 0)
+            {
+                TargetToGoTo.GetComponent<Building>().currentStockage -= 1;
+                SoulAmount += 1;
+                TargetToGoTo.GetComponent<Building>().UpdateStockVisu();
+            }
+            yield return new WaitForSeconds(0.4f);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        runCoroutineSoulsOnce = false;
+    }
+
     IEnumerator PlaceOnTableWait()
     {
         yield return new WaitForSeconds(0.3f);
 
-        if (JobType == JobType.foodProcessor)
+        for (int i = 0; i < SoulObjects.Length; i++)
         {
-            for (int i = 0; i < SoulObjects.Length; i++)
-            {
-                SoulObjects[i].SetActive(false);
-                yield return new WaitForSeconds(0.4f);
-            }
+            SoulObjects[i].SetActive(false);
+            yield return new WaitForSeconds(0.4f);
         }
 
         if (Wagon != null)
