@@ -9,11 +9,13 @@ public class CanvasDamage : MonoBehaviour
     public Text resistanceText;
     public GameObject Sanity;
     public GameObject Physical;
+    public GameObject Energy;
 
     public void SetupCanvasDamage(AiStatus aiStatus, int DamageAmount, int resistance)
     {
         Sanity.SetActive(false);
         Physical.SetActive(false);
+        Energy.SetActive(false);
 
         resistanceText.text = "";
         text.text = "";
@@ -33,5 +35,17 @@ public class CanvasDamage : MonoBehaviour
         {
             resistanceText.text = "Res " + resistance;
         }
+    }
+
+    public void SetupCanvasEnergy(int EnergyAmount)
+    {
+        Sanity.SetActive(false);
+        Physical.SetActive(false);
+
+        resistanceText.text = "";
+
+        Energy.SetActive(true);
+
+        text.text = "+" + EnergyAmount;
     }
 }

@@ -48,7 +48,7 @@ public class ParticleMover : MonoBehaviour
             switch (Statuses)
             {
                 case 0: //travel
-                    this.transform.position = Vector3.Lerp(this.transform.position, travelPoints[travelIndex].transform.position, fractionOfJourney);
+                    this.transform.position = Vector3.MoveTowards(this.transform.position, travelPoints[travelIndex].transform.position, fractionOfJourney);
                     break;
 
                 case 1: //switch target
