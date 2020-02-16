@@ -460,23 +460,11 @@ public class AiManager : MonoBehaviour
                                             {
                                                 if (currentAiDemon.CheckIfCurrentStockInStockIsMoreThanZero(ResourceType.whiteSoul)) //is there a stock to take from ? more than 0 
                                                 {
-                                                    GameObject blueVioletSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.whiteSoul); //check for stockage
-                                                                                                                                                          //activate to show where you are taking it from
+                                                    GameObject whiteSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.whiteSoul); //check for stockage //activate to show where you are taking it from
 
-                                                    if (blueVioletSoulStockage.GetComponent<Building>().currentStockage > 0)
-                                                    {
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.EndingPoint = currentAiDemon.AssignedBuilding.GetComponent<Building>().EndVisuStockPileFlow;
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.active = true;
+                                                    currentAiDemon.AssignedBuilding.GetComponent<Building>().BuildingLinkedToGenerateFlow_Input01 = whiteSoulStockage;
 
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.particle.GetComponent<SoulColor>().ChangeColor(GameSettings.whiteSoulColor);
-                                                    }
-                                                    else
-                                                    {
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.active = false;
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.EndingPoint = null;
-                                                    }
-
-                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(blueVioletSoulStockage))//am i close to closest stockage 
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(whiteSoulStockage))//am i close to closest stockage 
                                                     {
                                                         currentAiDemon.TakeFromStockpile();
                                                         Debug.Log("Taking from stockpile " + ResourceType.whiteSoul);
@@ -488,13 +476,6 @@ public class AiManager : MonoBehaviour
                                                 }
                                                 else //otherwise idle
                                                 {
-                                                    //deactivate all to make sure none are going in case
-                                                    for (int a = 0; a < Buildings.Count; a++)
-                                                    {
-                                                        Buildings[a].GetComponent<Building>().visuFlowParticle.active = false;
-                                                        Buildings[a].GetComponent<Building>().visuFlowParticle.EndingPoint = null;
-                                                    }
-
                                                     if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
                                                     {
                                                         currentAiDemon.Idle();
@@ -526,23 +507,11 @@ public class AiManager : MonoBehaviour
                                             {
                                                 if (currentAiDemon.CheckIfCurrentStockInStockIsMoreThanZero(ResourceType.whiteSoul)) //is there a stock to take from ? more than 0 
                                                 {
-                                                    GameObject blueVioletSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.whiteSoul); //check for stockage
-                                                                                                                                                          //activate to show where you are taking it from
-
-                                                    if (blueVioletSoulStockage.GetComponent<Building>().currentStockage > 0)
-                                                    {
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.EndingPoint = currentAiDemon.AssignedBuilding.GetComponent<Building>().EndVisuStockPileFlow;
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.active = true;
-
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.particle.GetComponent<SoulColor>().ChangeColor(GameSettings.whiteSoulColor);
-                                                    }
-                                                    else
-                                                    {
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.active = false;
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.EndingPoint = null;
-                                                    }
-
-                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(blueVioletSoulStockage))//am i close to closest stockage 
+                                                    GameObject whiteSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.whiteSoul); //check for stockage
+                                                                                                                                                     //activate to show where you are taking it from
+                                                    currentAiDemon.AssignedBuilding.GetComponent<Building>().BuildingLinkedToGenerateFlow_Input01 = whiteSoulStockage;
+                                                    
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(whiteSoulStockage))//am i close to closest stockage 
                                                     {
                                                         currentAiDemon.TakeFromStockpile();
                                                         Debug.Log("Taking from stockpile " + ResourceType.whiteSoul);
@@ -554,13 +523,6 @@ public class AiManager : MonoBehaviour
                                                 }
                                                 else //otherwise idle
                                                 {
-                                                    //deactivate all to make sure none are going in case
-                                                    for (int a = 0; a < Buildings.Count; a++)
-                                                    {
-                                                        Buildings[a].GetComponent<Building>().visuFlowParticle.active = false;
-                                                        Buildings[a].GetComponent<Building>().visuFlowParticle.EndingPoint = null;
-                                                    }
-
                                                     if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
                                                     {
                                                         currentAiDemon.Idle();
@@ -596,20 +558,9 @@ public class AiManager : MonoBehaviour
                                                 if (currentAiDemon.CheckIfCurrentStockInStockIsMoreThanZero(ResourceType.blueVioletSoul)) //is there a stock to take from ? more than 0 
                                                 {
                                                     GameObject blueVioletSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.blueVioletSoul); //check for stockage
-                                                                                                                                                          //activate to show where you are taking it from
+                                                                                                                                                               //activate to show where you are taking it from
 
-                                                    if (blueVioletSoulStockage.GetComponent<Building>().currentStockage > 0)
-                                                    {
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.EndingPoint = currentAiDemon.AssignedBuilding.GetComponent<Building>().EndVisuStockPileFlow2;
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.active = true;
-
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.particle.GetComponent<SoulColor>().ChangeColor(GameSettings.blueVioletColor);
-                                                    }
-                                                    else
-                                                    {
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.active = false;
-                                                        blueVioletSoulStockage.GetComponent<Building>().visuFlowParticle.EndingPoint = null;
-                                                    }
+                                                    currentAiDemon.AssignedBuilding.GetComponent<Building>().BuildingLinkedToGenerateFlow_Input02 = blueVioletSoulStockage;
 
                                                     if (currentAiDemon.checkIfGivenObjectIscloseBy(blueVioletSoulStockage))//am i close to closest stockage 
                                                     {
@@ -623,14 +574,7 @@ public class AiManager : MonoBehaviour
                                                 }
                                                 else //otherwise idle
                                                 {
-                                                    //deactivate all to make sure none are going in case
-                                                    for (int a = 0; a < Buildings.Count; a++)
-                                                    {
-                                                        Buildings[a].GetComponent<Building>().visuFlowParticle.active = false;
-                                                        Buildings[a].GetComponent<Building>().visuFlowParticle.EndingPoint = null;
-                                                    }
-
-                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                                     if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
                                                     {
                                                         currentAiDemon.Idle();
                                                     }

@@ -42,7 +42,10 @@ public class Building : MonoBehaviour
     public GameObject StartVisuStockPileFlow;
     public GameObject EndVisuStockPileFlow;
     public GameObject EndVisuStockPileFlow2;
-    public ParticleFlowManager visuFlowParticle;
+    public ParticleFlowManager ParticleFlowManagerOfInput_01;
+    public ParticleFlowManager ParticleFlowManagerOfInput_02;
+    public GameObject BuildingLinkedToGenerateFlow_Input01;
+    public GameObject BuildingLinkedToGenerateFlow_Input02;
 
     public GameObject StockPileTrigger;
 
@@ -90,6 +93,64 @@ public class Building : MonoBehaviour
 
     void Update()
     {
+        if (BuildingLinkedToGenerateFlow_Input01 != null)
+        {
+            if (BuildingLinkedToGenerateFlow_Input01.GetComponent<Building>().currentStockage <= 0)
+            {
+                ParticleFlowManagerOfInput_01.active = false;
+                ParticleFlowManagerOfInput_01.EndingPoint = null;
+                ParticleFlowManagerOfInput_01.StartingPoint = null;
+            }
+            else if (BuildingLinkedToGenerateFlow_Input01.GetComponent<Building>().currentStockage > 0)
+            {
+                ParticleFlowManagerOfInput_01.EndingPoint = EndVisuStockPileFlow;
+                ParticleFlowManagerOfInput_01.StartingPoint = BuildingLinkedToGenerateFlow_Input01.GetComponent<Building>().StartVisuStockPileFlow;
+                ParticleFlowManagerOfInput_01.active = true;
+            }
+
+            if (BuildingLinkedToGenerateFlow_Input01.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
+            {
+                ParticleFlowManagerOfInput_01.color = _aiManager.GameSettings.whiteSoulColor;
+            }
+            else if (BuildingLinkedToGenerateFlow_Input01.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
+            {
+                ParticleFlowManagerOfInput_01.color = _aiManager.GameSettings.blueVioletColor;
+            }
+        }
+        else
+        {
+            ParticleFlowManagerOfInput_01.active = false;
+        }
+        
+        if (BuildingLinkedToGenerateFlow_Input02 != null)
+        {
+            if (BuildingLinkedToGenerateFlow_Input02.GetComponent<Building>().currentStockage <= 0)
+            {
+                ParticleFlowManagerOfInput_02.active = false;
+                ParticleFlowManagerOfInput_02.EndingPoint = null;
+                ParticleFlowManagerOfInput_02.StartingPoint = null;
+            }
+            else if (BuildingLinkedToGenerateFlow_Input02.GetComponent<Building>().currentStockage > 0)
+            {
+                ParticleFlowManagerOfInput_02.EndingPoint = EndVisuStockPileFlow2;
+                ParticleFlowManagerOfInput_02.StartingPoint = BuildingLinkedToGenerateFlow_Input02.GetComponent<Building>().StartVisuStockPileFlow;
+                ParticleFlowManagerOfInput_02.active = true;
+            }
+
+            if (BuildingLinkedToGenerateFlow_Input02.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
+            {
+                ParticleFlowManagerOfInput_02.color = _aiManager.GameSettings.whiteSoulColor;
+            }
+            else if (BuildingLinkedToGenerateFlow_Input02.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
+            {
+                ParticleFlowManagerOfInput_02.color = _aiManager.GameSettings.blueVioletColor;
+            }
+        }
+        else
+        {
+            ParticleFlowManagerOfInput_02.active = false;
+        }
+
         if (resourceProducedAtBuilding == ResourceType.whiteSoul)
         {
             if (BrokenSoulOnTableExist)
@@ -215,17 +276,18 @@ public class Building : MonoBehaviour
 
     void ResetFlowVisu()
     {
-        visuFlowParticle.EndingPoint = null;
-        visuFlowParticle.StartingPoint = StartVisuStockPileFlow;
-        visuFlowParticle.active = false;
+        ParticleFlowManagerOfInput_01.EndingPoint = null;
+        ParticleFlowManagerOfInput_01.StartingPoint = null;
+        ParticleFlowManagerOfInput_01.active = false;
+        ParticleFlowManagerOfInput_02.EndingPoint = null;
+        ParticleFlowManagerOfInput_02.StartingPoint = null;
+        ParticleFlowManagerOfInput_02.active = false;
     }
 
     IEnumerator feedToNotLooseGame()
     {
         yield return new WaitForSeconds(3);
-
-        ResetFlowVisu();
-
+        
         if (Health < 0)
         {
             DestroyBuilding();

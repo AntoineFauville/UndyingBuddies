@@ -19,17 +19,22 @@ public class ParticleFlowManager : MonoBehaviour
 
     public bool active;
 
+    public Color color;
+
     void Start()
     {
         particleFactory.intervals = intervals;
-
-        particleFactory.Setup(particle, StartingPoint.transform, this);
-
+        
         pathAddaptor.Setup(StartingPoint, EndingPoint, this, particleHeight);
     }
 
     void Update()
     {
+        if (StartingPoint != null)
+        {
+            particleFactory.Setup(particle, StartingPoint.transform, this, color);
+        }
+
         particleFactory.activate = active;
 
         pathAddaptor.UpdateStartEnd(StartingPoint, EndingPoint);

@@ -14,23 +14,34 @@ public class ParticleFactory : MonoBehaviour
 
     private ParticleFlowManager _particleFlowManager;
 
-    public void Setup(GameObject particle, Transform startingPoint, ParticleFlowManager particleFlowManager)
+    private bool waitToSpawn;
+
+    private Color _color;
+
+    public void Setup(GameObject particle, Transform startingPoint, ParticleFlowManager particleFlowManager, Color colorParticle)
     {
+        _color = colorParticle;
         _particle = particle;
         _startingPoint = startingPoint;
         _particleFlowManager = particleFlowManager;
 
-        StartCoroutine(spawnParticleSlowly());
+        if (!waitToSpawn)
+        {
+            StartCoroutine(spawnParticleSlowly());
+        }
     }
 
     public void CreateParticle()
     {
         GameObject Particle = Instantiate(_particle, _startingPoint.position, new Quaternion());
+        Particle.GetComponent<SoulColor>().ChangeColor(_color);
         Particle.GetComponent<ParticleMover>().travelPoints = _particleFlowManager.Points;
     }
 
     IEnumerator spawnParticleSlowly()
     {
+        waitToSpawn = true;
+
         if (activate)
         {
             CreateParticle();
@@ -38,6 +49,8 @@ public class ParticleFactory : MonoBehaviour
 
         yield return new WaitForSeconds(intervals);
 
-        StartCoroutine(spawnParticleSlowly());
+        waitToSpawn = false;
+
+        //StartCoroutine(spawnParticleSlowly());
     }
 }
