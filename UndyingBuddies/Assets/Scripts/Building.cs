@@ -17,7 +17,9 @@ public class Building : MonoBehaviour
 
     public List<GameObject> Stokpile = new List<GameObject>();
 
-    public bool WhatsBeenWorkedOnTheTableExist;
+    public bool BrokenSoulOnTableExist;
+    public bool WhiteSoulOnTableExist;
+    public bool BlueVioletSoulOnTableExist;
     public bool WorkedOnTableBeenProcessed;
 
     public List<GameObject> StockPileVisuals = new List<GameObject>();
@@ -39,12 +41,19 @@ public class Building : MonoBehaviour
 
     public GameObject StartVisuStockPileFlow;
     public GameObject EndVisuStockPileFlow;
+    public GameObject EndVisuStockPileFlow2;
     public ParticleFlowManager visuFlowParticle;
 
     public GameObject StockPileTrigger;
 
+    public GameObject SoulsInWhell_01;
+    public GameObject SoulsInWhell_02;
+
     void Start()
     {
+        SoulsInWhell_01.SetActive(false);
+        SoulsInWhell_02.SetActive(false);
+
         BoudingBoxTag.SetActive(false);
         detectPlacement.gameObject.SetActive(false);
 
@@ -77,6 +86,75 @@ public class Building : MonoBehaviour
         ResetFlowVisu();
 
         StartCoroutine(feedToNotLooseGame());
+    }
+
+    void Update()
+    {
+        if (resourceProducedAtBuilding == ResourceType.whiteSoul)
+        {
+            if (BrokenSoulOnTableExist)
+            {
+                SoulsInWhell_01.SetActive(true);
+                SoulsInWhell_01.GetComponent<SoulColor>().ChangeColor(_aiManager.GameSettings.brokenSoulColor);
+            }
+            else
+            {
+                SoulsInWhell_01.SetActive(false);
+            }
+
+            //color of the stockpile
+            for (int i = 0; i < StockPileVisuals.Count; i++)
+            {
+                StockPileVisuals[i].GetComponent<SoulColor>().ChangeColor(_aiManager.GameSettings.whiteSoulColor);
+            }
+        }
+
+        if (resourceProducedAtBuilding == ResourceType.blueVioletSoul)
+        {
+            if (WhiteSoulOnTableExist)
+            {
+                SoulsInWhell_01.SetActive(true);
+                SoulsInWhell_01.GetComponent<SoulColor>().ChangeColor(_aiManager.GameSettings.whiteSoulColor);
+            }
+            else
+            {
+                SoulsInWhell_01.SetActive(false);
+            }
+
+            //color of the stockpile
+            for (int i = 0; i < StockPileVisuals.Count; i++)
+            {
+                StockPileVisuals[i].GetComponent<SoulColor>().ChangeColor(_aiManager.GameSettings.blueVioletColor);
+            }
+        }
+
+        if (resourceProducedAtBuilding == ResourceType.violetSoul)
+        {
+            if (WhiteSoulOnTableExist)
+            {
+                SoulsInWhell_01.SetActive(true);
+                SoulsInWhell_01.GetComponent<SoulColor>().ChangeColor(_aiManager.GameSettings.whiteSoulColor);
+            }
+            else
+            {
+                SoulsInWhell_01.SetActive(false);
+            }
+            if (BlueVioletSoulOnTableExist)
+            {
+                SoulsInWhell_02.SetActive(true);
+                SoulsInWhell_02.GetComponent<SoulColor>().ChangeColor(_aiManager.GameSettings.blueVioletColor);
+            }
+            else
+            {
+                SoulsInWhell_02.SetActive(false);
+            }
+
+            //color of the stockpile
+            for (int i = 0; i < StockPileVisuals.Count; i++)
+            {
+                StockPileVisuals[i].GetComponent<SoulColor>().ChangeColor(_aiManager.GameSettings.violetColor);
+            }
+        }
     }
 
     public void GetAttack(int damage)

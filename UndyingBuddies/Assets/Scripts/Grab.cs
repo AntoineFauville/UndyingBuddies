@@ -55,6 +55,10 @@ public class Grab : MonoBehaviour
                 {
                     Sacrifice.TransformIntoEnergy(ResourceType.blueVioletSoul, hit.transform.gameObject, handAnim);
                 }
+                else if (hit.collider.tag == "violetSoulsStock")
+                {
+                    Sacrifice.TransformIntoEnergy(ResourceType.violetSoul, hit.transform.gameObject, handAnim);
+                }
 
                 if (hit.collider.transform.GetComponent<Building>() == null)
                 {

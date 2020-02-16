@@ -44,4 +44,10 @@ public class GameSettings : ScriptableObject
 
     public int WhiteSoulValueInEnergy = 2;
     public int BlueVioletSoulValueInEnergy = 9;
+    public int VioletSoulValueInEnergy = 30;
+
+    public Color brokenSoulColor;
+    public Color whiteSoulColor;
+    public Color blueVioletColor;
+    public Color violetColor;
 }

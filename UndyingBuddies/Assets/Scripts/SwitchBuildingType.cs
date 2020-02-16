@@ -7,6 +7,7 @@ public class SwitchBuildingType : MonoBehaviour
     [SerializeField] private GameObject UI;
     [SerializeField] private GameObject white;
     [SerializeField] private GameObject blueViolet;
+    [SerializeField] private GameObject violet;
     [SerializeField] private AiManager _aiManager;
     [SerializeField] private ResourceManager _resourceManager;
     [SerializeField] private GameSettings _gameSettings;
@@ -23,7 +24,7 @@ public class SwitchBuildingType : MonoBehaviour
             //hit is the object that i want to grab
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.tag == "whiteSoulsStock" || hit.collider.tag == "blueVioletSoulsStock")
+                if (hit.collider.tag == "whiteSoulsStock" || hit.collider.tag == "blueVioletSoulsStock" || hit.collider.tag == "violetSoulsStock")
                 {
                     building = hit.collider.GetComponentInParent<Building>();
                     if (building.resourceProducedAtBuilding == ResourceType.whiteSoul)
@@ -31,10 +32,15 @@ public class SwitchBuildingType : MonoBehaviour
                         Reset();
                         white.SetActive(true);
                     }
-                    else if (building.resourceProducedAtBuilding == ResourceType.whiteSoul)
+                    else if (building.resourceProducedAtBuilding == ResourceType.blueVioletSoul)
                     {
                         Reset();
                         blueViolet.SetActive(true);
+                    }
+                    else if (building.resourceProducedAtBuilding == ResourceType.violetSoul)
+                    {
+                        Reset();
+                        violet.SetActive(true);
                     }
                     UI.SetActive(true);
                 }
@@ -46,6 +52,7 @@ public class SwitchBuildingType : MonoBehaviour
     {
         white.SetActive(false);
         blueViolet.SetActive(false);
+        violet.SetActive(false);
     }
 
     void RemoveFromAnyStock()
@@ -66,6 +73,14 @@ public class SwitchBuildingType : MonoBehaviour
             building.UpdateStockVisu();
             _aiManager.WhiteSoulStockage.Remove(building.gameObject);
         }
+        if (_aiManager.VioletSoulStorage.Contains(building.gameObject))
+        {
+            _resourceManager.amountOfEnergy += building.currentStockage * _gameSettings.VioletSoulValueInEnergy;
+            _resourceManager.amountOfWhite -= building.currentStockage;
+            building.currentStockage = 0;
+            building.UpdateStockVisu();
+            _aiManager.VioletSoulStorage.Remove(building.gameObject);
+        }
     }
 
     public void SwitchResourceType(int type)
@@ -84,6 +99,12 @@ public class SwitchBuildingType : MonoBehaviour
                 RemoveFromAnyStock();
                 building.StockPileTrigger.tag = "blueVioletSoulsStock";
                 _aiManager.BlueVioletSoulStockage.Add(building.gameObject);
+                break;
+            case 2:
+                building.resourceProducedAtBuilding = ResourceType.violetSoul;
+                RemoveFromAnyStock();
+                building.StockPileTrigger.tag = "violetSoulsStock";
+                _aiManager.VioletSoulStorage.Add(building.gameObject);
                 break;
         }
     }

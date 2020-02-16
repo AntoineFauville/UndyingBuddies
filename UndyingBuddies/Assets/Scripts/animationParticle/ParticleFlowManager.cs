@@ -15,7 +15,7 @@ public class ParticleFlowManager : MonoBehaviour
     [SerializeField] private int intervals = 2;
     [SerializeField] private int particleHeight = 5;
 
-    [SerializeField] private GameObject particle;
+    public GameObject particle;
 
     public bool active;
 

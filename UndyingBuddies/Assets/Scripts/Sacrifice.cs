@@ -94,6 +94,17 @@ public class Sacrifice : MonoBehaviour
                     _particleSystem[i].GetComponent<ParticleSystem>().Play();
                 }
             }
+
+            if (resourceType == ResourceType.violetSoul)
+            {
+                handAnim.Play("hand anim Sacrifice");
+                resourceManager.amountOfEnergy += gameSettings.VioletSoulValueInEnergy;
+
+                for (int i = 0; i < _particleSystem.Length; i++)
+                {
+                    _particleSystem[i].GetComponent<ParticleSystem>().Play();
+                }
+            }
         }
     }
 }
