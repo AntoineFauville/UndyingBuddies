@@ -49,15 +49,23 @@ public class Grab : MonoBehaviour
             {
                 if (hit.collider.tag == "whiteSoulsStock")
                 {
-                    Sacrifice.TransformIntoEnergy(ResourceType.whiteSoul, hit.transform.gameObject, handAnim);
+                    Sacrifice.TransformIntoEnergy(ResourceType.whiteSoul, hit, handAnim);
                 }
                 else if (hit.collider.tag == "blueVioletSoulsStock")
                 {
-                    Sacrifice.TransformIntoEnergy(ResourceType.blueVioletSoul, hit.transform.gameObject, handAnim);
+                    Sacrifice.TransformIntoEnergy(ResourceType.blueVioletSoul, hit, handAnim);
                 }
                 else if (hit.collider.tag == "violetSoulsStock")
                 {
-                    Sacrifice.TransformIntoEnergy(ResourceType.violetSoul, hit.transform.gameObject, handAnim);
+                    Sacrifice.TransformIntoEnergy(ResourceType.violetSoul, hit, handAnim);
+                }
+                else if (hit.collider.tag == "blueSoulsStock")
+                {
+                    Sacrifice.TransformIntoEnergy(ResourceType.blueSoul, hit, handAnim);
+                }
+                else if (hit.collider.tag == "redSoulsStock")
+                {
+                    Sacrifice.TransformIntoEnergy(ResourceType.redSoul, hit, handAnim);
                 }
 
                 if (hit.collider.transform.GetComponent<Building>() == null)

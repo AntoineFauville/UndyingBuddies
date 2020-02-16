@@ -14,7 +14,7 @@ public class Resource : MonoBehaviour
 
     void Start()
     {
-        if (resourceType == ResourceType.whiteSoul)
+        if (resourceType == ResourceType.brokenSoul)
         {
             amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.BrokenSoulsOnResource;
         }
@@ -44,7 +44,6 @@ public class Resource : MonoBehaviour
         if (resourceType == ResourceType.whiteSoul)
         {
             GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess.Remove(this.gameObject);
-
         }
 
         DestroyImmediate(this.gameObject);

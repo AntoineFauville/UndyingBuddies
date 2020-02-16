@@ -40,14 +40,17 @@ public class GameSettings : ScriptableObject
     public CanvasDamage CanvasDamagePrefab;
 
     public int CostOfNewBuilding = 30;
-
-
+    
     public int WhiteSoulValueInEnergy = 2;
     public int BlueVioletSoulValueInEnergy = 9;
     public int VioletSoulValueInEnergy = 30;
+    public int BlueSoulValueInEnergy = 65;
+    public int RedSoulValueInEnergy = 90;
 
     public Color brokenSoulColor;
     public Color whiteSoulColor;
     public Color blueVioletColor;
     public Color violetColor;
+    public Color blueColor;
+    public Color redColor;
 }

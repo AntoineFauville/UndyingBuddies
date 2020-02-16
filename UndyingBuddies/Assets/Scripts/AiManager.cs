@@ -19,6 +19,8 @@ public class AiManager : MonoBehaviour
     public List<GameObject> WhiteSoulStockage = new List<GameObject>();
     public List<GameObject> BlueVioletSoulStockage = new List<GameObject>();
     public List<GameObject> VioletSoulStorage = new List<GameObject>();
+    public List<GameObject> BlueSoulStockage = new List<GameObject>();
+    public List<GameObject> RedSoulStorage = new List<GameObject>();
 
     public List<GameObject> Buildings = new List<GameObject>();
     public List<GameObject> BuildingWithJobs = new List<GameObject>();
@@ -76,6 +78,16 @@ public class AiManager : MonoBehaviour
             if (building.resourceProducedAtBuilding == ResourceType.violetSoul && !VioletSoulStorage.Contains(building.gameObject))
             {
                 VioletSoulStorage.Add(building.gameObject);
+            }
+
+            if (building.resourceProducedAtBuilding == ResourceType.blueSoul && !BlueSoulStockage.Contains(building.gameObject))
+            {
+                BlueSoulStockage.Add(building.gameObject);
+            }
+
+            if (building.resourceProducedAtBuilding == ResourceType.redSoul && !RedSoulStorage.Contains(building.gameObject))
+            {
+                RedSoulStorage.Add(building.gameObject);
             }
         }
     }
@@ -188,6 +200,22 @@ public class AiManager : MonoBehaviour
             if (VioletSoulStorage[i] == null)
             {
                 VioletSoulStorage.Remove(VioletSoulStorage[i]);
+            }
+        }
+
+        for (int i = 0; i < BlueSoulStockage.Count; i++)
+        {
+            if (BlueSoulStockage[i] == null)
+            {
+                BlueSoulStockage.Remove(BlueSoulStockage[i]);
+            }
+        }
+
+        for (int i = 0; i < RedSoulStorage.Count; i++)
+        {
+            if (RedSoulStorage[i] == null)
+            {
+                RedSoulStorage.Remove(RedSoulStorage[i]);
             }
         }
 
@@ -405,6 +433,102 @@ public class AiManager : MonoBehaviour
                                     }
                                 }
                             }
+                            else if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WhiteSoulOnTableExist &&
+                               currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().VioletSoulOnTableExist &&
+                               currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.blueSoul)
+                            {
+                                if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed)
+                                {
+                                    if (currentAiDemon.SoulBasketAmount > 0)
+                                    {
+                                        //once produced you need to place these somewhere check if the correct stock exists somewhere
+                                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.blueSoul)
+                                        {
+                                            if (currentAiDemon.CheckIfThereIsAWayToPlaceStockage(ResourceType.blueSoul))
+                                            {
+                                                if (currentAiDemon.CheckForClosestBuildingToPlaceStockage())//check the closest and if i'm nearby returns true
+                                                {
+                                                    currentAiDemon.PlaceInStockpile();
+                                                }
+                                                else
+                                                {
+                                                    currentAiDemon.Walk();
+                                                    Debug.Log("Not close enought from stockpile of " + ResourceType.blueSoul);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Debug.Log("No More Stockage Units for " + ResourceType.blueSoul);
+                                                currentAiDemon.Idle();
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.TakeFromTable();
+                                    }
+                                }
+                                else
+                                {
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                    {
+                                        currentAiDemon.Process(); // change process to transform the item on table into processed
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                        Debug.Log("Not close enought to my assigned building");
+                                    }
+                                }
+                            }
+                            else if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().BlueVioletSoulOnTableExist &&
+                              currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().VioletSoulOnTableExist &&
+                              currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.redSoul)
+                            {
+                                if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed)
+                                {
+                                    if (currentAiDemon.SoulBasketAmount > 0)
+                                    {
+                                        //once produced you need to place these somewhere check if the correct stock exists somewhere
+                                        if (currentAiDemon.AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.redSoul)
+                                        {
+                                            if (currentAiDemon.CheckIfThereIsAWayToPlaceStockage(ResourceType.redSoul))
+                                            {
+                                                if (currentAiDemon.CheckForClosestBuildingToPlaceStockage())//check the closest and if i'm nearby returns true
+                                                {
+                                                    currentAiDemon.PlaceInStockpile();
+                                                }
+                                                else
+                                                {
+                                                    currentAiDemon.Walk();
+                                                    Debug.Log("Not close enought from stockpile of " + ResourceType.redSoul);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Debug.Log("No More Stockage Units for " + ResourceType.redSoul);
+                                                currentAiDemon.Idle();
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.TakeFromTable();
+                                    }
+                                }
+                                else
+                                {
+                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                    {
+                                        currentAiDemon.Process(); // change process to transform the item on table into processed
+                                    }
+                                    else
+                                    {
+                                        currentAiDemon.Walk();
+                                        Debug.Log("Not close enought to my assigned building");
+                                    }
+                                }
+                            }
                             else
                             {
                                 if (currentAiDemon.SoulAmount >= currentAiDemon.MaxSouls)
@@ -455,7 +579,8 @@ public class AiManager : MonoBehaviour
                                     }
                                     else if (currentAiDemon.AssignedBuilding.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
                                     {
-                                        if (!currentAiDemon.AssignedBuilding.GetComponent<Building>().WhiteSoulOnTableExist) {
+                                        if (!currentAiDemon.AssignedBuilding.GetComponent<Building>().WhiteSoulOnTableExist)
+                                        {
                                             if (WhiteSoulStockage.Count > 0)//if they are actual stock in the game, if no building around then idle at home
                                             {
                                                 if (currentAiDemon.CheckIfCurrentStockInStockIsMoreThanZero(ResourceType.whiteSoul)) //is there a stock to take from ? more than 0 
@@ -601,6 +726,214 @@ public class AiManager : MonoBehaviour
                                         else
                                         {
                                             Debug.Log(ResourceType.blueVioletSoul + " Already exist on table");
+                                        }
+                                    }
+                                    else if (currentAiDemon.AssignedBuilding.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueSoul)
+                                    {
+                                        if (!currentAiDemon.AssignedBuilding.GetComponent<Building>().WhiteSoulOnTableExist)
+                                        {
+                                            if (WhiteSoulStockage.Count > 0)//if they are actual stock in the game, if no building around then idle at home
+                                            {
+                                                if (currentAiDemon.CheckIfCurrentStockInStockIsMoreThanZero(ResourceType.whiteSoul)) //is there a stock to take from ? more than 0 
+                                                {
+                                                    GameObject whiteSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.whiteSoul); //check for stockage
+                                                                                                                                                     //activate to show where you are taking it from
+                                                    currentAiDemon.AssignedBuilding.GetComponent<Building>().BuildingLinkedToGenerateFlow_Input01 = whiteSoulStockage;
+
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(whiteSoulStockage))//am i close to closest stockage 
+                                                    {
+                                                        currentAiDemon.TakeFromStockpile();
+                                                        Debug.Log("Taking from stockpile " + ResourceType.whiteSoul);
+                                                    }
+                                                    else
+                                                    {
+                                                        currentAiDemon.Walk();
+                                                    }
+                                                }
+                                                else //otherwise idle
+                                                {
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                                    {
+                                                        currentAiDemon.Idle();
+                                                    }
+                                                    else
+                                                    {
+                                                        currentAiDemon.Walk();
+                                                    }
+                                                }
+                                            }
+                                            else //otherwise idle
+                                            {
+                                                Debug.Log("No more " + ResourceType.whiteSoul + " in stockpile");
+
+                                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                                {
+                                                    currentAiDemon.Idle();
+                                                }
+                                                else
+                                                {
+                                                    currentAiDemon.Walk();
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Debug.Log(ResourceType.whiteSoul + " Already exist on table");
+                                        }
+                                        if (!currentAiDemon.AssignedBuilding.GetComponent<Building>().VioletSoulOnTableExist)
+                                        {
+                                            if (VioletSoulStorage.Count > 0)//if they are actual stock in the game, if no building around then idle at home
+                                            {
+                                                if (currentAiDemon.CheckIfCurrentStockInStockIsMoreThanZero(ResourceType.violetSoul)) //is there a stock to take from ? more than 0 
+                                                {
+                                                    GameObject VioletSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.violetSoul); //check for stockage
+                                                                                                                                                               //activate to show where you are taking it from
+
+                                                    currentAiDemon.AssignedBuilding.GetComponent<Building>().BuildingLinkedToGenerateFlow_Input02 = VioletSoulStockage;
+
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(VioletSoulStockage))//am i close to closest stockage 
+                                                    {
+                                                        currentAiDemon.TakeFromStockpile();
+                                                        Debug.Log("Taking from stockpile " + ResourceType.violetSoul);
+                                                    }
+                                                    else
+                                                    {
+                                                        currentAiDemon.Walk();
+                                                    }
+                                                }
+                                                else //otherwise idle
+                                                {
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                                    {
+                                                        currentAiDemon.Idle();
+                                                    }
+                                                    else
+                                                    {
+                                                        currentAiDemon.Walk();
+                                                    }
+                                                }
+                                            }
+                                            else //otherwise idle
+                                            {
+                                                Debug.Log("No more " + ResourceType.violetSoul + " in stockpile");
+
+                                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                                {
+                                                    currentAiDemon.Idle();
+                                                }
+                                                else
+                                                {
+                                                    currentAiDemon.Walk();
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Debug.Log(ResourceType.violetSoul + " Already exist on table");
+                                        }
+                                    }
+                                    else if (currentAiDemon.AssignedBuilding.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.redSoul)
+                                    {
+                                        if (!currentAiDemon.AssignedBuilding.GetComponent<Building>().BlueVioletSoulOnTableExist)
+                                        {
+                                            if (BlueVioletSoulStockage.Count > 0)//if they are actual stock in the game, if no building around then idle at home
+                                            {
+                                                if (currentAiDemon.CheckIfCurrentStockInStockIsMoreThanZero(ResourceType.blueVioletSoul)) //is there a stock to take from ? more than 0 
+                                                {
+                                                    GameObject blueVioletSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.blueVioletSoul); //check for stockage
+                                                                                                                                                     //activate to show where you are taking it from
+                                                    currentAiDemon.AssignedBuilding.GetComponent<Building>().BuildingLinkedToGenerateFlow_Input01 = blueVioletSoulStockage;
+
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(blueVioletSoulStockage))//am i close to closest stockage 
+                                                    {
+                                                        currentAiDemon.TakeFromStockpile();
+                                                        Debug.Log("Taking from stockpile " + ResourceType.blueVioletSoul);
+                                                    }
+                                                    else
+                                                    {
+                                                        currentAiDemon.Walk();
+                                                    }
+                                                }
+                                                else //otherwise idle
+                                                {
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                                    {
+                                                        currentAiDemon.Idle();
+                                                    }
+                                                    else
+                                                    {
+                                                        currentAiDemon.Walk();
+                                                    }
+                                                }
+                                            }
+                                            else //otherwise idle
+                                            {
+                                                Debug.Log("No more " + ResourceType.blueVioletSoul + " in stockpile");
+
+                                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                                {
+                                                    currentAiDemon.Idle();
+                                                }
+                                                else
+                                                {
+                                                    currentAiDemon.Walk();
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Debug.Log(ResourceType.blueVioletSoul + " Already exist on table");
+                                        }
+                                        if (!currentAiDemon.AssignedBuilding.GetComponent<Building>().VioletSoulOnTableExist)
+                                        {
+                                            if (BlueVioletSoulStockage.Count > 0)//if they are actual stock in the game, if no building around then idle at home
+                                            {
+                                                if (currentAiDemon.CheckIfCurrentStockInStockIsMoreThanZero(ResourceType.violetSoul)) //is there a stock to take from ? more than 0 
+                                                {
+                                                    GameObject VioletSoulStockage = currentAiDemon.FindClosestResourceSupply(ResourceType.violetSoul); //check for stockage
+                                                                                                                                                       //activate to show where you are taking it from
+
+                                                    currentAiDemon.AssignedBuilding.GetComponent<Building>().BuildingLinkedToGenerateFlow_Input02 = VioletSoulStockage;
+
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(VioletSoulStockage))//am i close to closest stockage 
+                                                    {
+                                                        currentAiDemon.TakeFromStockpile();
+                                                        Debug.Log("Taking from stockpile " + ResourceType.violetSoul);
+                                                    }
+                                                    else
+                                                    {
+                                                        currentAiDemon.Walk();
+                                                    }
+                                                }
+                                                else //otherwise idle
+                                                {
+                                                    if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                                    {
+                                                        currentAiDemon.Idle();
+                                                    }
+                                                    else
+                                                    {
+                                                        currentAiDemon.Walk();
+                                                    }
+                                                }
+                                            }
+                                            else //otherwise idle
+                                            {
+                                                Debug.Log("No more " + ResourceType.violetSoul + " in stockpile");
+
+                                                if (currentAiDemon.checkIfGivenObjectIscloseBy(currentAiDemon.AssignedBuilding))
+                                                {
+                                                    currentAiDemon.Idle();
+                                                }
+                                                else
+                                                {
+                                                    currentAiDemon.Walk();
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Debug.Log(ResourceType.violetSoul + " Already exist on table");
                                         }
                                     }
                                 }

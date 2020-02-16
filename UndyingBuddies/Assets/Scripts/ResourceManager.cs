@@ -7,6 +7,9 @@ public class ResourceManager : MonoBehaviour
 {
     public int amountOfWhite;
     public int amountOfBlueViolet;
+    public int amountOfViolet;
+    public int amountOfBlue;
+    public int amountOfRed;
     public int amountOfEnergy;
 
     public Text textWood;
@@ -83,6 +86,66 @@ public class ResourceManager : MonoBehaviour
                 else if (_aiManager.BlueVioletSoulStockage[i] != null)
                 {
                     amountOfBlueViolet += _aiManager.BlueVioletSoulStockage[i].GetComponent<Building>().currentStockage;
+                }
+            }
+        }
+
+        amountOfViolet = 0;
+        if (_aiManager.VioletSoulStorage.Count <= 0)
+        {
+            amountOfBlueViolet = 0;
+        }
+        else
+        {
+            for (int i = 0; i < _aiManager.VioletSoulStorage.Count; i++)
+            {
+                if (_aiManager.VioletSoulStorage[i] == null)
+                {
+                    _aiManager.VioletSoulStorage.Remove(_aiManager.VioletSoulStorage[i]);
+                }
+                else if (_aiManager.VioletSoulStorage[i] != null)
+                {
+                    amountOfViolet += _aiManager.VioletSoulStorage[i].GetComponent<Building>().currentStockage;
+                }
+            }
+        }
+
+        amountOfBlue = 0;
+        if (_aiManager.BlueSoulStockage.Count <= 0)
+        {
+            amountOfBlue = 0;
+        }
+        else
+        {
+            for (int i = 0; i < _aiManager.BlueSoulStockage.Count; i++)
+            {
+                if (_aiManager.BlueSoulStockage[i] == null)
+                {
+                    _aiManager.BlueSoulStockage.Remove(_aiManager.BlueSoulStockage[i]);
+                }
+                else if (_aiManager.BlueSoulStockage[i] != null)
+                {
+                    amountOfBlue += _aiManager.BlueSoulStockage[i].GetComponent<Building>().currentStockage;
+                }
+            }
+        }
+
+        amountOfRed = 0;
+        if (_aiManager.RedSoulStorage.Count <= 0)
+        {
+            amountOfRed = 0;
+        }
+        else
+        {
+            for (int i = 0; i < _aiManager.RedSoulStorage.Count; i++)
+            {
+                if (_aiManager.RedSoulStorage[i] == null)
+                {
+                    _aiManager.RedSoulStorage.Remove(_aiManager.RedSoulStorage[i]);
+                }
+                else if (_aiManager.RedSoulStorage[i] != null)
+                {
+                    amountOfRed += _aiManager.RedSoulStorage[i].GetComponent<Building>().currentStockage;
                 }
             }
         }

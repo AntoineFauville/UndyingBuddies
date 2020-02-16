@@ -144,6 +144,10 @@ public class AIDemons : MonoBehaviour
             AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.blueVioletColor);
         else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.violetSoul)
             AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.violetColor);
+        else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.blueSoul)
+            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.blueColor);
+        else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.redSoul)
+            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.redColor);
     }
 
     public void Gather(ResourceType resourceToGather)
@@ -208,13 +212,9 @@ public class AIDemons : MonoBehaviour
             Wagon.SetActive(true);
         }
 
-        if (JobType == JobType.processor)
-        {
-            SoulBasketAmount = 1;
+        SoulBasketAmount = 1;
+        SoulObjects.SetActive(true);
 
-            SoulObjects.SetActive(true);
-        }
-        
         if (AssignedBuilding.GetComponentInParent<Building>().visualsOnTable != null)
         {
             AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.SetActive(false);
@@ -379,6 +379,16 @@ public class AIDemons : MonoBehaviour
                 }
             }
         }
+        else if (resourceType == ResourceType.violetSoul) // check for a stock
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().VioletSoulStorage.Count; i++)
+            {
+                if (GameObject.Find("Main Camera").GetComponent<AiManager>().VioletSoulStorage[i].GetComponent<Building>().currentStockage > 0)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().VioletSoulStorage[i]);
+                }
+            }
+        }
 
         foreach (GameObject potentialTarget in listToCheck)
         {
@@ -450,6 +460,26 @@ public class AIDemons : MonoBehaviour
                 }
             }
         }
+        else if (AssignedBuilding.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueSoul)
+        {
+            if (GameObject.Find("Main Camera").GetComponent<AiManager>().BlueSoulStockage.Count > 0)
+            {
+                for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().BlueSoulStockage.Count; i++)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().BlueSoulStockage[i]);
+                }
+            }
+        }
+        else if (AssignedBuilding.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.redSoul)
+        {
+            if (GameObject.Find("Main Camera").GetComponent<AiManager>().RedSoulStorage.Count > 0)
+            {
+                for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().RedSoulStorage.Count; i++)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().RedSoulStorage[i]);
+                }
+            }
+        }
 
         for (int i = 0; i < listToCheck.Count; i++)
         {
@@ -480,6 +510,8 @@ public class AIDemons : MonoBehaviour
         {
             check = false;
         }
+
+        Debug.Log(check + "CheckForClosestBuildingToPlaceStockage");
 
         return check;
     } // check if there is an enemy to attack close up
@@ -515,6 +547,20 @@ public class AIDemons : MonoBehaviour
                 listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().VioletSoulStorage[i]);
             }
         }
+        else if (resourceType == ResourceType.blueSoul)
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().BlueSoulStockage.Count; i++)
+            {
+                listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().BlueSoulStockage[i]);
+            }
+        }
+        else if (resourceType == ResourceType.redSoul)
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().RedSoulStorage.Count; i++)
+            {
+                listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().RedSoulStorage[i]);
+            }
+        }
 
         if (listToCheck.Count > 0)
         {
@@ -532,6 +578,8 @@ public class AIDemons : MonoBehaviour
         {
             check = false;
         }
+
+        Debug.Log(check + "CheckIfThereIsAWayToPlaceStockage");
 
         return check;
     }
@@ -574,14 +622,34 @@ public class AIDemons : MonoBehaviour
                 }
             }
         }
+        else if (resourceType == ResourceType.blueSoul)
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().BlueSoulStockage.Count; i++)
+            {
+                if (GameObject.Find("Main Camera").GetComponent<AiManager>().BlueSoulStockage[i].GetComponent<Building>().currentStockage > 0)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().BlueSoulStockage[i]);
+                }
+            }
+        }
+        else if (resourceType == ResourceType.redSoul)
+        {
+            for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().RedSoulStorage.Count; i++)
+            {
+                if (GameObject.Find("Main Camera").GetComponent<AiManager>().RedSoulStorage[i].GetComponent<Building>().currentStockage > 0)
+                {
+                    listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().RedSoulStorage[i]);
+                }
+            }
+        }
 
         if (listToCheck.Count > 0)
         {
+            int stock = 0;
+
             for (int i = 0; i < listToCheck.Count; i++)
             {
-                int stock;
-
-                stock = listToCheck[i].GetComponent<Building>().maxStockage - listToCheck[i].GetComponent<Building>().currentStockage;
+                stock += listToCheck[i].GetComponent<Building>().currentStockage;
 
                 stockage += stock;
             }
@@ -642,6 +710,7 @@ public class AIDemons : MonoBehaviour
         AssignedBuilding.GetComponentInParent<Building>().BrokenSoulOnTableExist = false;
         AssignedBuilding.GetComponentInParent<Building>().WhiteSoulOnTableExist = false;
         AssignedBuilding.GetComponentInParent<Building>().BlueVioletSoulOnTableExist = false;
+        AssignedBuilding.GetComponentInParent<Building>().VioletSoulOnTableExist = false;
         SoulBasketAmount = 0;
 
         runCoroutineSoulsOnce = false;
@@ -660,6 +729,11 @@ public class AIDemons : MonoBehaviour
         {
             resourceImCurrentlyTransporting = ResourceType.blueVioletSoul;
             SoulObjects.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.blueVioletColor);
+        }
+        else if (TargetToGoTo.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.violetSoul)
+        {
+            resourceImCurrentlyTransporting = ResourceType.violetSoul;
+            SoulObjects.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.violetColor);
         }
 
         yield return new WaitForSeconds(0.4f);
@@ -712,6 +786,10 @@ public class AIDemons : MonoBehaviour
         else if (resourceImCurrentlyTransporting == ResourceType.blueVioletSoul)
         {
             AssignedBuilding.GetComponentInParent<Building>().BlueVioletSoulOnTableExist = true;
+        }
+        else if (resourceImCurrentlyTransporting == ResourceType.violetSoul)
+        {
+            AssignedBuilding.GetComponentInParent<Building>().VioletSoulOnTableExist = true;
         }
 
         AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = false; //but it hasn't been processed yet

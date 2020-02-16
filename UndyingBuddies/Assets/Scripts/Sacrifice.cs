@@ -9,6 +9,8 @@ public class Sacrifice : MonoBehaviour
     [SerializeField] private GameObject[] _particleSystem;
     AiManager _aiManager;
 
+    [SerializeField] private GameObject spawnPointCanvas;
+
     void Start()
     {
         for (int i = 0; i < _particleSystem.Length; i++)
@@ -23,19 +25,28 @@ public class Sacrifice : MonoBehaviour
 
         if (grabbedObject.GetComponent<Resource>() != null)
         {
-            if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.whiteSoul)
+            if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.brokenSoul)
             {
                 resourceManager.amountOfEnergy += gameSettings.BrokenSoulValueInEnergy;
+
+                CanvasDamage canvasDamage = Instantiate(gameSettings.CanvasDamagePrefab, spawnPointCanvas.transform.position, new Quaternion());
+                canvasDamage.SetupCanvasEnergy(gameSettings.BrokenSoulValueInEnergy);
             }
             else if (grabbedObject.GetComponent<Resource>().resourceType == ResourceType.energy)
             {
                 resourceManager.amountOfEnergy += gameSettings.EnergyGetOutOfSacrificingHouse;
+
+                CanvasDamage canvasDamage = Instantiate(gameSettings.CanvasDamagePrefab, spawnPointCanvas.transform.position, new Quaternion());
+                canvasDamage.SetupCanvasEnergy(gameSettings.EnergyGetOutOfSacrificingHouse);
             }
         }
 
         if (grabbedObject.GetComponent<AIDemons>() != null)
         {
             resourceManager.amountOfEnergy += gameSettings.EnergyOutOfDemonSacrifice;
+
+            CanvasDamage canvasDamage = Instantiate(gameSettings.CanvasDamagePrefab, spawnPointCanvas.transform.position, new Quaternion());
+            canvasDamage.SetupCanvasEnergy(gameSettings.EnergyOutOfDemonSacrifice);
 
             if (grabbedObject.GetComponent<AIDemons>().AssignedBuilding != null)
             {
@@ -66,12 +77,12 @@ public class Sacrifice : MonoBehaviour
         DestroyImmediate(grabbedObject);
     }
 
-    public void TransformIntoEnergy(ResourceType resourceType, GameObject stockGameObject, Animator handAnim)
+    public void TransformIntoEnergy(ResourceType resourceType, RaycastHit hit, Animator handAnim)
     {
-        if (stockGameObject.GetComponent<Building>().currentStockage > 0)
+        if (hit.transform.gameObject.GetComponent<Building>().currentStockage > 0)
         {
-            stockGameObject.GetComponent<Building>().currentStockage -= 1;
-            stockGameObject.GetComponent<Building>().UpdateStockVisu();
+            hit.transform.gameObject.GetComponent<Building>().currentStockage -= 1;
+            hit.transform.gameObject.GetComponent<Building>().UpdateStockVisu();
 
             if (resourceType == ResourceType.whiteSoul)
             {
@@ -82,6 +93,10 @@ public class Sacrifice : MonoBehaviour
                 {
                     _particleSystem[i].GetComponent<ParticleSystem>().Play();
                 }
+
+                CanvasDamage canvasDamage = Instantiate(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.CanvasDamagePrefab, hit.collider.transform.position, new Quaternion());
+                canvasDamage.transform.localScale = new Vector3(2, 2, 2);
+                canvasDamage.SetupCanvasEnergy(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.WhiteSoulValueInEnergy);
             }
 
             if (resourceType == ResourceType.blueVioletSoul)
@@ -93,6 +108,10 @@ public class Sacrifice : MonoBehaviour
                 {
                     _particleSystem[i].GetComponent<ParticleSystem>().Play();
                 }
+
+                CanvasDamage canvasDamage = Instantiate(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.CanvasDamagePrefab, hit.collider.transform.position, new Quaternion());
+                canvasDamage.transform.localScale = new Vector3(2, 2, 2);
+                canvasDamage.SetupCanvasEnergy(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.BlueVioletSoulValueInEnergy);
             }
 
             if (resourceType == ResourceType.violetSoul)
@@ -104,6 +123,40 @@ public class Sacrifice : MonoBehaviour
                 {
                     _particleSystem[i].GetComponent<ParticleSystem>().Play();
                 }
+
+                CanvasDamage canvasDamage = Instantiate(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.CanvasDamagePrefab, hit.collider.transform.position, new Quaternion());
+                canvasDamage.transform.localScale = new Vector3(2, 2, 2);
+                canvasDamage.SetupCanvasEnergy(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.VioletSoulValueInEnergy);
+            }
+
+            if (resourceType == ResourceType.blueSoul)
+            {
+                handAnim.Play("hand anim Sacrifice");
+                resourceManager.amountOfEnergy += gameSettings.BlueSoulValueInEnergy;
+
+                for (int i = 0; i < _particleSystem.Length; i++)
+                {
+                    _particleSystem[i].GetComponent<ParticleSystem>().Play();
+                }
+
+                CanvasDamage canvasDamage = Instantiate(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.CanvasDamagePrefab, hit.collider.transform.position, new Quaternion());
+                canvasDamage.transform.localScale = new Vector3(2, 2, 2);
+                canvasDamage.SetupCanvasEnergy(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.BlueSoulValueInEnergy);
+            }
+
+            if (resourceType == ResourceType.redSoul)
+            {
+                handAnim.Play("hand anim Sacrifice");
+                resourceManager.amountOfEnergy += gameSettings.RedSoulValueInEnergy;
+
+                for (int i = 0; i < _particleSystem.Length; i++)
+                {
+                    _particleSystem[i].GetComponent<ParticleSystem>().Play();
+                }
+
+                CanvasDamage canvasDamage = Instantiate(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.CanvasDamagePrefab, hit.collider.transform.position, new Quaternion());
+                canvasDamage.transform.localScale = new Vector3(2, 2, 2);
+                canvasDamage.SetupCanvasEnergy(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.RedSoulValueInEnergy);
             }
         }
     }
