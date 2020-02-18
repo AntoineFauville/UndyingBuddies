@@ -5,16 +5,12 @@ using UnityEngine;
 public class SwitchBuildingType : MonoBehaviour
 {
     [SerializeField] private GameObject UI;
-    [SerializeField] private GameObject white;
-    [SerializeField] private GameObject blueViolet;
-    [SerializeField] private GameObject violet;
-    [SerializeField] private GameObject blue;
-    [SerializeField] private GameObject red;
     [SerializeField] private AiManager _aiManager;
     [SerializeField] private ResourceManager _resourceManager;
     [SerializeField] private GameSettings _gameSettings;
+    [SerializeField] private RecipeManager _recipeManager;
 
-    private Building building;
+    public Building building;
 
     void Update()
     {
@@ -33,44 +29,11 @@ public class SwitchBuildingType : MonoBehaviour
                     || hit.collider.tag == "redSoulsStock")
                 {
                     building = hit.collider.GetComponentInParent<Building>();
-                    if (building.resourceProducedAtBuilding == ResourceType.whiteSoul)
-                    {
-                        Reset();
-                        white.SetActive(true);
-                    }
-                    else if (building.resourceProducedAtBuilding == ResourceType.blueVioletSoul)
-                    {
-                        Reset();
-                        blueViolet.SetActive(true);
-                    }
-                    else if (building.resourceProducedAtBuilding == ResourceType.violetSoul)
-                    {
-                        Reset();
-                        violet.SetActive(true);
-                    }
-                    else if (building.resourceProducedAtBuilding == ResourceType.blueSoul)
-                    {
-                        Reset();
-                        blue.SetActive(true);
-                    }
-                    else if (building.resourceProducedAtBuilding == ResourceType.redSoul)
-                    {
-                        Reset();
-                        red.SetActive(true);
-                    }
+                    _recipeManager.checkIfRecipeChange();
                     UI.SetActive(true);
                 }
             }
         }
-    }
-
-    void Reset()
-    {
-        white.SetActive(false);
-        blueViolet.SetActive(false);
-        violet.SetActive(false);
-        blue.SetActive(false);
-        red.SetActive(false);
     }
 
     void RemoveFromAnyStock()
@@ -117,36 +80,36 @@ public class SwitchBuildingType : MonoBehaviour
         }
     }
 
-    public void SwitchResourceType(int type)
+    public void SwitchResourceType(ResourceType type)
     {
         switch (type)
         {
-            case 0:
+            case ResourceType.whiteSoul:
                 building.resourceProducedAtBuilding = ResourceType.whiteSoul;
                 RemoveFromAnyStock();
                 building.StockPileTrigger.tag = "whiteSoulsStock";
                 _aiManager.WhiteSoulStockage.Add(building.gameObject);
                 break;
 
-            case 1:
+            case ResourceType.blueVioletSoul:
                 building.resourceProducedAtBuilding = ResourceType.blueVioletSoul;
                 RemoveFromAnyStock();
                 building.StockPileTrigger.tag = "blueVioletSoulsStock";
                 _aiManager.BlueVioletSoulStockage.Add(building.gameObject);
                 break;
-            case 2:
+            case ResourceType.violetSoul:
                 building.resourceProducedAtBuilding = ResourceType.violetSoul;
                 RemoveFromAnyStock();
                 building.StockPileTrigger.tag = "violetSoulsStock";
                 _aiManager.VioletSoulStorage.Add(building.gameObject);
                 break;
-            case 3:
+            case ResourceType.blueSoul:
                 building.resourceProducedAtBuilding = ResourceType.blueSoul;
                 RemoveFromAnyStock();
                 building.StockPileTrigger.tag = "blueSoulsStock";
                 _aiManager.BlueSoulStockage.Add(building.gameObject);
                 break;
-            case 4:
+            case ResourceType.redSoul:
                 building.resourceProducedAtBuilding = ResourceType.redSoul;
                 RemoveFromAnyStock();
                 building.StockPileTrigger.tag = "redSoulsStock";

@@ -53,4 +53,7 @@ public class GameSettings : ScriptableObject
     public Color violetColor;
     public Color blueColor;
     public Color redColor;
+    public Color defaultWhenNotWorking;
+
+    public int CostToUnlockTwoInputInEnergy = 100;
 }

@@ -10,5 +10,6 @@ public enum ResourceType
     violetSoul = 3,
     blueSoul = 4,
     redSoul = 5,
-    brokenSoul = 6
+    brokenSoul = 6,
+    noResource = 7
 }
