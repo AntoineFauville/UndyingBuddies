@@ -29,6 +29,7 @@ public class SwitchBuildingType : MonoBehaviour
                     || hit.collider.tag == "redSoulsStock")
                 {
                     building = hit.collider.GetComponentInParent<Building>();
+                    _recipeManager.LoadInfoFromBuilding();
                     _recipeManager.checkIfRecipeChange();
                     UI.SetActive(true);
                 }

@@ -50,7 +50,38 @@ public class RecipeManager : MonoBehaviour
         //default settings
         checkIfRecipeChange();
     }
-    
+
+    public void LoadInfoFromBuilding()
+    {
+        if (_switchBuildingType.building != null)
+        {
+            _resourceTypeProduced = _switchBuildingType.building.resourceProducedAtBuilding;
+            switch (_resourceTypeProduced)
+            {
+                case ResourceType.whiteSoul:
+                    SoulInput_01 = ResourceType.brokenSoul;
+                    SoulInput_02 = ResourceType.noResource;
+                    break;
+                case ResourceType.blueVioletSoul:
+                    SoulInput_01 = ResourceType.whiteSoul;
+                    SoulInput_02 = ResourceType.noResource;
+                    break;
+                case ResourceType.violetSoul:
+                    SoulInput_01 = ResourceType.whiteSoul;
+                    SoulInput_02 = ResourceType.blueVioletSoul;
+                    break;
+                case ResourceType.blueSoul:
+                    SoulInput_01 = ResourceType.whiteSoul;
+                    SoulInput_02 = ResourceType.violetSoul;
+                    break;
+                case ResourceType.redSoul:
+                    SoulInput_01 = ResourceType.blueVioletSoul;
+                    SoulInput_02 = ResourceType.violetSoul;
+                    break;
+            }
+        }
+    }
+
     public void checkIfRecipeChange()
     {
         if (SoulInput_01 == ResourceType.brokenSoul)
@@ -63,10 +94,10 @@ public class RecipeManager : MonoBehaviour
             _TextToProcess_01.text = ResourceType.whiteSoul.ToString() + "\n" + _gameSettings.WhiteSoulValueInEnergy + " Energy";
             _imageToProcess_01.color = _gameSettings.whiteSoulColor;
         }
-        else if (SoulInput_02 == ResourceType.blueVioletSoul)
+        else if (SoulInput_01 == ResourceType.blueVioletSoul)
         {
-            _TextToProcess_02.text = ResourceType.blueVioletSoul.ToString() + "\n" + _gameSettings.BlueVioletSoulValueInEnergy + " Energy";
-            _imageToProcess_02.color = _gameSettings.blueVioletColor;
+            _TextToProcess_01.text = ResourceType.blueVioletSoul.ToString() + "\n" + _gameSettings.BlueVioletSoulValueInEnergy + " Energy";
+            _imageToProcess_01.color = _gameSettings.blueVioletColor;
         }
         else if (SoulInput_01 == ResourceType.violetSoul)
         {
@@ -232,7 +263,7 @@ public class RecipeManager : MonoBehaviour
                     }
                 }
 
-                if (_blueVioletStockage.Count <= 0 || _VioletStockage.Count <= 0)// since i put the apply, i can't check if i'm not included, so i'll do -1 directly to exclude me right away anyway
+                if (_blueVioletStockage.Count <= 0 || _VioletStockage.Count <= 0)
                 {
                     _EmergencyText.enabled = true;
                     _EmergencyText.text = "You don't seem to have the correct setup for this";
@@ -262,10 +293,11 @@ public class RecipeManager : MonoBehaviour
 
     public void UnlockSecondInput(GameObject purschaseButton)
     {
-        purschaseButton.SetActive(false);
-
         if (_resourceManager.amountOfEnergy >= _gameSettings.CostToUnlockTwoInputInEnergy)
         {
+            _resourceManager.amountOfEnergy -= _gameSettings.CostToUnlockTwoInputInEnergy;
+
+            purschaseButton.SetActive(false);
             BoughtSecondInput = true;
 
             for (int i = 0; i < _recipeNotUnlockedInInput01.Length; i++)
@@ -285,5 +317,6 @@ public class RecipeManager : MonoBehaviour
     public void Apply()
     {
         _switchBuildingType.SwitchResourceType(_resourceTypeProduced);
+        _switchBuildingType.building.UpdateVisuParticleWell(_resourceTypeProduced);
     }
 }

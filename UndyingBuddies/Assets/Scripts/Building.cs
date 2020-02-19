@@ -54,6 +54,9 @@ public class Building : MonoBehaviour
     public GameObject SoulsInWhell_01;
     public GameObject SoulsInWhell_02;
 
+    [SerializeField] private SoulColor ParticleWell_01;
+    [SerializeField] private SoulColor ParticleWell_02;
+
     void Start()
     {
         SoulsInWhell_01.SetActive(false);
@@ -89,6 +92,8 @@ public class Building : MonoBehaviour
         UpdateStockVisu();
 
         ResetFlowVisu();
+
+        UpdateVisuParticleWell(ResourceType.whiteSoul);
 
         StartCoroutine(feedToNotLooseGame());
     }
@@ -348,6 +353,36 @@ public class Building : MonoBehaviour
         ParticleFlowManagerOfInput_02.EndingPoint = null;
         ParticleFlowManagerOfInput_02.StartingPoint = null;
         ParticleFlowManagerOfInput_02.active = false;
+    }
+
+    public void UpdateVisuParticleWell(ResourceType recipeBeingProduced)
+    {
+        switch (recipeBeingProduced)
+        {
+            case ResourceType.whiteSoul:
+                ParticleWell_01.ChangeColor(_aiManager.GameSettings.brokenSoulColor);
+                ParticleWell_02.gameObject.SetActive(false);
+                break;
+            case ResourceType.blueVioletSoul:
+                ParticleWell_01.ChangeColor(_aiManager.GameSettings.whiteSoulColor);
+                ParticleWell_02.gameObject.SetActive(false);
+                break;
+            case ResourceType.violetSoul:
+                ParticleWell_01.ChangeColor(_aiManager.GameSettings.whiteSoulColor);
+                ParticleWell_02.ChangeColor(_aiManager.GameSettings.blueVioletColor);
+                ParticleWell_02.gameObject.SetActive(true);
+                break;
+            case ResourceType.blueSoul:
+                ParticleWell_01.ChangeColor(_aiManager.GameSettings.whiteSoulColor);
+                ParticleWell_02.ChangeColor(_aiManager.GameSettings.violetColor);
+                ParticleWell_02.gameObject.SetActive(true);
+                break;
+            case ResourceType.redSoul:
+                ParticleWell_01.ChangeColor(_aiManager.GameSettings.blueVioletColor);
+                ParticleWell_02.ChangeColor(_aiManager.GameSettings.violetColor);
+                ParticleWell_02.gameObject.SetActive(true);
+                break;
+        }
     }
 
     IEnumerator feedToNotLooseGame()
