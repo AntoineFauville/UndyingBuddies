@@ -91,27 +91,7 @@ public class AiManager : MonoBehaviour
             }
         }
     }
-
-    public void AddResource(GameObject resourceGameObject)
-    {
-        if (resourceGameObject.GetComponent<Resource>() == null)
-        {
-            Debug.Log("can't do anything about this resource");
-        }
-
-        ResourceToProcess.Add(resourceGameObject);
-    }
-
-    void RemoveResource(GameObject resourceGameObject)
-    {
-        if (resourceGameObject.GetComponent<Resource>() == null)
-        {
-            Debug.Log("can't do anything about this resource");
-        }
-
-        ResourceToProcess.Remove(resourceGameObject);
-    }
-
+    
     void AddDemons()
     {
         foreach (var demon in GameObject.FindGameObjectsWithTag("demon"))

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Building : MonoBehaviour
 {
@@ -57,8 +58,13 @@ public class Building : MonoBehaviour
     [SerializeField] private SoulColor ParticleWell_01;
     [SerializeField] private SoulColor ParticleWell_02;
 
+    public GameObject LoadingBarForProcessing;
+    public Image imageFillingProcessing;
+
     void Start()
     {
+        LoadingBarForProcessing.SetActive(false);
+
         SoulsInWhell_01.SetActive(false);
         SoulsInWhell_02.SetActive(false);
 

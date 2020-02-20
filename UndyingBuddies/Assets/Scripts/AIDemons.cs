@@ -34,6 +34,8 @@ public class AIDemons : MonoBehaviour
 
     public ResourceType resourceImCurrentlyTransporting;
 
+    public bool OnlyProcessOnce;
+
     public void Setup(string name, JobType initialJobtype, int initiallife, int demonRangeOfDetection, int demonRangeOfAttack)
     {
         myName = name;
@@ -132,22 +134,26 @@ public class AIDemons : MonoBehaviour
         NavMeshAgent.isStopped = true;
         animatorDemon.Play("Prey");
 
-        StartCoroutine(processing());
+        if (!OnlyProcessOnce)
+        {
+            OnlyProcessOnce = true;
+            StartCoroutine(processing());
 
-        this.gameObject.transform.position = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.position;
-        this.gameObject.transform.rotation = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.rotation;
+            this.gameObject.transform.position = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.position;
+            this.gameObject.transform.rotation = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.rotation;
 
-        AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.SetActive(true);
-        if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
-            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.whiteSoulColor);
-        else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
-            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.blueVioletColor);
-        else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.violetSoul)
-            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.violetColor);
-        else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.blueSoul)
-            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.blueColor);
-        else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.redSoul)
-            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.redColor);
+            AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.SetActive(true);
+            if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
+                AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.whiteSoulColor);
+            else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
+                AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.blueVioletColor);
+            else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.violetSoul)
+                AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.violetColor);
+            else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.blueSoul)
+                AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.blueColor);
+            else if (AssignedBuilding.GetComponentInParent<Building>().resourceProducedAtBuilding == ResourceType.redSoul)
+                AssignedBuilding.GetComponentInParent<Building>().visualsOnTable.GetComponent<SoulColor>().ChangeColor(GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.redColor);
+        }
     }
 
     public void Gather(ResourceType resourceToGather)
@@ -797,8 +803,18 @@ public class AIDemons : MonoBehaviour
 
     IEnumerator processing()
     {
-        yield return new WaitForSeconds(3f);
+        AssignedBuilding.GetComponent<Building>().LoadingBarForProcessing.SetActive(true);
+        AssignedBuilding.GetComponent<Building>().imageFillingProcessing.fillAmount = 0;
+
+        for (float i = 0; i < 10; i++)
+        {
+            AssignedBuilding.GetComponent<Building>().imageFillingProcessing.fillAmount = i / 10;
+            yield return new WaitForSeconds(0.3f);
+        }
 
         AssignedBuilding.GetComponentInParent<Building>().WorkedOnTableBeenProcessed = true;
+        AssignedBuilding.GetComponent<Building>().LoadingBarForProcessing.SetActive(false);
+
+        OnlyProcessOnce = false;
     }
 }

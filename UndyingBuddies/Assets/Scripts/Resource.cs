@@ -12,8 +12,14 @@ public class Resource : MonoBehaviour
 
     public bool processedResource;
 
+    [SerializeField] private GameObject ArtAlive;
+    [SerializeField] private GameObject ArtDed;
+
     void Start()
     {
+        ArtAlive.SetActive(true);
+        ArtDed.SetActive(false);
+
         if (resourceType == ResourceType.brokenSoul)
         {
             amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.BrokenSoulsOnResource;
@@ -41,11 +47,13 @@ public class Resource : MonoBehaviour
 
     void Die()
     {
-        if (resourceType == ResourceType.whiteSoul)
+        if (resourceType == ResourceType.brokenSoul)
         {
             GameObject.Find("Main Camera").GetComponent<AiManager>().ResourceToProcess.Remove(this.gameObject);
         }
 
-        DestroyImmediate(this.gameObject);
+        uiHealth.gameObject.SetActive(false);
+        ArtAlive.SetActive(false);
+        ArtDed.SetActive(true);
     }
 }

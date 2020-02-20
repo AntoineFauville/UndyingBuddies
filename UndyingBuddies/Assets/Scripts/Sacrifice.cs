@@ -63,18 +63,19 @@ public class Sacrifice : MonoBehaviour
         if (_aiManager.Demons.Contains(grabbedObject))
         {
             _aiManager.Demons.Remove(grabbedObject);
+            DestroyImmediate(grabbedObject);
         }
         else if (_aiManager.ResourceToProcess.Contains(grabbedObject))
         {
             _aiManager.ResourceToProcess.Remove(grabbedObject);
+            grabbedObject.GetComponent<Resource>().amountOfResourceAvailable = 0;
+            grabbedObject.tag = "deadResource";
         }
 
         for (int i = 0; i < _particleSystem.Length; i++)
         {
             _particleSystem[i].GetComponent<ParticleSystem>().Play();
         }
-
-        DestroyImmediate(grabbedObject);
     }
 
     public void TransformIntoEnergy(ResourceType resourceType, RaycastHit hit, Animator handAnim)
