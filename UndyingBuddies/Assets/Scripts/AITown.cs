@@ -33,6 +33,8 @@ public class AITown : MonoBehaviour
 
     void Awake()
     {
+        
+
         if (CityResistanceMentalImage != null)
         {
             CityResistanceMentalImage.enabled = false;
@@ -78,6 +80,13 @@ public class AITown : MonoBehaviour
         if (isCamp)
         {
             StartCoroutine(CampUpdate());
+
+            for (int i = 0; i < AllPriestUnit.Count; i++)
+            {
+                AllPriestUnit[i].GetComponent<AIPriest>().Target = null;
+                AllPriestUnit[i].GetComponent<AIPriest>().PriestAttackerType = PriestAttackerType.camper;
+                AllPriestUnit[i].GetComponent<AIPriest>().CanAttackBack = true;
+            }
         }
     }
 

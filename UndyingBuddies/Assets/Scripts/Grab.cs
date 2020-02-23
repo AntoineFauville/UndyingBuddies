@@ -20,6 +20,7 @@ public class Grab : MonoBehaviour
 
     [SerializeField] private Sacrifice Sacrifice;
     [SerializeField] private bool canSacrificeAgain;
+    private bool playAnimOnce;
 
     // Start is called before the first frame update
     void Start()
@@ -119,6 +120,7 @@ public class Grab : MonoBehaviour
                 {
                     if (hit.transform.GetComponent<CharacterTypeTagger>().characterType == CharacterType.demon)
                     {
+                        hit.transform.GetComponent<AIDemons>().SoulObjects.SetActive(false);
                         StartCoroutine(waitForMouseToUnderstand(hit.transform.gameObject));
                     }
                 }
@@ -138,18 +140,7 @@ public class Grab : MonoBehaviour
                     posCurrentObject = hitPos.point;
                 }
 
-                if (hitPos.collider.tag == "terrainWarFlagOnly")
-                {
-                    if (grabbedItem.transform.tag == "flag" || grabbedItem.transform.tag == "FireZone")
-                    {
-                        conditionToReleaseMet = true;
-                    }
-                    else
-                    {
-                        conditionToReleaseMet = false;
-                    }
-                }
-                else if (grabbedItem.transform.GetComponent<Building>() != null)//if i'm a building i want to make sure the ground is working to be placed
+                if (grabbedItem.transform.GetComponent<Building>() != null)//if i'm a building i want to make sure the ground is working to be placed
                 {
                     for (int i = 0; i < AiManager.Buildings.Count; i++) // activate all the bouding box if it's a building
                     {
@@ -190,7 +181,11 @@ public class Grab : MonoBehaviour
 
         if (grabbing)
         {
-            handAnim.Play("hand anim hold");
+            if (!playAnimOnce)
+            {
+                playAnimOnce = true;
+                handAnim.Play("hand anim hold");
+            }
             grabbedItem.GetComponent<Grabable>().grabbed = true;
             if (grabbedItem.transform.GetComponent<Building>() != null)
             {
@@ -216,6 +211,7 @@ public class Grab : MonoBehaviour
                 grabbing = false;
                 Debug.Log("canceled building placement");
                 handAnim.Play("hand anim holdrelease");
+                playAnimOnce = false;
                 PointerWhereMouseAt.SetActive(false);
             }
         }
@@ -240,6 +236,7 @@ public class Grab : MonoBehaviour
                         Debug.Log("sacrifice");
 
                         handAnim.Play("hand anim Sacrifice");
+                        playAnimOnce = false;
 
                         for (int i = 0; i < AiManager.Buildings.Count; i++)
                         {
@@ -309,6 +306,7 @@ public class Grab : MonoBehaviour
             }
 
             handAnim.Play("hand anim holdrelease");
+            playAnimOnce = false;
 
             grabbedItem.GetComponent<Grabable>().grabbed = false;
             

@@ -63,7 +63,7 @@ public class AIPriest : MonoBehaviour
             aiManager.Priest.Add(this.gameObject);
         }
         
-        CheckClosestDemonToAttack();
+        //CheckClosestDemonToAttack();
     }
 
     void Update()
@@ -366,6 +366,8 @@ public class AIPriest : MonoBehaviour
     public void CheckClosestDemonToAttack()
     {
         GameObject bestDemon = null;
+
+        Debug.Log("checking for an enemy");
 
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
