@@ -56,4 +56,8 @@ public class GameSettings : ScriptableObject
     public Color defaultWhenNotWorking;
 
     public int CostToUnlockTwoInputInEnergy = 100;
+
+    public int timeToPrepareWithACamp = 120;
+    public GameObject UIAttack;
+    public int CampSightIncrease = 4;
 }

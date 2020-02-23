@@ -8,12 +8,13 @@ public class AITown : MonoBehaviour
     [SerializeField] private List<AIPriest> AllRelatedAIOfThisTown = new List<AIPriest>();
     [SerializeField] private List<AIPriest> AllPriestUnit = new List<AIPriest>();
 
-    bool Revenge;
+    public bool Revenge;
+    public bool RevengeCamp;
     
     [SerializeField] private GameObject buildingToDestroy;
     [SerializeField] private GameObject visualsToShowActivation;
 
-    [SerializeField] private AiCityBonus[] AiCityBonus;
+    [SerializeField] private List<AiCityBonus> AiCityBonus;
     [SerializeField] private AiCityBonus ActiveAiCityBonus;
 
     [SerializeField] private Image CityResistanceMentalImage, CityResistancePhysicalImage;
@@ -25,24 +26,35 @@ public class AITown : MonoBehaviour
 
     [SerializeField] private AiBuilding[] buildingToTransformInEnergy;
 
+    public bool isCamp;
+    public bool weNeedToPrepare;
+    private GameObject ui;
+    [SerializeField] private GameSettings _gameSettings;
+
     void Awake()
     {
-        CityResistanceMentalImage.enabled = false;
-        CityResistancePhysicalImage.enabled = false;
-
-        foreach (var priest in AllRelatedAIOfThisTown)
+        if (CityResistanceMentalImage != null)
         {
-            if (!priest.GetComponent<AIPriest>().AmIBuilding) {
-
-                AllPriestUnit.Add(priest);
-            }
+            CityResistanceMentalImage.enabled = false;
+        }
+        if (CityResistancePhysicalImage != null)
+        {
+            CityResistancePhysicalImage.enabled = false;
         }
 
-        //select random bonus for city
-        int randCityBonus = Random.Range(0, AiCityBonus.Length);
-        ActiveAiCityBonus = AiCityBonus[randCityBonus];
+        for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
+        {
+            if (!AllRelatedAIOfThisTown[i].GetComponent<AIPriest>().AmIBuilding)
+            {
+                AllPriestUnit.Add(AllRelatedAIOfThisTown[i]);
+            }
+        }
+        
+        if (AiCityBonus.Count > 0) {
+            //select random bonus for city
+            int randCityBonus = Random.Range(0, AiCityBonus.Count);
+            ActiveAiCityBonus = AiCityBonus[randCityBonus];
 
-        if (AiCityBonus != null) {
             for (int i = 0; i < AllPriestUnit.Count; i++)
             {
                 AllPriestUnit[i].GetComponent<AIStatController>().PhysicalResistance = ActiveAiCityBonus.PhysicalResistanceBonus;
@@ -62,6 +74,22 @@ public class AITown : MonoBehaviour
         StartCoroutine(animateAIInCity());
 
         StartCoroutine(SlowUpdate());
+
+        if (isCamp)
+        {
+            StartCoroutine(CampUpdate());
+        }
+    }
+
+    IEnumerator CampUpdate()
+    {
+        yield return new WaitForSeconds(60);
+        for (int i = 0; i < AllPriestUnit.Count; i++)
+        {
+            AllPriestUnit[i].GetComponent<AIPriest>().MaxPositionCamper += _gameSettings.CampSightIncrease;
+        }
+
+        StartCoroutine(CampUpdate());
     }
 
     IEnumerator SlowUpdate()
@@ -82,6 +110,25 @@ public class AITown : MonoBehaviour
             }
         }
 
+        if (weNeedToPrepare)
+        {
+            for (int i = 0; i < AllPriestUnit.Count; i++)
+            {
+                AllPriestUnit[i].GetComponent<AIPriest>().preparationForAttack = true;
+            }
+
+            if (ui == null)
+            {
+                ui = Instantiate(_gameSettings.UIAttack);
+                ui.GetComponent<AttackFromPriestCamp>().seconds = _gameSettings.timeToPrepareWithACamp;
+                ui.transform.SetParent(GameObject.Find("AttackContainer").transform);
+                ui.transform.localScale = new Vector3(1, 1, 1);
+                ui.transform.localPosition = new Vector3(0, 0, 0);
+                ui.transform.rotation = new Quaternion();
+            }
+        }
+
+
         if (AllPriestUnit.Count <= 0)
         {
             isTheVillageDestroyed = true;
@@ -90,7 +137,7 @@ public class AITown : MonoBehaviour
         {
             isTheVillageDestroyed = false;
 
-            if (Revenge)
+            if (Revenge || RevengeCamp)
             {
                 for (int i = 0; i < AllPriestUnit.Count; i++)
                 {
@@ -100,7 +147,7 @@ public class AITown : MonoBehaviour
                     }
                     else
                     {
-                        AllPriestUnit[i].PriestAttackerType = PriestAttackerType.rusher;
+                        AllPriestUnit[i].PriestAttackerType = PriestAttackerType.rusherFromCity;
 
                         AllPriestUnit[i].isAttacked = true;
 

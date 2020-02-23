@@ -14,12 +14,6 @@ public class AIPriest : MonoBehaviour
     //Mental Health
     public int MentalHealthAmount;
     public int MentalHealthMaxAmount;
-    //Lonelyness
-    //public int LonelynessAmount;
-    //public int LonelynessMaxAmount;
-    ////Intestine Status
-    //public int IntestineStatusAmount;
-    //public int IntestineStatusMaxAmount;
 
     public bool CanAttackBack;
 
@@ -51,6 +45,13 @@ public class AIPriest : MonoBehaviour
     public bool Stun;
     public bool isAttacked;
     public GameObject buildingToWalkTo;
+
+    public int MaxPositionCamper = 10;
+    public GameObject Camp;
+    public bool CanLookAround;
+    public bool preparationForAttack;
+    public bool canOnlyDoOnceCoroutine;
+    public GameObject TargeForRandom;
 
     void Start()
     {
@@ -127,7 +128,7 @@ public class AIPriest : MonoBehaviour
                             }
                         }
                         break;
-                    case PriestAttackerType.rusher:
+                    case PriestAttackerType.rusherFromCity:
                         if (!AmIBuilding && CanAttackBack)
                         {
                             CheckClosestDemonToAttack();
@@ -225,24 +226,133 @@ public class AIPriest : MonoBehaviour
             }
             else
             {
-                if (!AmIBuilding && CanAttackBack)
+                switch (PriestAttackerType)
                 {
-                    if (Vector3.Distance(this.transform.position, buildingToWalkTo.transform.position) <= _gameSettings.demonRangeOfDetection)
-                    {
-                        NavMeshAgent.isStopped = false;
+                    case PriestAttackerType.defender:
+                        //while i'm not attacked
+                        if (!AmIBuilding && CanAttackBack)
+                        {
+                            if (Vector3.Distance(this.transform.position, buildingToWalkTo.transform.position) <= _gameSettings.demonRangeOfDetection)
+                            {
+                                NavMeshAgent.isStopped = false;
 
-                        NavMeshAgent.destination = buildingToWalkTo.transform.position;
+                                NavMeshAgent.destination = buildingToWalkTo.transform.position;
 
-                        animatorPriest.Play("Walk");
-                    }
-                    else
-                    {
-                        animatorPriest.Play("Idle");
+                                animatorPriest.Play("Walk");
+                            }
+                            else
+                            {
+                                animatorPriest.Play("Idle");
 
-                        NavMeshAgent.isStopped = true;
-                    }
+                                NavMeshAgent.isStopped = true;
+                            }
+                        }
+                        break;
+                    case PriestAttackerType.rusherFromCity:
+                        Debug.Log("mehh");
+                        break;
+                    case PriestAttackerType.followFormation:
+                        break;
+                    case PriestAttackerType.camper:
+                        if (!preparationForAttack)
+                        {
+                            if (Target == null)
+                            {
+                                if (Camp == null)
+                                {
+                                    Debug.Log("please make sure " + this.gameObject.name + " is assigned to the camp");
+                                }
+                                else
+                                {
+                                    Vector3 RandInAreaToGoTo = new Vector3(Random.Range(Camp.transform.position.x - MaxPositionCamper, Camp.transform.position.x + MaxPositionCamper),
+                                        Camp.transform.position.y,
+                                        Random.Range(Camp.transform.position.z - MaxPositionCamper, Camp.transform.position.z + MaxPositionCamper));
+
+                                    if (TargeForRandom == null)
+                                    {
+                                        TargeForRandom = new GameObject();
+                                        TargeForRandom.name = this.name + " TargetForRandom";
+
+                                        TargeForRandom.transform.position = RandInAreaToGoTo;
+
+                                        Target = TargeForRandom;
+                                    }
+                                    else
+                                    {
+                                        TargeForRandom.transform.position = RandInAreaToGoTo;
+
+                                        Target = TargeForRandom;
+                                    }
+                                }
+                            }
+
+                            if (Vector3.Distance(this.transform.position, Target.transform.position) > 2)
+                            {
+                                //walk;
+                                animatorPriest.Play("Walk");
+
+                                NavMeshAgent.isStopped = false;
+                                NavMeshAgent.destination = Target.transform.position;
+                            }
+                            else
+                            {
+                                if (!canOnlyDoOnceCoroutine)
+                                {
+                                    StartCoroutine(WaitAndLook());
+                                }
+                            }
+
+                            if (CanLookAround && !preparationForAttack)
+                            {
+                                LookIfFindAnyEnemy();
+                            }
+                            if (preparationForAttack)
+                            {
+                                Debug.Log("Found something sir, lets rpepare to attack these demons");
+                            }
+                        }
+                        if(preparationForAttack)
+                        {
+                            Target = Camp;
+                            if (Vector3.Distance(this.transform.position, Target.transform.position) > 2)
+                            {
+                                NavMeshAgent.isStopped = false;
+                                NavMeshAgent.destination = Target.transform.position;
+                                animatorPriest.Play("Walk");
+                            }
+                            else
+                            {
+                                animatorPriest.Play("Idle");
+                                NavMeshAgent.isStopped = true;
+                            }
+
+                            StartCoroutine(waitForRaid());
+                        }
+                        break;
                 }
+
+               
             }
+        }
+    }
+
+    public void LookIfFindAnyEnemy()
+    {
+        List<GameObject> demonAroundMe = new List<GameObject>();
+
+        Collider[] hitCollider = Physics.OverlapSphere(this.transform.position, MaxPositionCamper);
+        for (int i = 0; i < hitCollider.Length; i++)
+        {
+            if (hitCollider[i].GetComponent<AIDemons>() != null)
+            {
+                demonAroundMe.Add(hitCollider[i].gameObject);
+            }
+        }
+
+        if (demonAroundMe.Count > 0)
+        {
+            preparationForAttack = true;
+            Camp.GetComponent<AITown>().weNeedToPrepare = true;
         }
     }
 
@@ -331,5 +441,27 @@ public class AIPriest : MonoBehaviour
         yield return new WaitForSeconds(5);
 
         Stun = false;
+    }
+
+    IEnumerator WaitAndLook()
+    {
+        canOnlyDoOnceCoroutine = true;
+        NavMeshAgent.isStopped = true;
+
+        animatorPriest.Play("Observe");
+
+        CanLookAround = true;
+
+        yield return new WaitForSeconds(5);
+
+        CanLookAround = false;
+        canOnlyDoOnceCoroutine = false;
+        Target = null;
+    }
+
+    IEnumerator waitForRaid()
+    {
+        yield return new WaitForSeconds(_gameSettings.timeToPrepareWithACamp);
+        Camp.GetComponent<AITown>().RevengeCamp = true;
     }
 }

@@ -2149,7 +2149,7 @@ MonoBehaviour:
   fearMaxAmount: 0
   MentalHealthAmount: 0
   MentalHealthMaxAmount: 0
-  CanAttackBack: 0
+  CanAttackBack: 1
   AmIBuilding: 0
   PriestType: 0
   CanAttackAgain: 0
@@ -2166,6 +2166,11 @@ MonoBehaviour:
   Stun: 0
   isAttacked: 0
   buildingToWalkTo: {fileID: 0}
+  MaxPositionCamper: 10
+  Camp: {fileID: 0}
+  CanLookAround: 0
+  preparationForAttack: 0
+  canOnlyDoOnceCoroutine: 0
 --- !u!114 &2683776210274104171
 MonoBehaviour:
   m_ObjectHideFlags: 0
