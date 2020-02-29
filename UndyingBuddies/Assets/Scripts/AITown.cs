@@ -33,8 +33,6 @@ public class AITown : MonoBehaviour
 
     void Awake()
     {
-        
-
         if (CityResistanceMentalImage != null)
         {
             CityResistanceMentalImage.enabled = false;
@@ -84,10 +82,42 @@ public class AITown : MonoBehaviour
             for (int i = 0; i < AllPriestUnit.Count; i++)
             {
                 AllPriestUnit[i].GetComponent<AIPriest>().Target = null;
-                AllPriestUnit[i].GetComponent<AIPriest>().PriestAttackerType = PriestAttackerType.camper;
+                AllPriestUnit[i].GetComponent<AIPriest>()._myAIPriestType = AIPriestType.Camper;
                 AllPriestUnit[i].GetComponent<AIPriest>().CanAttackBack = true;
             }
         }
+        else
+        {
+            for (int i = 0; i < AllPriestUnit.Count; i++)
+            {
+                AllPriestUnit[i].GetComponent<AIPriest>()._myAIPriestType = AIPriestType.TownCitizen;
+                AllPriestUnit[i].GetComponent<AIPriest>().CanAttackBack = true;
+            }
+        }
+    }
+
+    void CleanupUnessesaryEmpty()
+    {
+        for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
+        {
+            if (AllRelatedAIOfThisTown[i] == null)
+            {
+                AllRelatedAIOfThisTown.Remove(AllRelatedAIOfThisTown[i]);
+            }
+        }
+
+        for (int i = 0; i < AllPriestUnit.Count; i++)
+        {
+            if (AllPriestUnit[i] == null)
+            {
+                AllPriestUnit.Remove(AllPriestUnit[i]);
+            }
+        }
+    }
+
+    void GenerateARandomBuildingToGoTo(AIPriest aiPriest)
+    {
+        aiPriest.Target = BuildingToWalkTo[Random.Range(0, BuildingToWalkTo.Length)];
     }
 
     IEnumerator CampUpdate()
@@ -103,19 +133,82 @@ public class AITown : MonoBehaviour
 
     IEnumerator SlowUpdate()
     {
-        for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
-        {
-            if (AllRelatedAIOfThisTown[i] == null)
-            {
-                AllRelatedAIOfThisTown.Remove(AllRelatedAIOfThisTown[i]);
-            }
-        }
+        CleanupUnessesaryEmpty();
 
         for (int i = 0; i < AllPriestUnit.Count; i++)
         {
-            if (AllPriestUnit[i] == null)
+
+            AIPriestType aIPriestType;
+            AIPriest currentAIPriest;
+
+            currentAIPriest = AllPriestUnit[i];
+            aIPriestType = currentAIPriest._myAIPriestType;
+
+            if (currentAIPriest.AmUnderEffect)
             {
-                AllPriestUnit.Remove(AllPriestUnit[i]);
+                switch (currentAIPriest.currentAiPriestEffects)
+                {
+                    case AiPriestEffects.OnFire:
+                        yield return new WaitForSeconds(0.5f);
+                        StartCoroutine(SlowUpdate());
+                        yield break;
+
+                    case AiPriestEffects.Feared:
+                        yield return new WaitForSeconds(0.5f);
+                        StartCoroutine(SlowUpdate());
+                        yield break;
+
+                    case AiPriestEffects.Stun:
+                        currentAIPriest.Stun();
+                        yield return new WaitForSeconds(0.5f);
+                        StartCoroutine(SlowUpdate());
+                        yield break;
+                }
+                
+            }
+
+            switch (aIPriestType)
+            {
+                case AIPriestType.TownCitizen:
+
+
+                    if (currentAIPriest.Target != null)
+                    {
+                        if (Vector3.Distance(currentAIPriest.transform.position, currentAIPriest.Target.transform.position) < 2)
+                        {
+                            GenerateARandomBuildingToGoTo(currentAIPriest);
+                            currentAIPriest.Idle();
+                        }
+                        else
+                        {
+                            currentAIPriest.Walk();
+                        }
+                    }
+                    else
+                    {
+                        GenerateARandomBuildingToGoTo(currentAIPriest);
+                    }
+                    break;
+                case AIPriestType.Rusher:
+                    if (currentAIPriest.Target != null)
+                    {
+                        if (Vector3.Distance(this.transform.position, currentAIPriest.Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !currentAIPriest.CanAttackAgain)
+                        {
+                            currentAIPriest.Attack();
+                        }
+                        else
+                        {
+                            currentAIPriest.Walk();
+                        }
+                    }
+                    else
+                    {
+                        currentAIPriest.Idle();
+                        currentAIPriest.CheckClosestDemonToAttack();
+                    }
+                    break;
+                case AIPriestType.Camper:
+                    break;
             }
         }
 

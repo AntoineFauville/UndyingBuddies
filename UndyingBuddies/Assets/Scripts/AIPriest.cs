@@ -42,7 +42,7 @@ public class AIPriest : MonoBehaviour
 
     public Animator animatorPriest;
 
-    public bool Stun;
+    public bool _stun;
     public bool isAttacked;
     public GameObject buildingToWalkTo;
 
@@ -52,6 +52,10 @@ public class AIPriest : MonoBehaviour
     public bool preparationForAttack;
     public bool canOnlyDoOnceCoroutine;
     public GameObject TargeForRandom;
+
+    public AIPriestType _myAIPriestType;
+    public bool AmUnderEffect;
+    public AiPriestEffects currentAiPriestEffects;
 
     void Start()
     {
@@ -66,275 +70,241 @@ public class AIPriest : MonoBehaviour
         //CheckClosestDemonToAttack();
     }
 
-    void Update()
+    public void Stun()
     {
-        if (Stun)
+        NavMeshAgent.isStopped = true;
+        animatorPriest.Play("Stun");
+    }
+
+    public void Walk()
+    {
+        NavMeshAgent.isStopped = false;
+        animatorPriest.Play("Walk");
+
+        NavMeshAgent.destination = Target.transform.position;
+
+        if (Vector3.Distance(Target.transform.position, this.transform.position) > 4)
         {
-            if (!AmIBuilding && CanAttackBack)
-            {
-                NavMeshAgent.isStopped = true;
-
-                animatorPriest.Play("Stun");
-
-                StartCoroutine(UnStun());
-            }
+            NavMeshAgent.isStopped = false;
+            NavMeshAgent.SetDestination(Target.transform.position);
         }
         else
         {
-            if (isAttacked)
-            {
-                switch (PriestAttackerType)
-                {
-                    case PriestAttackerType.defender:
-                        if (!AmIBuilding && CanAttackBack)
-                        {
-                            CheckClosestDemonToAttack();
-
-                            if (Target != null)
-                            {
-                                if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
-                                {
-                                    NavMeshAgent.isStopped = true;
-
-                                    animatorPriest.Play("Attack");
-
-                                    CanAttackAgain = true;
-
-                                    if (Target.GetComponent<AIDemons>() != null)
-                                    {
-                                        Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
-                                    }
-                                    else if (Target.GetComponent<Building>() != null)
-                                    {
-                                        Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
-                                    }
-
-                                    StartCoroutine(waitToReAttack());
-                                }
-                                else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)
-                                {
-                                    NavMeshAgent.isStopped = false;
-
-                                    NavMeshAgent.destination = Target.transform.position;
-
-                                    animatorPriest.Play("Walk");
-                                }
-                                else
-                                {
-                                    animatorPriest.Play("Idle");
-
-                                    NavMeshAgent.isStopped = true;
-                                }
-                            }
-                        }
-                        break;
-                    case PriestAttackerType.rusherFromCity:
-                        if (!AmIBuilding && CanAttackBack)
-                        {
-                            CheckClosestDemonToAttack();
-
-                            if (Target != null)
-                            {
-                                if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
-                                {
-                                    NavMeshAgent.isStopped = true;
-
-                                    animatorPriest.Play("Attack");
-
-                                    CanAttackAgain = true;
-
-                                    if (Target.GetComponent<AIDemons>() != null)
-                                    {
-                                        Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
-                                    }
-                                    else if (Target.GetComponent<Building>() != null)
-                                    {
-                                        Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
-                                    }
-
-                                    StartCoroutine(waitToReAttack());
-                                }
-                                else
-                                {
-                                    NavMeshAgent.isStopped = false;
-
-                                    NavMeshAgent.destination = Target.transform.position;
-
-                                    animatorPriest.Play("Walk");
-                                }
-                            }
-                        }
-                        break;
-                    case PriestAttackerType.followFormation:
-                        if (!AmIBuilding && CanAttackBack)
-                        {
-                            CheckClosestDemonToAttack();
-
-                            if (Target != null)
-                            {
-                                if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)//if i'm close to an enemy i attack
-                                {
-                                    NavMeshAgent.isStopped = true;
-
-                                    animatorPriest.Play("Attack");
-
-                                    CanAttackAgain = true;
-
-                                    if (Target.GetComponent<AIDemons>() != null)
-                                    {
-                                        Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
-                                    }
-                                    else if (Target.GetComponent<Building>() != null)
-                                    {
-                                        Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
-                                    }
-
-                                    StartCoroutine(waitToReAttack());
-                                }
-                                else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)//if i've in my detection range an enemy target becomes the enemy
-                                {
-                                    NavMeshAgent.isStopped = false;
-
-                                    NavMeshAgent.destination = Target.transform.position;
-
-                                    animatorPriest.Play("Walk");
-                                }
-                                else //if i'm away from that tell me what i need to follow
-                                {
-                                    Target = aiFormationFollowPoint;
-
-                                    NavMeshAgent.isStopped = false;
-
-                                    NavMeshAgent.destination = aiFormationFollowPoint.transform.position;
-
-                                    animatorPriest.Play("Walk");
-                                }
-                            }
-                            else //if i'm away from that tell me what i need to follow
-                            {
-                                Target = aiFormationFollowPoint;
-
-                                NavMeshAgent.isStopped = false;
-
-                                NavMeshAgent.destination = aiFormationFollowPoint.transform.position;
-
-                                animatorPriest.Play("Walk");
-                            }
-                        }
-                        break;
-                }
-            }
-            else
-            {
-                switch (PriestAttackerType)
-                {
-                    case PriestAttackerType.defender:
-                        //while i'm not attacked
-                        if (!AmIBuilding && CanAttackBack)
-                        {
-                            if (Vector3.Distance(this.transform.position, buildingToWalkTo.transform.position) <= _gameSettings.demonRangeOfDetection)
-                            {
-                                NavMeshAgent.isStopped = false;
-
-                                NavMeshAgent.destination = buildingToWalkTo.transform.position;
-
-                                animatorPriest.Play("Walk");
-                            }
-                            else
-                            {
-                                animatorPriest.Play("Idle");
-
-                                NavMeshAgent.isStopped = true;
-                            }
-                        }
-                        break;
-                    case PriestAttackerType.rusherFromCity:
-                        Debug.Log("mehh");
-                        break;
-                    case PriestAttackerType.followFormation:
-                        break;
-                    case PriestAttackerType.camper:
-                        if (!preparationForAttack)
-                        {
-                            if (Target == null)
-                            {
-                                if (Camp == null)
-                                {
-                                    Debug.Log("please make sure " + this.gameObject.name + " is assigned to the camp");
-                                }
-                                else
-                                {
-                                    Vector3 RandInAreaToGoTo = new Vector3(Random.Range(Camp.transform.position.x - MaxPositionCamper, Camp.transform.position.x + MaxPositionCamper),
-                                        Camp.transform.position.y,
-                                        Random.Range(Camp.transform.position.z - MaxPositionCamper, Camp.transform.position.z + MaxPositionCamper));
-
-                                    if (TargeForRandom == null)
-                                    {
-                                        TargeForRandom = new GameObject();
-                                        TargeForRandom.name = this.name + " TargetForRandom";
-
-                                        TargeForRandom.transform.position = RandInAreaToGoTo;
-
-                                        Target = TargeForRandom;
-                                    }
-                                    else
-                                    {
-                                        TargeForRandom.transform.position = RandInAreaToGoTo;
-
-                                        Target = TargeForRandom;
-                                    }
-                                }
-                            }
-
-                            if (Vector3.Distance(this.transform.position, Target.transform.position) > 2)
-                            {
-                                //walk;
-                                animatorPriest.Play("Walk");
-
-                                NavMeshAgent.isStopped = false;
-                                NavMeshAgent.destination = Target.transform.position;
-                            }
-                            else
-                            {
-                                if (!canOnlyDoOnceCoroutine)
-                                {
-                                    StartCoroutine(WaitAndLook());
-                                }
-                            }
-
-                            if (CanLookAround && !preparationForAttack)
-                            {
-                                LookIfFindAnyEnemy();
-                            }
-                            if (preparationForAttack)
-                            {
-                                Debug.Log("Found something sir, lets rpepare to attack these demons");
-                            }
-                        }
-                        if(preparationForAttack)
-                        {
-                            Target = Camp;
-                            if (Vector3.Distance(this.transform.position, Target.transform.position) > 2)
-                            {
-                                NavMeshAgent.isStopped = false;
-                                NavMeshAgent.destination = Target.transform.position;
-                                animatorPriest.Play("Walk");
-                            }
-                            else
-                            {
-                                animatorPriest.Play("Idle");
-                                NavMeshAgent.isStopped = true;
-                            }
-
-                            StartCoroutine(waitForRaid());
-                        }
-                        break;
-                }
-
-               
-            }
+            NavMeshAgent.isStopped = true;
         }
     }
+
+    public void Idle()
+    {
+        NavMeshAgent.isStopped = true;
+        animatorPriest.Play("Idle");
+    }
+
+    public void OnFire()
+    {
+    }
+
+    public void Fear()
+    {
+        NavMeshAgent.isStopped = true;
+        animatorPriest.Play("Feared");
+    }
+
+    public void Observe()
+    {
+        NavMeshAgent.isStopped = true;
+        animatorPriest.Play("Observe");
+    }
+
+    public void Attack()
+    {
+        if (!CanAttackAgain)
+        {
+            StartCoroutine(WaitToAttack());
+        }
+
+        
+
+        NavMeshAgent.isStopped = true;
+        animatorPriest.Play("Attack");
+    }
+
+    //void Update()
+    //{
+    //    if (_stun)
+    //    {
+    //        if (!AmIBuilding && CanAttackBack)
+    //        {
+    //            NavMeshAgent.isStopped = true;
+
+    //            animatorPriest.Play("Stun");
+
+    //            StartCoroutine(UnStun());
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (isAttacked)
+    //        {
+    //            switch (PriestAttackerType)
+    //            {
+    //                case PriestAttackerType.defender:
+    //                    if (!AmIBuilding && CanAttackBack)
+    //                    {
+    //                        CheckClosestDemonToAttack();
+
+    //                        if (Target != null)
+    //                        {
+    //                            if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
+    //                            {
+    //                                NavMeshAgent.isStopped = true;
+
+    //                                animatorPriest.Play("Attack");
+
+    //                                CanAttackAgain = true;
+
+    //                                if (Target.GetComponent<AIDemons>() != null)
+    //                                {
+    //                                    Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
+    //                                }
+    //                                else if (Target.GetComponent<Building>() != null)
+    //                                {
+    //                                    Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
+    //                                }
+
+    //                                StartCoroutine(waitToReAttack());
+    //                            }
+    //                            else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)
+    //                            {
+    //                                NavMeshAgent.isStopped = false;
+
+    //                                NavMeshAgent.destination = Target.transform.position;
+
+    //                                animatorPriest.Play("Walk");
+    //                            }
+    //                            else
+    //                            {
+    //                                animatorPriest.Play("Idle");
+
+    //                                NavMeshAgent.isStopped = true;
+    //                            }
+    //                        }
+    //                    }
+    //                
+    
+    //            }
+    //        }
+    //        else
+    //        {
+    //            switch (PriestAttackerType)
+    //            {
+    //                case PriestAttackerType.defender:
+    //                    //while i'm not attacked
+    //                    if (!AmIBuilding && CanAttackBack)
+    //                    {
+    //                        if (Vector3.Distance(this.transform.position, buildingToWalkTo.transform.position) <= _gameSettings.demonRangeOfDetection)
+    //                        {
+    //                            NavMeshAgent.isStopped = false;
+
+    //                            NavMeshAgent.destination = buildingToWalkTo.transform.position;
+
+    //                            animatorPriest.Play("Walk");
+    //                        }
+    //                        else
+    //                        {
+    //                            animatorPriest.Play("Idle");
+
+    //                            NavMeshAgent.isStopped = true;
+    //                        }
+    //                    }
+    //                    break;
+    //                case PriestAttackerType.rusherFromCity:
+    //                    Debug.Log("mehh");
+    //                    break;
+    //                case PriestAttackerType.followFormation:
+    //                    break;
+    //                case PriestAttackerType.camper:
+    //                    if (!preparationForAttack)
+    //                    {
+    //                        if (Target == null)
+    //                        {
+    //                            if (Camp == null)
+    //                            {
+    //                                Debug.Log("please make sure " + this.gameObject.name + " is assigned to the camp");
+    //                            }
+    //                            else
+    //                            {
+    //                                Vector3 RandInAreaToGoTo = new Vector3(Random.Range(Camp.transform.position.x - MaxPositionCamper, Camp.transform.position.x + MaxPositionCamper),
+    //                                    Camp.transform.position.y,
+    //                                    Random.Range(Camp.transform.position.z - MaxPositionCamper, Camp.transform.position.z + MaxPositionCamper));
+
+    //                                if (TargeForRandom == null)
+    //                                {
+    //                                    TargeForRandom = new GameObject();
+    //                                    TargeForRandom.name = this.name + " TargetForRandom";
+
+    //                                    TargeForRandom.transform.position = RandInAreaToGoTo;
+
+    //                                    Target = TargeForRandom;
+    //                                }
+    //                                else
+    //                                {
+    //                                    TargeForRandom.transform.position = RandInAreaToGoTo;
+
+    //                                    Target = TargeForRandom;
+    //                                }
+    //                            }
+    //                        }
+
+    //                        if (Vector3.Distance(this.transform.position, Target.transform.position) > 2)
+    //                        {
+    //                            //walk;
+    //                            animatorPriest.Play("Walk");
+
+    //                            NavMeshAgent.isStopped = false;
+    //                            NavMeshAgent.destination = Target.transform.position;
+    //                        }
+    //                        else
+    //                        {
+    //                            if (!canOnlyDoOnceCoroutine)
+    //                            {
+    //                                StartCoroutine(WaitAndLook());
+    //                            }
+    //                        }
+
+    //                        if (CanLookAround && !preparationForAttack)
+    //                        {
+    //                            LookIfFindAnyEnemy();
+    //                        }
+    //                        if (preparationForAttack)
+    //                        {
+    //                            Debug.Log("Found something sir, lets rpepare to attack these demons");
+    //                        }
+    //                    }
+    //                    if(preparationForAttack)
+    //                    {
+    //                        Target = Camp;
+    //                        if (Vector3.Distance(this.transform.position, Target.transform.position) > 2)
+    //                        {
+    //                            NavMeshAgent.isStopped = false;
+    //                            NavMeshAgent.destination = Target.transform.position;
+    //                            animatorPriest.Play("Walk");
+    //                        }
+    //                        else
+    //                        {
+    //                            animatorPriest.Play("Idle");
+    //                            NavMeshAgent.isStopped = true;
+    //                        }
+
+    //                        StartCoroutine(waitForRaid());
+    //                    }
+    //                    break;
+    //            }
+
+               
+    //        }
+    //    }
+    //}
 
     public void LookIfFindAnyEnemy()
     {
@@ -432,8 +402,19 @@ public class AIPriest : MonoBehaviour
         DestroyImmediate(this.gameObject);
     }
 
-    IEnumerator waitToReAttack()
+    IEnumerator WaitToAttack()
     {
+        CanAttackAgain = true;
+
+        if (Target.GetComponent<AIDemons>() != null)
+        {
+            Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
+        }
+        else if (Target.GetComponent<Building>() != null)
+        {
+            Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
+        }
+
         yield return new WaitForSeconds(1);
         CanAttackAgain = false;
     }
@@ -442,7 +423,7 @@ public class AIPriest : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
 
-        Stun = false;
+        _stun = false;
     }
 
     IEnumerator WaitAndLook()
