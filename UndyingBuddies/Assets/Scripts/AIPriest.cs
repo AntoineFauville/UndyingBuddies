@@ -56,6 +56,7 @@ public class AIPriest : MonoBehaviour
     public AIPriestType _myAIPriestType;
     public bool AmUnderEffect;
     public AiPriestEffects currentAiPriestEffects;
+    public bool stunOnce;
 
     void Start()
     {
@@ -70,10 +71,18 @@ public class AIPriest : MonoBehaviour
         //CheckClosestDemonToAttack();
     }
 
-    public void Stun()
+    public void Stun(float stunDuration)
     {
         NavMeshAgent.isStopped = true;
         animatorPriest.Play("Stun");
+
+        _stun = true;
+        AmUnderEffect = true;
+
+        if (!stunOnce)
+        {
+            StartCoroutine(UnStun(stunDuration));
+        }
     }
 
     public void Walk()
@@ -83,7 +92,7 @@ public class AIPriest : MonoBehaviour
 
         NavMeshAgent.destination = Target.transform.position;
 
-        if (Vector3.Distance(Target.transform.position, this.transform.position) > 4)
+        if (Vector3.Distance(Target.transform.position, this.transform.position) > 2)
         {
             NavMeshAgent.isStopped = false;
             NavMeshAgent.SetDestination(Target.transform.position);
@@ -114,6 +123,13 @@ public class AIPriest : MonoBehaviour
     {
         NavMeshAgent.isStopped = true;
         animatorPriest.Play("Observe");
+
+        LookIfFindAnyEnemy();
+
+        if (!canOnlyDoOnceCoroutine)
+        {
+            StartCoroutine(WaitAndLook());
+        }
     }
 
     public void Attack()
@@ -123,188 +139,18 @@ public class AIPriest : MonoBehaviour
             StartCoroutine(WaitToAttack());
         }
 
-        
-
         NavMeshAgent.isStopped = true;
         animatorPriest.Play("Attack");
     }
 
-    //void Update()
-    //{
-    //    if (_stun)
-    //    {
-    //        if (!AmIBuilding && CanAttackBack)
-    //        {
-    //            NavMeshAgent.isStopped = true;
+    public Vector3 FindRandomPositionNearMe(GameObject objectToCompareTo) // for the camp use this to walk around the camp, for the fear, use myself
+    {
+        Vector3 RandInAreaToGoTo = new Vector3(Random.Range(objectToCompareTo.transform.position.x - MaxPositionCamper, objectToCompareTo.transform.position.x + MaxPositionCamper),
+                                        objectToCompareTo.transform.position.y,
+                                        Random.Range(objectToCompareTo.transform.position.z - MaxPositionCamper, objectToCompareTo.transform.position.z + MaxPositionCamper));
 
-    //            animatorPriest.Play("Stun");
-
-    //            StartCoroutine(UnStun());
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (isAttacked)
-    //        {
-    //            switch (PriestAttackerType)
-    //            {
-    //                case PriestAttackerType.defender:
-    //                    if (!AmIBuilding && CanAttackBack)
-    //                    {
-    //                        CheckClosestDemonToAttack();
-
-    //                        if (Target != null)
-    //                        {
-    //                            if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !CanAttackAgain)
-    //                            {
-    //                                NavMeshAgent.isStopped = true;
-
-    //                                animatorPriest.Play("Attack");
-
-    //                                CanAttackAgain = true;
-
-    //                                if (Target.GetComponent<AIDemons>() != null)
-    //                                {
-    //                                    Target.GetComponent<AIDemons>().life -= _gameSettings.PriestAttackAmount;
-    //                                }
-    //                                else if (Target.GetComponent<Building>() != null)
-    //                                {
-    //                                    Target.GetComponent<Building>().GetAttack(_gameSettings.PriestAttackAmount);
-    //                                }
-
-    //                                StartCoroutine(waitToReAttack());
-    //                            }
-    //                            else if (Vector3.Distance(this.transform.position, Target.transform.position) <= _gameSettings.demonRangeOfDetection)
-    //                            {
-    //                                NavMeshAgent.isStopped = false;
-
-    //                                NavMeshAgent.destination = Target.transform.position;
-
-    //                                animatorPriest.Play("Walk");
-    //                            }
-    //                            else
-    //                            {
-    //                                animatorPriest.Play("Idle");
-
-    //                                NavMeshAgent.isStopped = true;
-    //                            }
-    //                        }
-    //                    }
-    //                
-    
-    //            }
-    //        }
-    //        else
-    //        {
-    //            switch (PriestAttackerType)
-    //            {
-    //                case PriestAttackerType.defender:
-    //                    //while i'm not attacked
-    //                    if (!AmIBuilding && CanAttackBack)
-    //                    {
-    //                        if (Vector3.Distance(this.transform.position, buildingToWalkTo.transform.position) <= _gameSettings.demonRangeOfDetection)
-    //                        {
-    //                            NavMeshAgent.isStopped = false;
-
-    //                            NavMeshAgent.destination = buildingToWalkTo.transform.position;
-
-    //                            animatorPriest.Play("Walk");
-    //                        }
-    //                        else
-    //                        {
-    //                            animatorPriest.Play("Idle");
-
-    //                            NavMeshAgent.isStopped = true;
-    //                        }
-    //                    }
-    //                    break;
-    //                case PriestAttackerType.rusherFromCity:
-    //                    Debug.Log("mehh");
-    //                    break;
-    //                case PriestAttackerType.followFormation:
-    //                    break;
-    //                case PriestAttackerType.camper:
-    //                    if (!preparationForAttack)
-    //                    {
-    //                        if (Target == null)
-    //                        {
-    //                            if (Camp == null)
-    //                            {
-    //                                Debug.Log("please make sure " + this.gameObject.name + " is assigned to the camp");
-    //                            }
-    //                            else
-    //                            {
-    //                                Vector3 RandInAreaToGoTo = new Vector3(Random.Range(Camp.transform.position.x - MaxPositionCamper, Camp.transform.position.x + MaxPositionCamper),
-    //                                    Camp.transform.position.y,
-    //                                    Random.Range(Camp.transform.position.z - MaxPositionCamper, Camp.transform.position.z + MaxPositionCamper));
-
-    //                                if (TargeForRandom == null)
-    //                                {
-    //                                    TargeForRandom = new GameObject();
-    //                                    TargeForRandom.name = this.name + " TargetForRandom";
-
-    //                                    TargeForRandom.transform.position = RandInAreaToGoTo;
-
-    //                                    Target = TargeForRandom;
-    //                                }
-    //                                else
-    //                                {
-    //                                    TargeForRandom.transform.position = RandInAreaToGoTo;
-
-    //                                    Target = TargeForRandom;
-    //                                }
-    //                            }
-    //                        }
-
-    //                        if (Vector3.Distance(this.transform.position, Target.transform.position) > 2)
-    //                        {
-    //                            //walk;
-    //                            animatorPriest.Play("Walk");
-
-    //                            NavMeshAgent.isStopped = false;
-    //                            NavMeshAgent.destination = Target.transform.position;
-    //                        }
-    //                        else
-    //                        {
-    //                            if (!canOnlyDoOnceCoroutine)
-    //                            {
-    //                                StartCoroutine(WaitAndLook());
-    //                            }
-    //                        }
-
-    //                        if (CanLookAround && !preparationForAttack)
-    //                        {
-    //                            LookIfFindAnyEnemy();
-    //                        }
-    //                        if (preparationForAttack)
-    //                        {
-    //                            Debug.Log("Found something sir, lets rpepare to attack these demons");
-    //                        }
-    //                    }
-    //                    if(preparationForAttack)
-    //                    {
-    //                        Target = Camp;
-    //                        if (Vector3.Distance(this.transform.position, Target.transform.position) > 2)
-    //                        {
-    //                            NavMeshAgent.isStopped = false;
-    //                            NavMeshAgent.destination = Target.transform.position;
-    //                            animatorPriest.Play("Walk");
-    //                        }
-    //                        else
-    //                        {
-    //                            animatorPriest.Play("Idle");
-    //                            NavMeshAgent.isStopped = true;
-    //                        }
-
-    //                        StartCoroutine(waitForRaid());
-    //                    }
-    //                    break;
-    //            }
-
-               
-    //        }
-    //    }
-    //}
+        return RandInAreaToGoTo;
+    }
 
     public void LookIfFindAnyEnemy()
     {
@@ -419,32 +265,27 @@ public class AIPriest : MonoBehaviour
         CanAttackAgain = false;
     }
 
-    IEnumerator UnStun()
+    IEnumerator UnStun(float stunDuration)
     {
-        yield return new WaitForSeconds(5);
-
+        stunOnce = true;
+        animatorPriest.Play("Stun");
+        yield return new WaitForSeconds(stunDuration);
+        animatorPriest.Play("Stun");
+        stunOnce = false;
+        AmUnderEffect = false;
         _stun = false;
     }
 
-    IEnumerator WaitAndLook()
+    public IEnumerator WaitAndLook()
     {
         canOnlyDoOnceCoroutine = true;
-        NavMeshAgent.isStopped = true;
-
-        animatorPriest.Play("Observe");
-
-        CanLookAround = true;
-
+        
         yield return new WaitForSeconds(5);
 
         CanLookAround = false;
         canOnlyDoOnceCoroutine = false;
-        Target = null;
-    }
+        TargeForRandom.transform.position = FindRandomPositionNearMe(Camp); //this is the camp
 
-    IEnumerator waitForRaid()
-    {
-        yield return new WaitForSeconds(_gameSettings.timeToPrepareWithACamp);
-        Camp.GetComponent<AITown>().RevengeCamp = true;
+        Target = TargeForRandom;
     }
 }

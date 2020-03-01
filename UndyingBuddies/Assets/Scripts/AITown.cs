@@ -33,15 +33,19 @@ public class AITown : MonoBehaviour
 
     void Awake()
     {
-        if (CityResistanceMentalImage != null)
-        {
-            CityResistanceMentalImage.enabled = false;
-        }
-        if (CityResistancePhysicalImage != null)
-        {
-            CityResistancePhysicalImage.enabled = false;
-        }
+        SetupCityPrep();
 
+        AttributeAiToPriestList();
+
+        AttributeBonus();
+
+        SetupAiPerTownType();
+
+        StartCoroutine(SlowUpdate());
+    }
+
+    void AttributeAiToPriestList()
+    {
         for (int i = 0; i < AllRelatedAIOfThisTown.Count; i++)
         {
             if (!AllRelatedAIOfThisTown[i].GetComponent<AIPriest>().AmIBuilding)
@@ -49,8 +53,35 @@ public class AITown : MonoBehaviour
                 AllPriestUnit.Add(AllRelatedAIOfThisTown[i]);
             }
         }
-        
-        if (AiCityBonus.Count > 0) {
+    }
+
+    void SetupAiPerTownType()
+    {
+        if (isCamp)
+        {
+            StartCoroutine(CampUpdate());
+
+            for (int i = 0; i < AllPriestUnit.Count; i++)
+            {
+                AllPriestUnit[i].GetComponent<AIPriest>().Target = null;
+                AllPriestUnit[i].GetComponent<AIPriest>()._myAIPriestType = AIPriestType.Camper;
+                AllPriestUnit[i].GetComponent<AIPriest>().CanAttackBack = true;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < AllPriestUnit.Count; i++)
+            {
+                AllPriestUnit[i].GetComponent<AIPriest>()._myAIPriestType = AIPriestType.TownCitizen;
+                AllPriestUnit[i].GetComponent<AIPriest>().CanAttackBack = true;
+            }
+        }
+    }
+
+    void AttributeBonus()
+    {
+        if (AiCityBonus.Count > 0)
+        {
             //select random bonus for city
             int randCityBonus = Random.Range(0, AiCityBonus.Count);
             ActiveAiCityBonus = AiCityBonus[randCityBonus];
@@ -71,28 +102,17 @@ public class AITown : MonoBehaviour
             }
         }
 
-        StartCoroutine(animateAIInCity());
+    }
 
-        StartCoroutine(SlowUpdate());
-
-        if (isCamp)
+    void SetupCityPrep()
+    {
+        if (CityResistanceMentalImage != null)
         {
-            StartCoroutine(CampUpdate());
-
-            for (int i = 0; i < AllPriestUnit.Count; i++)
-            {
-                AllPriestUnit[i].GetComponent<AIPriest>().Target = null;
-                AllPriestUnit[i].GetComponent<AIPriest>()._myAIPriestType = AIPriestType.Camper;
-                AllPriestUnit[i].GetComponent<AIPriest>().CanAttackBack = true;
-            }
+            CityResistanceMentalImage.enabled = false;
         }
-        else
+        if (CityResistancePhysicalImage != null)
         {
-            for (int i = 0; i < AllPriestUnit.Count; i++)
-            {
-                AllPriestUnit[i].GetComponent<AIPriest>()._myAIPriestType = AIPriestType.TownCitizen;
-                AllPriestUnit[i].GetComponent<AIPriest>().CanAttackBack = true;
-            }
+            CityResistancePhysicalImage.enabled = false;
         }
     }
 
@@ -137,12 +157,22 @@ public class AITown : MonoBehaviour
 
         for (int i = 0; i < AllPriestUnit.Count; i++)
         {
-
             AIPriestType aIPriestType;
             AIPriest currentAIPriest;
 
             currentAIPriest = AllPriestUnit[i];
             aIPriestType = currentAIPriest._myAIPriestType;
+
+            if (Revenge && currentAIPriest._myAIPriestType != AIPriestType.Rusher)
+            {
+                currentAIPriest._myAIPriestType = AIPriestType.Rusher;
+                currentAIPriest.Target = null;
+            }
+
+            if (currentAIPriest.healthAmount < currentAIPriest.maxHealth || currentAIPriest.MentalHealthAmount > 0)
+            {
+                Revenge = true;
+            }
 
             if (currentAIPriest.AmUnderEffect)
             {
@@ -159,19 +189,15 @@ public class AITown : MonoBehaviour
                         yield break;
 
                     case AiPriestEffects.Stun:
-                        currentAIPriest.Stun();
                         yield return new WaitForSeconds(0.5f);
                         StartCoroutine(SlowUpdate());
                         yield break;
                 }
-                
             }
 
             switch (aIPriestType)
             {
                 case AIPriestType.TownCitizen:
-
-
                     if (currentAIPriest.Target != null)
                     {
                         if (Vector3.Distance(currentAIPriest.transform.position, currentAIPriest.Target.transform.position) < 2)
@@ -189,10 +215,14 @@ public class AITown : MonoBehaviour
                         GenerateARandomBuildingToGoTo(currentAIPriest);
                     }
                     break;
+
                 case AIPriestType.Rusher:
+
+                    currentAIPriest.CheckClosestDemonToAttack();
+
                     if (currentAIPriest.Target != null)
                     {
-                        if (Vector3.Distance(this.transform.position, currentAIPriest.Target.transform.position) <= _gameSettings.demonRangeOfCloseBy && !currentAIPriest.CanAttackAgain)
+                        if (Vector3.Distance(currentAIPriest.transform.position, currentAIPriest.Target.transform.position) <= _gameSettings.demonRangeOfCloseBy)
                         {
                             currentAIPriest.Attack();
                         }
@@ -203,11 +233,60 @@ public class AITown : MonoBehaviour
                     }
                     else
                     {
-                        currentAIPriest.Idle();
                         currentAIPriest.CheckClosestDemonToAttack();
+                        currentAIPriest.Idle();
                     }
                     break;
+
                 case AIPriestType.Camper:
+                    if (weNeedToPrepare)
+                    {
+                        StartCoroutine(waitForRaid());
+
+                        currentAIPriest.Target = this.gameObject;
+
+                        if (Vector3.Distance(currentAIPriest.transform.position, currentAIPriest.Target.transform.position) < 2)
+                        {
+                            currentAIPriest.Idle();
+                        }
+                        else
+                        {
+                            currentAIPriest.Walk();
+                        }
+
+                        if (RevengeCamp)
+                        {
+                            currentAIPriest._myAIPriestType = AIPriestType.Rusher;
+                        }
+                    }
+                    else
+                    {
+                        if (!currentAIPriest.CanLookAround)
+                        {
+                            if (currentAIPriest.TargeForRandom == null)
+                            {
+                                currentAIPriest.TargeForRandom = new GameObject();
+                                currentAIPriest.TargeForRandom.name = this.name + " TargetForRandom";
+
+                                currentAIPriest.TargeForRandom.transform.position = currentAIPriest.FindRandomPositionNearMe(this.gameObject); // this is the camp
+
+                                currentAIPriest.Target = currentAIPriest.TargeForRandom;
+                            }
+
+                            if (Vector3.Distance(currentAIPriest.transform.position, currentAIPriest.Target.transform.position) < 2)
+                            {
+                                currentAIPriest.CanLookAround = true;
+                            }
+                            else
+                            {
+                                currentAIPriest.Walk();
+                            }
+                        }
+                        else
+                        {
+                            currentAIPriest.Observe();
+                        }
+                    }
                     break;
             }
         }
@@ -298,15 +377,9 @@ public class AITown : MonoBehaviour
         StartCoroutine(SlowUpdate());
     }
 
-    IEnumerator animateAIInCity()
+    IEnumerator waitForRaid()
     {
-        for (int i = 0; i < AllPriestUnit.Count; i++)
-        {
-            AllPriestUnit[i].buildingToWalkTo = BuildingToWalkTo[Random.Range(0, BuildingToWalkTo.Length)];
-        }
-
-        yield return new WaitForSeconds(5);
-
-        StartCoroutine(animateAIInCity());
+        yield return new WaitForSeconds(_gameSettings.timeToPrepareWithACamp);
+        RevengeCamp = true;
     }
 }

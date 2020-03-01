@@ -118,7 +118,7 @@ public class Grab : MonoBehaviour
             {
                 if (hit.transform.GetComponent<Grabable>() != null && hit.transform.GetComponent<CharacterTypeTagger>() != null)
                 {
-                    if (hit.transform.GetComponent<CharacterTypeTagger>().characterType == CharacterType.demon)
+                    if (hit.transform.GetComponent<CharacterTypeTagger>().characterType == CharacterType.demon && hit.transform.GetComponent<AIDemons>() != null)
                     {
                         hit.transform.GetComponent<AIDemons>().SoulObjects.SetActive(false);
                         StartCoroutine(waitForMouseToUnderstand(hit.transform.gameObject));

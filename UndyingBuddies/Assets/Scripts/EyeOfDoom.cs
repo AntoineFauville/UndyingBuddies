@@ -119,9 +119,7 @@ public class EyeOfDoom : MonoBehaviour
         EyeState = 0;
 
         yield return new WaitForSeconds(3f);
-
-        Target.GetComponent<AIPriest>()._stun = false;
-
+        
         if (listToCheck.Contains(Target))
         {
             listToCheck.Remove(Target);
@@ -135,7 +133,7 @@ public class EyeOfDoom : MonoBehaviour
     IEnumerator EyeOfDoomDamage()
     {
         this.transform.LookAt(Target.transform);
-
+        Target.GetComponent<AIPriest>().Stun(3);
         Target.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, gameSettings.eyeSpell);
         Target.GetComponent<AIPriest>()._stun = true;
         yield return new WaitForSeconds(0.4f);
