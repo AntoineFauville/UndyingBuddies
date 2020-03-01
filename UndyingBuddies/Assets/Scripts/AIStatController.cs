@@ -63,13 +63,7 @@ public class AIStatController : MonoBehaviour
 
         UpdateLifeBars();
 
-        if (_aIPriest.healthAmount <= 0)
-        {
-            _aIPriest.Die(1);
-        } else if (_aIPriest.MentalHealthAmount >= _aIPriest.MentalHealthMaxAmount)
-        {
-            _aIPriest.Die(0);
-        }
+        
     }
 
     void UpdateLifeBars()

@@ -31,7 +31,7 @@ public class AITown : MonoBehaviour
     private GameObject ui;
     [SerializeField] private GameSettings _gameSettings;
 
-    void Awake()
+    void Start()
     {
         SetupCityPrep();
 
@@ -163,6 +163,23 @@ public class AITown : MonoBehaviour
             currentAIPriest = AllPriestUnit[i];
             aIPriestType = currentAIPriest._myAIPriestType;
 
+            if (currentAIPriest.healthAmount <= 0)
+            {
+                currentAIPriest.Die(1);
+                CleanupUnessesaryEmpty();
+                yield return new WaitForSeconds(0.5f);
+                StartCoroutine(SlowUpdate());
+                yield break;
+            }
+            else if (currentAIPriest.MentalHealthAmount >= currentAIPriest.MentalHealthMaxAmount)
+            {
+                currentAIPriest.Die(0);
+                CleanupUnessesaryEmpty();
+                yield return new WaitForSeconds(0.5f);
+                StartCoroutine(SlowUpdate());
+                yield break;
+            }
+
             if (Revenge && currentAIPriest._myAIPriestType != AIPriestType.Rusher)
             {
                 currentAIPriest._myAIPriestType = AIPriestType.Rusher;
@@ -198,6 +215,7 @@ public class AITown : MonoBehaviour
             switch (aIPriestType)
             {
                 case AIPriestType.TownCitizen:
+
                     if (currentAIPriest.Target != null)
                     {
                         if (Vector3.Distance(currentAIPriest.transform.position, currentAIPriest.Target.transform.position) < 2)
@@ -218,6 +236,8 @@ public class AITown : MonoBehaviour
 
                 case AIPriestType.Rusher:
 
+                    CleanupUnessesaryEmpty();
+
                     currentAIPriest.CheckClosestDemonToAttack();
 
                     if (currentAIPriest.Target != null)
@@ -233,12 +253,16 @@ public class AITown : MonoBehaviour
                     }
                     else
                     {
+                        CleanupUnessesaryEmpty();
                         currentAIPriest.CheckClosestDemonToAttack();
                         currentAIPriest.Idle();
                     }
                     break;
 
                 case AIPriestType.Camper:
+
+                    CleanupUnessesaryEmpty();
+
                     if (weNeedToPrepare)
                     {
                         StartCoroutine(waitForRaid());

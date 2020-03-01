@@ -67,8 +67,6 @@ public class AIPriest : MonoBehaviour
         {
             aiManager.Priest.Add(this.gameObject);
         }
-        
-        //CheckClosestDemonToAttack();
     }
 
     public void Stun(float stunDuration)
@@ -174,7 +172,10 @@ public class AIPriest : MonoBehaviour
 
     public void Die(int diedByWhat)
     {
-        aiManager.Priest.Remove(this.gameObject);
+        aiManager
+            .Priest
+            .Remove(
+            this.gameObject);
 
         StartCoroutine(waitToDie(diedByWhat));
     }

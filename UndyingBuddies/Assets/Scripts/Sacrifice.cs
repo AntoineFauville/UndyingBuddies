@@ -38,6 +38,10 @@ public class Sacrifice : MonoBehaviour
 
                 CanvasDamage canvasDamage = Instantiate(gameSettings.CanvasDamagePrefab, spawnPointCanvas.transform.position, new Quaternion());
                 canvasDamage.SetupCanvasEnergy(gameSettings.EnergyGetOutOfSacrificingHouse);
+
+                DestroyImmediate(grabbedObject);
+                CleanFromAiManagerAnyResidualInconveniences(grabbedObject);
+                return;
             }
         }
 
