@@ -195,6 +195,7 @@ public class AITown : MonoBehaviour
                 switch (currentAIPriest.currentAiPriestEffects)
                 {
                     case AiPriestEffects.OnFire:
+                        currentAIPriest.OnFire();
                         yield return new WaitForSeconds(0.5f);
                         StartCoroutine(SlowUpdate());
                         yield break;

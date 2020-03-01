@@ -57,6 +57,8 @@ public class AIPriest : MonoBehaviour
     public bool AmUnderEffect;
     public AiPriestEffects currentAiPriestEffects;
     public bool stunOnce;
+    public GameObject Flames;
+    public bool onlyStopFireOnce;
 
     void Start()
     {
@@ -66,6 +68,11 @@ public class AIPriest : MonoBehaviour
         if (!aiManager.Priest.Contains(this.gameObject))
         {
             aiManager.Priest.Add(this.gameObject);
+        }
+
+        if (!AmIBuilding)
+        {
+            Flames.SetActive(false);
         }
     }
 
@@ -109,7 +116,20 @@ public class AIPriest : MonoBehaviour
 
     public void OnFire()
     {
+        Debug.Log("shit fire yo");
 
+        animatorPriest.Play("OnFire");
+        
+        this.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, 1);
+        Flames.SetActive(true);
+        NavMeshAgent.SetDestination(FindRandomPositionNearMe(this.gameObject));
+        NavMeshAgent.isStopped = false;
+
+        if (!onlyStopFireOnce)
+        {
+            NavMeshAgent.speed += 2;
+            StartCoroutine(SetFireOff());
+        }
     }
 
     public void Fear()
@@ -289,5 +309,15 @@ public class AIPriest : MonoBehaviour
         TargeForRandom.transform.position = FindRandomPositionNearMe(Camp); //this is the camp
 
         Target = TargeForRandom;
+    }
+
+    IEnumerator SetFireOff()
+    {
+        onlyStopFireOnce = true;
+        yield return new WaitForSeconds(2);
+        NavMeshAgent.speed -= 2;
+        Flames.SetActive(false);
+        onlyStopFireOnce = false;
+        AmUnderEffect = false;
     }
 }

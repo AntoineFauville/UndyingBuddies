@@ -64,6 +64,40 @@ public class AIStatController : MonoBehaviour
         UpdateLifeBars();
     }
 
+    public void TakeDamage(AiStatus aiStatus, int damage)
+    {
+        int finalDamage = 0;
+        int resistance = 0;
+        //
+        switch (aiStatus)
+        {
+            case AiStatus.Physical:
+                resistance = PhysicalResistance;
+                finalDamage = damage - PhysicalResistance;
+                _aIPriest.healthAmount -= finalDamage;
+                break;
+            case AiStatus.Fear:
+                finalDamage = 0;
+                break;
+            case AiStatus.MentalHealth:
+                resistance = MentalHealthResistance;
+                finalDamage = damage - MentalHealthResistance;
+                _aIPriest.MentalHealthAmount += finalDamage;
+                break;
+            case AiStatus.Lonelyness:
+                finalDamage = 0;
+                break;
+            case AiStatus.IntestineStatus:
+                finalDamage = 0;
+                break;
+        }
+
+        CanvasDamage canvasDamage = Instantiate(_gameSettings.CanvasDamagePrefab, spawnPointCanvas.transform.position, new Quaternion());
+        canvasDamage.SetupCanvasDamage(aiStatus, finalDamage, resistance);
+
+        UpdateLifeBars();
+    }
+
     void UpdateLifeBars()
     {
         if (_aIPriest.UiHealth != null)

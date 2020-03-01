@@ -23856,6 +23856,7 @@ GameObject:
   - component: {fileID: 7347551339407043861}
   - component: {fileID: 2704573516347916258}
   - component: {fileID: 3732967262570982769}
+  - component: {fileID: 2540769419550335806}
   m_Layer: 2
   m_Name: FirePatch
   m_TagString: FireZone
@@ -23944,6 +23945,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1b8dd9cd31e22459b0acaba50e1208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2540769419550335806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198202783611895341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ddc6ce65d1069248aa290389a3f1b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
+  allPriestTouched: []
 --- !u!1 &8008885287157812403
 GameObject:
   m_ObjectHideFlags: 0
