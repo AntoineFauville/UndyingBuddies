@@ -9,9 +9,8 @@ public class AITown : MonoBehaviour
     [SerializeField] private List<AIPriest> AllPriestUnit = new List<AIPriest>();
 
     public bool Revenge;
-    public bool RevengeCamp;
     
-    [SerializeField] private GameObject buildingToDestroy;
+    [SerializeField] private GameObject ChurchInMiddleOfTown;
     [SerializeField] private GameObject visualsToShowActivation;
 
     [SerializeField] private List<AiCityBonus> AiCityBonus;
@@ -163,6 +162,17 @@ public class AITown : MonoBehaviour
             currentAIPriest = AllPriestUnit[i];
             aIPriestType = currentAIPriest._myAIPriestType;
 
+            if (currentAIPriest.healthAmount < currentAIPriest.maxHealth || currentAIPriest.MentalHealthAmount > 0)
+            {
+                Revenge = true;
+            }
+
+            if (Revenge && currentAIPriest._myAIPriestType != AIPriestType.Rusher)
+            {
+                currentAIPriest._myAIPriestType = AIPriestType.Rusher;
+                currentAIPriest.Target = null;
+            }
+
             if (currentAIPriest.healthAmount <= 0)
             {
                 currentAIPriest.Die(1);
@@ -178,17 +188,6 @@ public class AITown : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
                 StartCoroutine(SlowUpdate());
                 yield break;
-            }
-
-            if (Revenge && currentAIPriest._myAIPriestType != AIPriestType.Rusher)
-            {
-                currentAIPriest._myAIPriestType = AIPriestType.Rusher;
-                currentAIPriest.Target = null;
-            }
-
-            if (currentAIPriest.healthAmount < currentAIPriest.maxHealth || currentAIPriest.MentalHealthAmount > 0)
-            {
-                Revenge = true;
             }
 
             if (currentAIPriest.AmUnderEffect)
@@ -277,11 +276,6 @@ public class AITown : MonoBehaviour
                         {
                             currentAIPriest.Walk();
                         }
-
-                        if (RevengeCamp)
-                        {
-                            currentAIPriest._myAIPriestType = AIPriestType.Rusher;
-                        }
                     }
                     else
                     {
@@ -332,8 +326,7 @@ public class AITown : MonoBehaviour
                 ui.transform.rotation = new Quaternion();
             }
         }
-
-
+        
         if (AllPriestUnit.Count <= 0)
         {
             isTheVillageDestroyed = true;
@@ -342,7 +335,7 @@ public class AITown : MonoBehaviour
         {
             isTheVillageDestroyed = false;
 
-            if (Revenge || RevengeCamp)
+            if (Revenge)
             {
                 for (int i = 0; i < AllPriestUnit.Count; i++)
                 {
@@ -367,7 +360,7 @@ public class AITown : MonoBehaviour
                     }
                 }
 
-                if (buildingToDestroy != null)
+                if (ChurchInMiddleOfTown != null)
                 {
                     if (visualsToShowActivation != null)
                     {
@@ -404,6 +397,6 @@ public class AITown : MonoBehaviour
     IEnumerator waitForRaid()
     {
         yield return new WaitForSeconds(_gameSettings.timeToPrepareWithACamp);
-        RevengeCamp = true;
+        Revenge = true;
     }
 }

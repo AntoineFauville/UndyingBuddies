@@ -228,8 +228,7 @@ MonoBehaviour:
   - {fileID: 1356857637}
   AllPriestUnit: []
   Revenge: 0
-  RevengeCamp: 0
-  buildingToDestroy: {fileID: 0}
+  ChurchInMiddleOfTown: {fileID: 0}
   visualsToShowActivation: {fileID: 0}
   AiCityBonus: []
   ActiveAiCityBonus: {fileID: 0}
@@ -298,8 +297,7 @@ MonoBehaviour:
   - {fileID: 1604314807}
   AllPriestUnit: []
   Revenge: 0
-  RevengeCamp: 0
-  buildingToDestroy: {fileID: 0}
+  ChurchInMiddleOfTown: {fileID: 0}
   visualsToShowActivation: {fileID: 0}
   AiCityBonus: []
   ActiveAiCityBonus: {fileID: 0}
@@ -1004,8 +1002,7 @@ MonoBehaviour:
   - {fileID: 2090045164}
   AllPriestUnit: []
   Revenge: 0
-  RevengeCamp: 0
-  buildingToDestroy: {fileID: 0}
+  ChurchInMiddleOfTown: {fileID: 0}
   visualsToShowActivation: {fileID: 0}
   AiCityBonus: []
   ActiveAiCityBonus: {fileID: 0}
@@ -10429,8 +10426,7 @@ MonoBehaviour:
   - {fileID: 1016306280}
   AllPriestUnit: []
   Revenge: 0
-  RevengeCamp: 0
-  buildingToDestroy: {fileID: 0}
+  ChurchInMiddleOfTown: {fileID: 0}
   visualsToShowActivation: {fileID: 0}
   AiCityBonus: []
   ActiveAiCityBonus: {fileID: 0}
@@ -21213,6 +21209,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa,
         type: 2}
+    - target: {fileID: 5326522035269715967, guid: e29456cb3fcc3c54991286ffeeb1ccf7,
+        type: 3}
+      propertyPath: m_Name
+      value: BigChurch
+      objectReference: {fileID: 0}
     - target: {fileID: 3731019725357610315, guid: e29456cb3fcc3c54991286ffeeb1ccf7,
         type: 3}
       propertyPath: m_LocalPosition.x
