@@ -62,8 +62,6 @@ public class AIStatController : MonoBehaviour
         canvasDamage.SetupCanvasDamage(aiStatus, finalDamage, resistance);
 
         UpdateLifeBars();
-
-        
     }
 
     void UpdateLifeBars()
@@ -77,37 +75,7 @@ public class AIStatController : MonoBehaviour
             _aIPriest.UiHealth.maxMentalHealth = _gameSettings.PriestMaxMentalHealth;
         }
     }
-
-    void OnTriggerStay(Collider collider)
-    {
-        if (_aIPriest.PriestType == PriestType.soldier)
-        {
-            if (collider.tag == "FireZone")
-            {
-                if (_aIPriest.amIInFire == false)
-                {
-                    StartCoroutine(waitToStopFire());
-                }
-            }
-
-            if (collider.tag == "tentacleZone")
-            {
-                if (_aIPriest.attackedByTentacle == false)
-                {
-                    StartCoroutine(waitForTentacleEffect());
-                }
-            }
-
-            if (collider.tag == "spikeZone")
-            {
-                if (_aIPriest.attackedBySpike == false)
-                {
-                    StartCoroutine(Spikes());
-                }
-            }
-        }
-    }
-
+    
     IEnumerator HealSlowlyOverTime()
     {
         yield return new WaitForSeconds(1);
@@ -119,52 +87,7 @@ public class AIStatController : MonoBehaviour
 
         StartCoroutine(HealSlowlyOverTime());
     }
-
-    IEnumerator waitToStopFire()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            if (!_aIPriest.amIInFire)
-            {
-                TakeDamage(AiStatus.Physical, _gameSettings.fireSpell);
-            }
-            _aIPriest.amIInFire = true;
-            yield return new WaitForSeconds(0.5f);
-        }
-        _aIPriest.amIInFire = false;
-    }
-
-    IEnumerator Spikes()
-    {
-        if (!_aIPriest.attackedBySpike)
-        {
-            TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell);
-        }
-
-        _aIPriest.attackedBySpike = true;
-        _aIPriest.Stun(2);
-
-        yield return new WaitForSeconds(1);
-
-        _aIPriest.attackedBySpike = false;
-    }
-
-    IEnumerator waitForTentacleEffect()
-    {
-        if (!_aIPriest.attackedByTentacle) //otherwise it checks infinitly
-        {
-            TakeDamage(AiStatus.MentalHealth, _gameSettings.tentacleSpell);
-        }
-
-        _aIPriest.attackedByTentacle = true;
-
-        _aIPriest.Stun(0.2f);
-
-        yield return new WaitForSeconds(0.2f);
-
-        _aIPriest.attackedByTentacle = false;
-    }
-
+    
     IEnumerator slowUpdate()
     {
         yield return new WaitForSeconds(0.3f);

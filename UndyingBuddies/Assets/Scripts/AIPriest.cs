@@ -109,6 +109,7 @@ public class AIPriest : MonoBehaviour
 
     public void OnFire()
     {
+
     }
 
     public void Fear()

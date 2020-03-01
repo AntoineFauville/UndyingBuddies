@@ -135,7 +135,6 @@ public class EyeOfDoom : MonoBehaviour
         this.transform.LookAt(Target.transform);
         Target.GetComponent<AIPriest>().Stun(3);
         Target.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, gameSettings.eyeSpell);
-        Target.GetComponent<AIPriest>()._stun = true;
         yield return new WaitForSeconds(0.4f);
         canDoDamage = false;
     }

@@ -20,4 +20,6 @@ public class SpellArchetype : ScriptableObject
     public int CostToUnlockEnergy;
 
     public Sprite backGroundImage;
+
+    public int Range = 5;
 }
