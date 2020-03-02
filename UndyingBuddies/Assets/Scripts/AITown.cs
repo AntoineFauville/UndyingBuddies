@@ -196,19 +196,13 @@ public class AITown : MonoBehaviour
                 {
                     case AiPriestEffects.OnFire:
                         currentAIPriest.OnFire();
-                        yield return new WaitForSeconds(0.5f);
-                        StartCoroutine(SlowUpdate());
-                        yield break;
+                        goto Skip;
 
                     case AiPriestEffects.Feared:
-                        yield return new WaitForSeconds(0.5f);
-                        StartCoroutine(SlowUpdate());
-                        yield break;
+                        goto Skip;
 
                     case AiPriestEffects.Stun:
-                        yield return new WaitForSeconds(0.5f);
-                        StartCoroutine(SlowUpdate());
-                        yield break;
+                        goto Skip;
                 }
             }
 
@@ -308,6 +302,9 @@ public class AITown : MonoBehaviour
                     }
                     break;
             }
+
+            Skip:
+                continue;
         }
 
         if (weNeedToPrepare)
