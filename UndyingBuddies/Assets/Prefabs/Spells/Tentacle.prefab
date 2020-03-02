@@ -14309,6 +14309,7 @@ GameObject:
   - component: {fileID: 7347551339407043861}
   - component: {fileID: 2704573516347916258}
   - component: {fileID: 3732967262570982769}
+  - component: {fileID: 2957671389041756986}
   m_Layer: 2
   m_Name: Tentacle
   m_TagString: tentacleZone
@@ -14393,6 +14394,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1b8dd9cd31e22459b0acaba50e1208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2957671389041756986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198202783611895341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36a3c98d8e639b4ab3258e79dc91477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
+  allPriestTouched: []
 --- !u!1001 &371892374209975058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14400,11 +14415,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7200175704107705377}
     m_Modifications:
-    - target: {fileID: 2463588131281787169, guid: 7a75e9fadebd00f4c8469d99cd4ace78,
-        type: 3}
-      propertyPath: m_Name
-      value: TentacleAnimation
-      objectReference: {fileID: 0}
     - target: {fileID: 5869424190513205230, guid: 7a75e9fadebd00f4c8469d99cd4ace78,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14459,6 +14469,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2463588131281787169, guid: 7a75e9fadebd00f4c8469d99cd4ace78,
+        type: 3}
+      propertyPath: m_Name
+      value: TentacleAnimation
       objectReference: {fileID: 0}
     - target: {fileID: 6595402741360658022, guid: 7a75e9fadebd00f4c8469d99cd4ace78,
         type: 3}

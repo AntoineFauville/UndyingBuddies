@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flames : MonoBehaviour
+public class Tentacle : MonoBehaviour
 {
     [SerializeField] private GameSettings _gameSettings;
 
     [SerializeField] private List<GameObject> allPriestTouched = new List<GameObject>();
-
+    
     void Start()
     {
         //we can place this here because we just need to know on placement what we hit
-        Collider[] HitCollider = Physics.OverlapSphere(this.transform.position, _gameSettings.fireSpell.Range);
+        Collider[] HitCollider = Physics.OverlapSphere(this.transform.position, _gameSettings.tentacleSpell.Range);
 
         for (int i = 0; i < HitCollider.Length; i++)
         {
@@ -25,9 +25,9 @@ public class Flames : MonoBehaviour
 
     IEnumerator DamagePerXSeconds()
     {
-        Debug.Log("doing damage");
+        Debug.Log("doing damage tentacle");
 
-        Collider[] HitCollider = Physics.OverlapSphere(this.transform.position, _gameSettings.fireSpell.Range);
+        Collider[] HitCollider = Physics.OverlapSphere(this.transform.position, _gameSettings.tentacleSpell.Range);
 
         allPriestTouched.Clear();
 
@@ -41,19 +41,7 @@ public class Flames : MonoBehaviour
 
         for (int i = 0; i < allPriestTouched.Count; i++)
         {
-            allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.fireSpell);
-
-            if (allPriestTouched[i].GetComponent<AIPriest>().AmUnderEffect == false)
-            {
-                allPriestTouched[i].GetComponent<AIPriest>().AmUnderEffect = true;
-                allPriestTouched[i].GetComponent<AIPriest>().currentAiPriestEffects = AiPriestEffects.OnFire;
-            }
-
-            int rand = Random.Range(0, 100);
-            if (rand > 0)
-            {
-                
-            }
+            allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, _gameSettings.tentacleSpell);
         }
 
         yield return new WaitForSeconds(0.4f);
