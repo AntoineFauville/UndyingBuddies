@@ -15,12 +15,12 @@ public class AIStatController : MonoBehaviour
     
     void Start()
     {
-        _aIPriest.MentalHealthMaxAmount = _gameSettings.PriestMaxMentalHealth;
-
         if (_aIPriest.PriestType == PriestType.soldier)
         {
             _aIPriest.healthAmount = _gameSettings.PriestHealth;
             _aIPriest.maxHealth = _gameSettings.PriestHealth;
+            _aIPriest.fearMaxAmount = _gameSettings.PriestMaxFearAmount;
+            _aIPriest.MentalHealthMaxAmount = _gameSettings.PriestMaxMentalHealth;
             _aIPriest.MentalHealthAmount = 0;
         }
 

@@ -6,11 +6,12 @@ using UnityEngine.AI;
 public class EyeOfDoom : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent navMeshAgent;
-    private GameObject Target;
+    [SerializeField] private GameObject Target;
 
     public int EyeState;
 
     [SerializeField] List<GameObject> listToCheck = new List<GameObject>();
+    [SerializeField] List<GameObject> listOfAiFromTown = new List<GameObject>();
 
     [SerializeField] private GameSettings gameSettings;
     private bool canDoDamage;
@@ -24,12 +25,14 @@ public class EyeOfDoom : MonoBehaviour
         {
             for (int i = 0; i < GameObject.Find("Main Camera").GetComponent<AiManager>().Priest.Count; i++)
             {
-                if (!listToCheck.Contains(GameObject.Find("Main Camera").GetComponent<AiManager>().Priest[i]))
+                if (!listToCheck.Contains(GameObject.Find("Main Camera").GetComponent<AiManager>().Priest[i]) 
+                    && !GameObject.Find("Main Camera").GetComponent<AiManager>().Priest[i].GetComponent<AIPriest>().AmIBuilding)
                 {
                     listToCheck.Add(GameObject.Find("Main Camera").GetComponent<AiManager>().Priest[i]);
                 }
             }
         }
+
         if (!OnlyOneCoroutineAtTime)
         {
             StartCoroutine(EyeOfDooomTimers());
@@ -70,7 +73,28 @@ public class EyeOfDoom : MonoBehaviour
         }
 
         Target = bestPriest;
-    } // check if there is an enemy to attack close up
+
+        //after find closest target, we can get all the priest from that city
+        if (listOfAiFromTown.Count <= 0)
+        {
+            for (int i = 0; i < bestPriest.GetComponent<AIPriest>().myAiTown.AllPriestUnit.Count; i++)
+            {
+                listOfAiFromTown.Add(bestPriest.GetComponent<AIPriest>().myAiTown.AllPriestUnit[i].gameObject);
+            }
+
+            //now listOfAiFromTown will contains only the ai from the city itself
+
+            //then we can stipulate that the list now must look like the otherone so when we remove target we're removing from town etc 
+            //since it's only in the start that it gets all the priest possible this should be fine
+            // never do this because otherwise you confond the two and it crashes listToCheck = listOfAiFromTown;
+
+            listToCheck.Clear();
+            for (int i = 0; i < listOfAiFromTown.Count; i++)
+            {
+                listToCheck.Add(listOfAiFromTown[i]);
+            }
+        }
+    } 
 
     void Update()
     {
@@ -123,6 +147,7 @@ public class EyeOfDoom : MonoBehaviour
         if (listToCheck.Contains(Target))
         {
             listToCheck.Remove(Target);
+            Target = null;
         }
 
         OnlyOneCoroutineAtTime = false;
@@ -133,8 +158,12 @@ public class EyeOfDoom : MonoBehaviour
     IEnumerator EyeOfDoomDamage()
     {
         this.transform.LookAt(Target.transform);
-        Target.GetComponent<AIPriest>().Stun(3);
+        if (!Target.GetComponent<AIPriest>().AmUnderEffect)
+        {
+            Target.GetComponent<AIPriest>().Stun(3);
+        }
         Target.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, gameSettings.eyeSpell);
+        Target.GetComponent<AIPriest>().FearAmount += gameSettings.eyeSpell.FearAmount;
         yield return new WaitForSeconds(0.4f);
         canDoDamage = false;
     }

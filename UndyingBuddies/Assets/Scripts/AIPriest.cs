@@ -22,6 +22,8 @@ public class AIPriest : MonoBehaviour
     private GameSettings _gameSettings;
     private AiManager aiManager;
 
+    public AITown myAiTown;
+
     public PriestType PriestType;
     public bool CanAttackAgain;
 
@@ -59,6 +61,8 @@ public class AIPriest : MonoBehaviour
     public bool stunOnce;
     public GameObject Flames;
     public bool onlyStopFireOnce;
+    public bool onlyFearStopOnce;
+    public GameObject FearIndicator;
 
     void Start()
     {
@@ -73,19 +77,20 @@ public class AIPriest : MonoBehaviour
         if (!AmIBuilding)
         {
             Flames.SetActive(false);
+            FearIndicator.SetActive(false);
         }
     }
 
     public void Stun(float stunDuration)
     {
-        NavMeshAgent.isStopped = true;
-        animatorPriest.Play("Stun");
-
-        _stun = true;
-        AmUnderEffect = true;
-
         if (!stunOnce)
         {
+            NavMeshAgent.isStopped = true;
+            animatorPriest.Play("Stun");
+
+            _stun = true;
+            AmUnderEffect = true;
+            currentAiPriestEffects = AiPriestEffects.Stun;
             StartCoroutine(UnStun(stunDuration));
         }
     }
@@ -116,26 +121,37 @@ public class AIPriest : MonoBehaviour
 
     public void OnFire()
     {
-        Debug.Log("shit fire yo");
-
-        animatorPriest.Play("OnFire");
-        
         this.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, 1);
-        Flames.SetActive(true);
-        NavMeshAgent.SetDestination(FindRandomPositionNearMe(this.gameObject));
+        NavMeshAgent.SetDestination(FindRandomPositionNearMe(this.gameObject, 5));
         NavMeshAgent.isStopped = false;
 
         if (!onlyStopFireOnce)
         {
-            NavMeshAgent.speed += 2;
+            Debug.Log("shit fire yo");
+
+            animatorPriest.Play("OnFire");
+
+            Flames.SetActive(true);
+            NavMeshAgent.speed = 4f;
             StartCoroutine(SetFireOff());
         }
     }
 
     public void Fear()
     {
-        NavMeshAgent.isStopped = true;
-        animatorPriest.Play("Feared");
+        if (!onlyFearStopOnce)
+        {
+            Debug.Log("fear chutlulululu");
+
+            animatorPriest.Play("Feared");
+
+            NavMeshAgent.isStopped = false;
+
+            NavMeshAgent.SetDestination(FindRandomPositionNearMe(this.gameObject, 30));
+            NavMeshAgent.speed = 3f;
+            FearIndicator.SetActive(true);
+            StartCoroutine(SetFearOff());
+        }
     }
 
     public void Observe()
@@ -167,6 +183,15 @@ public class AIPriest : MonoBehaviour
         Vector3 RandInAreaToGoTo = new Vector3(Random.Range(objectToCompareTo.transform.position.x - MaxPositionCamper, objectToCompareTo.transform.position.x + MaxPositionCamper),
                                         objectToCompareTo.transform.position.y,
                                         Random.Range(objectToCompareTo.transform.position.z - MaxPositionCamper, objectToCompareTo.transform.position.z + MaxPositionCamper));
+
+        return RandInAreaToGoTo;
+    }
+
+    public Vector3 FindRandomPositionNearMe(GameObject objectToCompareTo, int Range) //for the others to run around in a set range when on fire or so
+    {
+        Vector3 RandInAreaToGoTo = new Vector3(Random.Range(objectToCompareTo.transform.position.x - Range, objectToCompareTo.transform.position.x + Range),
+                                        objectToCompareTo.transform.position.y,
+                                        Random.Range(objectToCompareTo.transform.position.z - Range, objectToCompareTo.transform.position.z + Range));
 
         return RandInAreaToGoTo;
     }
@@ -315,9 +340,20 @@ public class AIPriest : MonoBehaviour
     {
         onlyStopFireOnce = true;
         yield return new WaitForSeconds(2);
-        NavMeshAgent.speed -= 2;
+        NavMeshAgent.speed = 1.5f;
         Flames.SetActive(false);
         onlyStopFireOnce = false;
         AmUnderEffect = false;
+    }
+
+    IEnumerator SetFearOff()
+    {
+        onlyFearStopOnce = true;
+        yield return new WaitForSeconds(5);
+        NavMeshAgent.speed = 1.5f;
+        FearIndicator.SetActive(false);
+        onlyFearStopOnce = false;
+        AmUnderEffect = false;
+        FearAmount = 0;
     }
 }

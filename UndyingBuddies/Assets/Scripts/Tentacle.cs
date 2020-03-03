@@ -42,6 +42,7 @@ public class Tentacle : MonoBehaviour
         for (int i = 0; i < allPriestTouched.Count; i++)
         {
             allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, _gameSettings.tentacleSpell);
+            allPriestTouched[i].gameObject.GetComponent<AIPriest>().FearAmount += _gameSettings.tentacleSpell.FearAmount;
         }
 
         yield return new WaitForSeconds(0.4f);

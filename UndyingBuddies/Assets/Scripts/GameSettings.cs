@@ -18,6 +18,7 @@ public class GameSettings : ScriptableObject
     public int PriestHealth = 100;
     public int PriestAttackAmount = 10;
     public int PriestMaxMentalHealth = 100;
+    public int PriestMaxFearAmount = 100;
 
     public SpellArchetype fireSpell;
     public SpellArchetype eyeSpell;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class AITown : MonoBehaviour
 {
     [SerializeField] private List<AIPriest> AllRelatedAIOfThisTown = new List<AIPriest>();
-    [SerializeField] private List<AIPriest> AllPriestUnit = new List<AIPriest>();
+    public List<AIPriest> AllPriestUnit = new List<AIPriest>();
 
     public bool Revenge;
     
@@ -162,6 +162,11 @@ public class AITown : MonoBehaviour
             currentAIPriest = AllPriestUnit[i];
             aIPriestType = currentAIPriest._myAIPriestType;
 
+            if (currentAIPriest.myAiTown == null)
+            {
+                currentAIPriest.myAiTown = this;
+            }
+
             if (currentAIPriest.healthAmount < currentAIPriest.maxHealth || currentAIPriest.MentalHealthAmount > 0)
             {
                 Revenge = true;
@@ -189,9 +194,15 @@ public class AITown : MonoBehaviour
                 StartCoroutine(SlowUpdate());
                 yield break;
             }
-
+            
             if (currentAIPriest.AmUnderEffect)
             {
+                //if i'm already under an effect what do i do ? i have to prioritize!
+                //fear < than fire ? but fire does damage so fire cancels fear ?
+                //rule is as long as you are under effect deal with that then the other effect will wait and kick after or not at all
+
+                Debug.Log(currentAIPriest.currentAiPriestEffects);
+
                 switch (currentAIPriest.currentAiPriestEffects)
                 {
                     case AiPriestEffects.OnFire:
@@ -199,10 +210,20 @@ public class AITown : MonoBehaviour
                         goto Skip;
 
                     case AiPriestEffects.Feared:
+                        currentAIPriest.Fear();
                         goto Skip;
 
                     case AiPriestEffects.Stun:
+
                         goto Skip;
+                }
+            }
+            else
+            {
+                if (currentAIPriest.FearAmount >= currentAIPriest.fearMaxAmount)
+                {
+                    currentAIPriest.AmUnderEffect = true;
+                    currentAIPriest.currentAiPriestEffects = AiPriestEffects.Feared;
                 }
             }
 
@@ -372,7 +393,10 @@ public class AITown : MonoBehaviour
         {
             hasBeenDestroyedOnce = true;
 
-            visualsToShowActivation.SetActive(false);
+            if (visualsToShowActivation != null)
+            {
+                visualsToShowActivation.SetActive(false);
+            }
 
             for (int i = 0; i < buildingToTransformInEnergy.Length; i++)
             {

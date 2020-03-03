@@ -22,4 +22,6 @@ public class SpellArchetype : ScriptableObject
     public Sprite backGroundImage;
 
     public int Range = 5;
+
+    public int FearAmount = 5;
 }
