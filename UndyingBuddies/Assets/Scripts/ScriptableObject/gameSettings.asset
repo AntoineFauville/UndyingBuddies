@@ -23,6 +23,7 @@ MonoBehaviour:
   PriestHealth: 100
   PriestAttackAmount: 5
   PriestMaxMentalHealth: 200
+  PriestMaxFearAmount: 100
   fireSpell: {fileID: 11400000, guid: 4e70b12a3bdb36c48aff27c10c76daa4, type: 2}
   eyeSpell: {fileID: 11400000, guid: cf4f410c25723b14dbdd4aafc60f11fa, type: 2}
   spikeSpell: {fileID: 11400000, guid: 7efa2cb3bcd4083469c10a9e05cf67a2, type: 2}
@@ -58,3 +59,5 @@ MonoBehaviour:
   UIAttack: {fileID: 3861960556119976163, guid: b555a1fbcbd696643a322ccbee6cd8b7,
     type: 3}
   CampSightIncrease: 4
+  DeathPriest: {fileID: 8831018813437179756, guid: a4ced0b119e76a041b4c4af548f34293,
+    type: 3}

@@ -285,10 +285,10 @@ public class AIPriest : MonoBehaviour
         switch (diedByWhat)
         {
             case 0: // by mental health
-
+                Instantiate(_gameSettings.DeathPriest, this.transform.position, new Quaternion());
                 break;
             case 1: // by physical damage
-
+                Instantiate(_gameSettings.DeathPriest, this.transform.position, new Quaternion());
                 break;
         }
 

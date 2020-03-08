@@ -61,4 +61,6 @@ public class GameSettings : ScriptableObject
     public int timeToPrepareWithACamp = 120;
     public GameObject UIAttack;
     public int CampSightIncrease = 4;
+
+    public GameObject DeathPriest;
 }
