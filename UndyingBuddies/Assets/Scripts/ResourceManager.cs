@@ -11,9 +11,7 @@ public class ResourceManager : MonoBehaviour
     public int amountOfBlue;
     public int amountOfRed;
     public int amountOfEnergy;
-
-    public Text textWood;
-    public Text textFood;
+    
     public Text textEnergy;
 
     public List<GameObject> Resource = new List<GameObject>();
@@ -149,9 +147,7 @@ public class ResourceManager : MonoBehaviour
                 }
             }
         }
-
-        textWood.text = amountOfBlueViolet.ToString();
-        textFood.text = amountOfWhite.ToString();
+        
         textEnergy.text = amountOfEnergy.ToString();
 
         yield return new WaitForSeconds(0.02f);

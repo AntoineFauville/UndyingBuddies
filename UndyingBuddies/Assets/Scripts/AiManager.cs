@@ -255,6 +255,7 @@ public class AiManager : MonoBehaviour
 
         for (int i = 0; i < Demons.Count; i++)
         {
+            yield return new WaitForSeconds(0.02f);
             JobType demonJobType;
             AIDemons currentAiDemon;
 

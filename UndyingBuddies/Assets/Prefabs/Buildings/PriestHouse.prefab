@@ -53,6 +53,7 @@ GameObject:
   - component: {fileID: 7863630835671152237}
   - component: {fileID: 347484773417941584}
   - component: {fileID: 134279156046589187}
+  - component: {fileID: 5531747076875194840}
   m_Layer: 0
   m_Name: PriestHouse
   m_TagString: priest
@@ -125,6 +126,7 @@ MonoBehaviour:
   MentalHealthMaxAmount: 0
   CanAttackBack: 0
   AmIBuilding: 1
+  myAiTown: {fileID: 0}
   PriestType: 1
   CanAttackAgain: 0
   Target: {fileID: 0}
@@ -137,9 +139,23 @@ MonoBehaviour:
   PriestAttackerType: 0
   aiFormationFollowPoint: {fileID: 0}
   animatorPriest: {fileID: 0}
-  Stun: 0
+  _stun: 0
   isAttacked: 0
   buildingToWalkTo: {fileID: 0}
+  MaxPositionCamper: 10
+  Camp: {fileID: 0}
+  CanLookAround: 0
+  preparationForAttack: 0
+  canOnlyDoOnceCoroutine: 0
+  TargeForRandom: {fileID: 0}
+  _myAIPriestType: 0
+  AmUnderEffect: 0
+  currentAiPriestEffects: 0
+  stunOnce: 0
+  Flames: {fileID: 0}
+  onlyStopFireOnce: 0
+  onlyFearStopOnce: 0
+  FearIndicator: {fileID: 0}
 --- !u!114 &8803593055677472342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,6 +215,22 @@ MonoBehaviour:
   processedResource: 0
   ArtAlive: {fileID: 8658173516555480369}
   ArtDed: {fileID: 9137635001467456342}
+--- !u!114 &5531747076875194840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803593055677472336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d07ce676d7afda4dabb3b0f7dd5e654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &9137635001467456342
 GameObject:
   m_ObjectHideFlags: 0

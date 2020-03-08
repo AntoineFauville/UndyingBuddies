@@ -156,6 +156,8 @@ public class AITown : MonoBehaviour
 
         for (int i = 0; i < AllPriestUnit.Count; i++)
         {
+            yield return new WaitForSeconds(0.02f);
+
             AIPriestType aIPriestType;
             AIPriest currentAIPriest;
 
