@@ -2,5 +2,6 @@
 {
     OnFire = 0,
     Feared = 1,
-    Stun = 2
+    Stun = 2,
+    Poisoned = 3
 }

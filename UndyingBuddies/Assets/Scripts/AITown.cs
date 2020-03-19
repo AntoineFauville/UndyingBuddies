@@ -218,6 +218,10 @@ public class AITown : MonoBehaviour
                     case AiPriestEffects.Stun:
 
                         goto Skip;
+
+                    case AiPriestEffects.Poisoned:
+                        currentAIPriest.Poisoned();
+                        goto Skip;
                 }
             }
             else

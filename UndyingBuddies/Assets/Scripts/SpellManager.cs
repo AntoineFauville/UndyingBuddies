@@ -11,6 +11,8 @@ public class SpellManager : MonoBehaviour
     public SpellArchetype spikesSpell;
     public SpellArchetype chtulhuEyeSpell;
     public SpellArchetype TentacleSpell;
+    public SpellArchetype PoisonExplosion;
+    public SpellArchetype Rats;
 
     public PlaceSpell PlaceSpell;
 
@@ -20,6 +22,8 @@ public class SpellManager : MonoBehaviour
     public GameObject spikeButton;
     public GameObject eyeButton;
     public GameObject tentacleButton;
+    public GameObject poisonExplosionButton;
+    public GameObject ratsButton;
 
     public int indexOfCostSpells = 0;
 
@@ -29,6 +33,8 @@ public class SpellManager : MonoBehaviour
     public List<spellCanvasView> spellCanvases = new List<spellCanvasView>();
 
     public GameObject spellPanelSection;
+
+    public GameObject blockerOnceAllSpellUnlock;
 
     // Start is called before the first frame update
     void Start()
@@ -92,76 +98,117 @@ public class SpellManager : MonoBehaviour
             spellCanvases[3].ActivateBool();
         }
 
-        switch (unlockedFireSpell)
+        if (indexOfCostSpells > 3)
         {
-            case 0:
-                //this is nothing
-                break;
-
-            case 1:
-                if (!PlaceSpell.Spells.Contains(firePatchSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
-                {
-                    PlaceSpell.SetupSpell(firePatchSpell);
-                    resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
-                    indexOfCostSpells++;
-                    fireButton.SetActive(false);
-                }
-                else
-                {
-                    unlockedFireSpell = 0; //reset to not have the situation as follows:
-                    //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
-                    //even clicked on the spell here so it's not good.
-                }
-                break;
-
-            case 2:
-                if (!PlaceSpell.Spells.Contains(spikesSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
-                {
-                    PlaceSpell.SetupSpell(spikesSpell);
-                    resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
-                    indexOfCostSpells++;
-                    spikeButton.SetActive(false);
-                }
-                else
-                {
-                    unlockedFireSpell = 0; //reset to not have the situation as follows:
-                    //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
-                    //even clicked on the spell here so it's not good.
-                }
-                break;
-
-            case 3:
-                if (!PlaceSpell.Spells.Contains(chtulhuEyeSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
-                {
-                    PlaceSpell.SetupSpell(chtulhuEyeSpell);
-                    resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
-                    indexOfCostSpells++;
-                    eyeButton.SetActive(false);
-                }
-                else
-                {
-                    unlockedFireSpell = 0; //reset to not have the situation as follows:
-                    //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
-                    //even clicked on the spell here so it's not good.
-                }
-                break;
-
-            case 4:
-                if (!PlaceSpell.Spells.Contains(TentacleSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
-                {
-                    PlaceSpell.SetupSpell(TentacleSpell);
-                    resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
-                    indexOfCostSpells++;
-                    tentacleButton.SetActive(false);
-                }
-                else
-                {
-                    unlockedFireSpell = 0; //reset to not have the situation as follows:
-                    //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
-                    //even clicked on the spell here so it's not good.
-                }
-                break;
+            blockerOnceAllSpellUnlock.SetActive(true);
         }
+        else
+        {
+            blockerOnceAllSpellUnlock.SetActive(false);
+
+            switch (unlockedFireSpell)
+            {
+                case 0:
+                    //this is nothing
+                    break;
+
+                case 1:
+                    if (!PlaceSpell.Spells.Contains(firePatchSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
+                    {
+                        PlaceSpell.SetupSpell(firePatchSpell);
+                        resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
+                        indexOfCostSpells++;
+                        fireButton.SetActive(false);
+                    }
+                    else
+                    {
+                        unlockedFireSpell = 0; //reset to not have the situation as follows:
+                                               //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
+                                               //even clicked on the spell here so it's not good.
+                    }
+                    break;
+
+                case 2:
+                    if (!PlaceSpell.Spells.Contains(spikesSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
+                    {
+                        PlaceSpell.SetupSpell(spikesSpell);
+                        resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
+                        indexOfCostSpells++;
+                        spikeButton.SetActive(false);
+                    }
+                    else
+                    {
+                        unlockedFireSpell = 0; //reset to not have the situation as follows:
+                                               //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
+                                               //even clicked on the spell here so it's not good.
+                    }
+                    break;
+
+                case 3:
+                    if (!PlaceSpell.Spells.Contains(chtulhuEyeSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
+                    {
+                        PlaceSpell.SetupSpell(chtulhuEyeSpell);
+                        resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
+                        indexOfCostSpells++;
+                        eyeButton.SetActive(false);
+                    }
+                    else
+                    {
+                        unlockedFireSpell = 0; //reset to not have the situation as follows:
+                                               //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
+                                               //even clicked on the spell here so it's not good.
+                    }
+                    break;
+
+                case 4:
+                    if (!PlaceSpell.Spells.Contains(TentacleSpell) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
+                    {
+                        PlaceSpell.SetupSpell(TentacleSpell);
+                        resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
+                        indexOfCostSpells++;
+                        tentacleButton.SetActive(false);
+                    }
+                    else
+                    {
+                        unlockedFireSpell = 0; //reset to not have the situation as follows:
+                                               //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
+                                               //even clicked on the spell here so it's not good.
+                    }
+                    break;
+                case 5:
+                    if (!PlaceSpell.Spells.Contains(PoisonExplosion) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
+                    {
+                        PlaceSpell.SetupSpell(PoisonExplosion);
+                        resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
+                        indexOfCostSpells++;
+                        poisonExplosionButton.SetActive(false);
+                    }
+                    else
+                    {
+                        unlockedFireSpell = 0; //reset to not have the situation as follows:
+                                               //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
+                                               //even clicked on the spell here so it's not good.
+                    }
+                    break;
+                case 6:
+                    if (!PlaceSpell.Spells.Contains(Rats) && resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
+                    {
+                        PlaceSpell.SetupSpell(Rats);
+                        resourceManager.amountOfEnergy -= _gameSettings.CostSpell[indexOfCostSpells];
+                        indexOfCostSpells++;
+                        ratsButton.SetActive(false);
+                    }
+                    else
+                    {
+                        unlockedFireSpell = 0; //reset to not have the situation as follows:
+                                               //once you click on the button it sets  it to 1 so, as soon as you have enough money BOOM you get the spell, you mighjt have forgot since then that you
+                                               //even clicked on the spell here so it's not good.
+                    }
+                    break;
+            }
+        }
+
+       
     }
 
     public void UnlockFireSpell(int index)

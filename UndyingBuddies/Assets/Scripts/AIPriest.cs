@@ -59,10 +59,13 @@ public class AIPriest : MonoBehaviour
     public bool AmUnderEffect;
     public AiPriestEffects currentAiPriestEffects;
     public bool stunOnce;
-    public GameObject Flames;
+    
     public bool onlyStopFireOnce;
     public bool onlyFearStopOnce;
+    public bool onlyPoisonOnce;
     public GameObject FearIndicator;
+    public GameObject Flames;
+    public GameObject PoisonIndicator;
 
     void Start()
     {
@@ -78,6 +81,7 @@ public class AIPriest : MonoBehaviour
         {
             Flames.SetActive(false);
             FearIndicator.SetActive(false);
+            PoisonIndicator.SetActive(false);
         }
     }
 
@@ -134,6 +138,20 @@ public class AIPriest : MonoBehaviour
             Flames.SetActive(true);
             NavMeshAgent.speed = 4f;
             StartCoroutine(SetFireOff());
+        }
+    }
+
+    public void Poisoned()
+    {
+        this.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, 3);
+
+        if (!onlyPoisonOnce)
+        {
+            Debug.Log("PoisonedYo");
+
+            PoisonIndicator.SetActive(true);
+            NavMeshAgent.speed = 0.75f;
+            StartCoroutine(SetPoisonOff());
         }
     }
 
@@ -355,5 +373,15 @@ public class AIPriest : MonoBehaviour
         onlyFearStopOnce = false;
         AmUnderEffect = false;
         FearAmount = 0;
+    }
+
+    IEnumerator SetPoisonOff()
+    {
+        onlyPoisonOnce = true;
+        yield return new WaitForSeconds(7);
+        NavMeshAgent.speed = 1.5f;
+        PoisonIndicator.SetActive(false);
+        onlyPoisonOnce = false;
+        AmUnderEffect = false;
     }
 }
