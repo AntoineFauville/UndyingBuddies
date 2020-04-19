@@ -24,4 +24,8 @@ public class SpellArchetype : ScriptableObject
     public int Range = 5;
 
     public int FearAmount = 5;
+
+    public int spellTimer = 5;
+
+    public int chancesOfInfecting = 50;
 }

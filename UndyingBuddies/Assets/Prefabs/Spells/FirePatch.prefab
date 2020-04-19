@@ -23854,9 +23854,9 @@ GameObject:
   - component: {fileID: 7200175704107705377}
   - component: {fileID: 7648258192828689990}
   - component: {fileID: 7347551339407043861}
-  - component: {fileID: 2704573516347916258}
   - component: {fileID: 3732967262570982769}
   - component: {fileID: 2540769419550335806}
+  - component: {fileID: 806611723335818654}
   m_Layer: 2
   m_Name: FirePatch
   m_TagString: FireZone
@@ -23893,9 +23893,9 @@ SphereCollider:
   m_GameObject: {fileID: 7198202783611895341}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7347551339407043861
 MonoBehaviour:
@@ -23913,26 +23913,6 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 1
   m_AffectedAgents: ffffffff
---- !u!114 &2704573516347916258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7198202783611895341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17bc93548e24e404d9f8bda6da6e1c7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  seconds: 1.9
-  trigger: {fileID: 7198202783611895341}
-  particleSystems:
-  - {fileID: 141612733904443870}
-  - {fileID: 6647123931774921901}
-  - {fileID: 4877870553878317717}
-  - {fileID: 3184680214396925296}
-  - {fileID: 5861953693105590349}
 --- !u!114 &3732967262570982769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23959,6 +23939,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameSettings: {fileID: 11400000, guid: 57271dbc49f8d7440850b5eb901223fa, type: 2}
   allPriestTouched: []
+  allPriestThatWillBeOnFire: []
+--- !u!135 &806611723335818654
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198202783611895341}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 3.46
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8008885287157812403
 GameObject:
   m_ObjectHideFlags: 0

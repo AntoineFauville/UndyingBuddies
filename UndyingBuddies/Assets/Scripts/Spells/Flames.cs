@@ -9,9 +9,79 @@ public class Flames : MonoBehaviour
     [SerializeField] private List<GameObject> allPriestTouched = new List<GameObject>();
     [SerializeField] private List<GameObject> allPriestThatWillBeOnFire = new List<GameObject>();
 
+    private int LiveSpellState = 0;
+
+    private int counterForSpellLongevity;
+
+    private float ticRate = 0.3f;
+
+    private bool doCoroutineOnce;
+
     void Start()
     {
-        //we can place this here because we just need to know on placement what we hit
+        LiveSpellState = 0;
+    }
+
+    void Update()
+    {
+        switch (LiveSpellState)
+        {
+            case 0: //spawn
+                //play animation spawning
+                StartCoroutine(AnimationSpawning());
+                break;
+            case 1: //fill information after spawning
+
+                CheckAllTouchedEnemies();
+
+                //since this is an explosion, we are attacking the enemy now, the fire dot is left after
+                CreateExplosion();
+
+                LiveSpellState = 2;
+                break;
+            case 2: //systemic check if i'm crossing an other spell
+                SystemicCheck();
+                LiveSpellState = 3;
+                break;
+            case 3: //check if enemies around & do cycle
+
+                //to check when to destroy the spell
+                CheckHowLongSpellStillNeedToLast();
+
+                if (allPriestTouched.Count <= 0)
+                {
+                    if (!doCoroutineOnce)
+                    {
+                        StartCoroutine(WaitToTriggerDamageOrSkip());
+                    }
+                }
+                else
+                {
+                    //if there are enemies then do damage to them
+                    LiveSpellState = 4;
+                }
+                break;
+            case 4: //do spell
+
+                FireEnemy(); //fire dot
+
+                if (!doCoroutineOnce)
+                {
+                    StartCoroutine(WaitToTriggerDamageOrSkip());
+                }
+                break;
+            case 5: //end the spell with animation
+                //stop beam
+                StartCoroutine(AnimationEnding());
+                break;
+        }
+    }
+
+    void CheckAllTouchedEnemies()
+    {
+        allPriestTouched.Clear();
+        allPriestThatWillBeOnFire.Clear();
+
         Collider[] HitCollider = Physics.OverlapSphere(this.transform.position, _gameSettings.fireSpell.Range);
 
         for (int i = 0; i < HitCollider.Length; i++)
@@ -19,16 +89,29 @@ public class Flames : MonoBehaviour
             if (HitCollider[i].GetComponent<AIPriest>() != null && !HitCollider[i].GetComponent<AIPriest>().AmIBuilding)
             {
                 allPriestTouched.Add(HitCollider[i].gameObject);
+            }
+        }
+    }
 
-                int rand = Random.Range(0, 100);
-                if (rand > 50)
-                {
-                    allPriestThatWillBeOnFire.Add(HitCollider[i].gameObject);
-                }
+    void CheckHowLongSpellStillNeedToLast()
+    {
+        if (((float)counterForSpellLongevity * ticRate) > _gameSettings.fireSpell.spellTimer)
+        {
+            LiveSpellState = 5;
+        }
+    }
+
+    void FireEnemy()
+    {
+        for (int i = 0; i < allPriestTouched.Count; i++)
+        {
+            int rand = Random.Range(0, 100);
+            if (rand > _gameSettings.fireSpell.chancesOfInfecting)
+            {
+                allPriestThatWillBeOnFire.Add(allPriestTouched[i].gameObject);
             }
         }
 
-        //this means you can only put on fire the guys from the beginning
         for (int i = 0; i < allPriestThatWillBeOnFire.Count; i++)
         {
             if (allPriestThatWillBeOnFire[i].GetComponent<AIPriest>().AmUnderEffect == false)
@@ -37,8 +120,59 @@ public class Flames : MonoBehaviour
                 allPriestThatWillBeOnFire[i].GetComponent<AIPriest>().currentAiPriestEffects = AiPriestEffects.OnFire;
             }
         }
+    }
 
-        StartCoroutine(DamagePerXSeconds());
+    void CreateExplosion()
+    {
+        for (int i = 0; i < allPriestTouched.Count; i++)
+        {
+            allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.poisonExplosionSpell);
+        }
+    }
+
+    void SystemicCheck()
+    {
+        //check if we are colliding with poison
+        Collider[] HitCollider = Physics.OverlapSphere(this.transform.position, (float)_gameSettings.fireSpell.Range + 
+            ((float)_gameSettings.poisonExplosionSpell.Range/2)//we take the sphere of the fire spell and we add half of the explosion spell to see if the two circle collides
+            );
+
+        for (int i = 0; i < HitCollider.Length; i++)
+        {
+            if (HitCollider[i].GetComponent<PoisonExplosion>() != null)
+            {
+                HitCollider[i].GetComponent<PoisonExplosion>().CollideWithFireSpell();
+
+                Debug.Log("I've hit " + HitCollider[i].name);
+            }
+        }
+    }
+
+    IEnumerator AnimationSpawning()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        LiveSpellState = 1;
+    }
+
+    IEnumerator AnimationEnding()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        DestroyImmediate(this.gameObject);
+    }
+
+    IEnumerator WaitToTriggerDamageOrSkip()
+    {
+        doCoroutineOnce = true;
+
+        yield return new WaitForSeconds(ticRate);
+
+        LiveSpellState = 2;
+
+        counterForSpellLongevity++;
+
+        doCoroutineOnce = false;
     }
 
     IEnumerator DamagePerXSeconds()

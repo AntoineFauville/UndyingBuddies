@@ -10,21 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8b784b3964c7e94685aa9a788fb1f88, type: 3}
-  m_Name: PoisonExplosion
+  m_Name: Horror Patch
   m_EditorClassIdentifier: 
-  spellName: Poison Explosion
-  spellPrefab: {fileID: 7966817286534457261, guid: e473029e4c70ad543a6879b82a732f4f,
+  spellName: Horror Patch
+  spellPrefab: {fileID: 3732967262570982769, guid: 5a2f4b51423963e4e8d4b5396df051a7,
     type: 3}
-  spellLeftAfterSpawned: {fileID: 5161013285335528946, guid: f8206fd728b7cca42bd0fc907aa69491,
+  spellLeftAfterSpawned: {fileID: 5161013285335528946, guid: c27a70edd14517948b4b7af4991876e7,
     type: 3}
   PlacementShowDebug: {fileID: 5924142983344496631, guid: fccf759084a675e4c8f3cd696d6a61d8,
     type: 3}
-  DamageToEnemy: 10
+  DamageToEnemy: 6
   DamageToDemons: 1
   UIToSpawn: {fileID: 4131424293686182155, guid: 17f4c5a0f5289c04fbc032d0f2e892ad,
     type: 3}
-  SpellCostInEnergy: 20
+  SpellCostInEnergy: 40
   CostToUnlockEnergy: 1
-  backGroundImage: {fileID: 21300000, guid: ad8d7afe1c9a40a44aea9c4ed9e4394c, type: 3}
-  Range: 10
-  FearAmount: 0
+  backGroundImage: {fileID: 21300000, guid: 93774324c1320a54d938b9c7c780540c, type: 3}
+  Range: 8
+  FearAmount: 15
+  spellTimer: 5
+  chancesOfInfecting: 50

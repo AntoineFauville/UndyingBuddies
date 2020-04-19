@@ -26,7 +26,9 @@ public class GameSettings : ScriptableObject
     public SpellArchetype tentacleSpell;
     public SpellArchetype poisonExplosionSpell;
     public SpellArchetype ratsSpell;
-    
+
+    public int amountOfExplosionForEye = 5;
+
     public GameObject PriestPrefab;
     public GameObject AIFormationPrefab;
 
