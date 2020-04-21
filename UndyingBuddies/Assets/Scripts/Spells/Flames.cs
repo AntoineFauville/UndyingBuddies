@@ -62,11 +62,12 @@ public class Flames : MonoBehaviour
                 }
                 break;
             case 4: //do spell
-
-                FireEnemy(); //fire dot
-
+                
                 if (!doCoroutineOnce)
                 {
+                    FireEnemy(); //fire dot
+                    //placed in here to only activate once per tic
+
                     StartCoroutine(WaitToTriggerDamageOrSkip());
                 }
                 break;
@@ -173,30 +174,5 @@ public class Flames : MonoBehaviour
         counterForSpellLongevity++;
 
         doCoroutineOnce = false;
-    }
-
-    IEnumerator DamagePerXSeconds()
-    {
-        Debug.Log("doing damage");
-
-        Collider[] HitCollider = Physics.OverlapSphere(this.transform.position, _gameSettings.fireSpell.Range);
-
-        allPriestTouched.Clear();
-
-        for (int i = 0; i < HitCollider.Length; i++)
-        {
-            if (HitCollider[i].GetComponent<AIPriest>() != null && !HitCollider[i].GetComponent<AIPriest>().AmIBuilding)
-            {
-                allPriestTouched.Add(HitCollider[i].gameObject);
-            }
-        }
-
-        for (int i = 0; i < allPriestTouched.Count; i++)
-        {
-            allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.fireSpell);
-        }
-        
-        yield return new WaitForSeconds(0.4f);
-        StartCoroutine(DamagePerXSeconds());
     }
 }
