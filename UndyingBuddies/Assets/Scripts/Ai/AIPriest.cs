@@ -106,6 +106,8 @@ public class AIPriest : MonoBehaviour
 
         NavMeshAgent.destination = Target.transform.position;
 
+        Debug.DrawLine(this.transform.position, Target.transform.position, Color.red, 0.4f);
+
         if (Vector3.Distance(Target.transform.position, this.transform.position) > 2)
         {
             NavMeshAgent.isStopped = false;
@@ -176,13 +178,20 @@ public class AIPriest : MonoBehaviour
     {
         NavMeshAgent.isStopped = true;
         animatorPriest.Play("Observe");
-
+        
         LookIfFindAnyEnemy();
 
         if (!canOnlyDoOnceCoroutine)
         {
             StartCoroutine(WaitAndLook());
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = new Color(1,0,0,0.1f);
+        Gizmos.DrawSphere(transform.position, MaxPositionCamper);
     }
 
     public void Attack()

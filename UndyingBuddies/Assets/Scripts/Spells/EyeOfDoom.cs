@@ -88,6 +88,8 @@ public class EyeOfDoom : MonoBehaviour
                             else
                             {
                                 navMeshAgent.destination = Target.transform.position;
+
+                                Debug.DrawLine(this.transform.position, Target.transform.position, Color.white);
                             }
                             break;
 

@@ -28,6 +28,9 @@ public class GameSettings : ScriptableObject
     public SpellArchetype ratsSpell;
 
     public int amountOfExplosionForEye = 5;
+    public int damageModForSpike_Physical = 2;
+    public int damageModForSpike_MentalHealth = 2;
+    public int damageModForSpike_Poison = 2;
 
     public GameObject PriestPrefab;
     public GameObject AIFormationPrefab;

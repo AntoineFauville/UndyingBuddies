@@ -21,6 +21,13 @@ public class Tentacle : MonoBehaviour
         LiveSpellState = 0;
     }
 
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = new Color(0, 1, 0, 0.2f);
+        Gizmos.DrawSphere(transform.position, _gameSettings.tentacleSpell.Range);
+    }
+
     void Update()
     {
         switch (LiveSpellState)

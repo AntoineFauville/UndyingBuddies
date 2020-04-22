@@ -122,6 +122,8 @@ public class AIDemons : MonoBehaviour
         {
             NavMeshAgent.isStopped = false;
             NavMeshAgent.SetDestination(TargetToGoTo.transform.position);
+
+            Debug.DrawLine(this.transform.position, TargetToGoTo.transform.position, Color.green, 0.4f);
         }
         else
         {
