@@ -9,6 +9,18 @@ public class Flames : MonoBehaviour
     [SerializeField] private List<GameObject> allPriestTouched = new List<GameObject>();
     [SerializeField] private List<GameObject> allPriestThatWillBeOnFire = new List<GameObject>();
 
+    [SerializeField] private GameObject PrefabEntrance;
+    private GameObject _prefab_Entrance;
+    bool hasEntranceBeenSpawned;
+    [SerializeField] private GameObject PrefabMid;
+    private GameObject _prefab_Mid;
+    bool hasMidBeenSpawned;
+    [SerializeField] private GameObject PrefabEnd;
+    private GameObject _prefab_end;
+    bool hasEndBeenSpawned;
+
+    private Vector3 VectorOffset;
+
     private int LiveSpellState = 0;
 
     private int counterForSpellLongevity;
@@ -34,6 +46,9 @@ public class Flames : MonoBehaviour
         switch (LiveSpellState)
         {
             case 0: //spawn
+
+                VectorOffset = new Vector3(this.transform.position.x, this.transform.position.y + 0.05f, this.transform.position.z);
+
                 //play animation spawning
                 StartCoroutine(AnimationSpawning());
                 break;
@@ -42,12 +57,14 @@ public class Flames : MonoBehaviour
                 CheckAllTouchedEnemies();
 
                 //since this is an explosion, we are attacking the enemy now, the fire dot is left after
-                CreateExplosion();
+                DamageOfTheExplosion();
 
                 LiveSpellState = 2;
                 break;
             case 2: //systemic check if i'm crossing an other spell
+                                
                 SystemicCheck();
+                
                 LiveSpellState = 3;
                 break;
             case 3: //check if enemies around & do cycle
@@ -130,7 +147,7 @@ public class Flames : MonoBehaviour
         }
     }
 
-    void CreateExplosion()
+    void DamageOfTheExplosion()
     {
         for (int i = 0; i < allPriestTouched.Count; i++)
         {
@@ -154,10 +171,24 @@ public class Flames : MonoBehaviour
                 Debug.Log("I've hit " + HitCollider[i].name);
             }
         }
+
+        //creates the zone if nothing interfear with it
+
+        if (!hasMidBeenSpawned)
+        {
+            _prefab_Mid = Instantiate(PrefabMid, VectorOffset, new Quaternion());
+            hasMidBeenSpawned = true;
+        }
     }
 
     IEnumerator AnimationSpawning()
     {
+        if (!hasEntranceBeenSpawned)
+        {
+            _prefab_Entrance = Instantiate(PrefabEntrance, VectorOffset, new Quaternion());
+            hasEntranceBeenSpawned = true;
+        }
+
         yield return new WaitForSeconds(0.1f);
 
         LiveSpellState = 1;
@@ -165,8 +196,19 @@ public class Flames : MonoBehaviour
 
     IEnumerator AnimationEnding()
     {
+        if (!hasEndBeenSpawned)
+        {
+            Instantiate(PrefabEnd, VectorOffset, new Quaternion());
+            hasEndBeenSpawned = true;
+        }
+
+        DestroyImmediate(_prefab_Mid);
+
         yield return new WaitForSeconds(0.2f);
 
+        //clean the existing left overs
+        DestroyImmediate(_prefab_end);
+        DestroyImmediate(_prefab_Entrance);
         DestroyImmediate(this.gameObject);
     }
 
