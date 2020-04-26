@@ -164,7 +164,7 @@ public class Flames : MonoBehaviour
 
         for (int i = 0; i < HitCollider.Length; i++)
         {
-            if (HitCollider[i].GetComponent<PoisonExplosion>() != null)
+            if (HitCollider[i].GetComponent<PoisonExplosion>() != null && !HitCollider[i].GetComponent<PoisonExplosion>().alreadyCollidedWithFireExplosion)
             {
                 HitCollider[i].GetComponent<PoisonExplosion>().CollideWithFireSpell();
 

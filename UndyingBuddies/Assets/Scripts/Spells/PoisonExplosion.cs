@@ -18,11 +18,21 @@ public class PoisonExplosion : MonoBehaviour
     private float ticRate = 0.3f;
 
     [SerializeField] private GameObject FlamesExplosions;
+    private GameObject _flammesExplosion;
     bool DoOnce;
+
+    [SerializeField] private GameObject PoisonPatchPrefab;
+    private GameObject _poisonPrefab;
+    private bool InstanciateOnce;
+    private Vector3 OffsettedPosition;
+
+    public bool alreadyCollidedWithFireExplosion;
 
     // Start is called before the first frame update
     void Start()
     {
+        OffsettedPosition = new Vector3(this.transform.position.x, this.transform.position.y + 0.2f, this.transform.position.z);
+
         LiveSpellState = 0;
     }
 
@@ -146,19 +156,53 @@ public class PoisonExplosion : MonoBehaviour
 
     public void CollideWithFireSpell()
     {
-        StartCoroutine(AnimationEnding());
-
-        Debug.Log("I'm turning into a burning hell and destroy myself");
-
+        alreadyCollidedWithFireExplosion = true;
+        
         if (!DoOnce)
         {
             DoOnce = true;
-            Instantiate(FlamesExplosions, this.transform.position, new Quaternion());
+            _flammesExplosion = Instantiate(FlamesExplosions, this.transform.position, new Quaternion());
+
+            for (int i = 0; i < allPriestTouched.Count; i++)
+            {
+                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.poisonExplosionSpell);
+            }
+
+        }
+
+        Debug.Log("I'm turning into a burning hell and destroy myself");
+
+        //now check if you need to turn other poison patch into fire
+
+        StartCoroutine(delayOnExplosionCheck());
+    }
+
+    private void ExplodeNextOne()
+    {
+        Collider[] HitCollider = Physics.OverlapSphere(this.transform.position, (float)_gameSettings.poisonExplosionSpell.Range +
+                    ((float)_gameSettings.poisonExplosionSpell.Range / 2)//we take the sphere of the fire spell and we add half of the explosion spell to see if the two circle collides
+                    );
+
+        for (int i = 0; i < HitCollider.Length; i++)
+        {
+            //please make sure to not infinite loop by taking ourself into account
+            if (HitCollider[i].GetComponent<PoisonExplosion>() != null && !HitCollider[i].GetComponent<PoisonExplosion>().alreadyCollidedWithFireExplosion)
+            {
+                HitCollider[i].GetComponent<PoisonExplosion>().CollideWithFireSpell();
+
+                Debug.Log("I've hit " + HitCollider[i].name);
+            }
         }
     }
 
     IEnumerator AnimationSpawning()
     {
+        if (!InstanciateOnce)
+        {
+            InstanciateOnce = true;
+            _poisonPrefab = Instantiate(PoisonPatchPrefab, OffsettedPosition, new Quaternion());
+        }
+
         yield return new WaitForSeconds(0.3f);
 
         LiveSpellState = 1;
@@ -168,6 +212,8 @@ public class PoisonExplosion : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
 
+        DestroyImmediate(_poisonPrefab);
+        DestroyImmediate(_flammesExplosion);
         DestroyImmediate(this.gameObject);
     }
 
@@ -183,4 +229,16 @@ public class PoisonExplosion : MonoBehaviour
 
         doCoroutineOnce = false;
     }
+
+    IEnumerator delayOnExplosionCheck()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        //check if we are colliding with poison
+        ExplodeNextOne();
+
+        StartCoroutine(AnimationEnding());
+    }
+
+    
 }

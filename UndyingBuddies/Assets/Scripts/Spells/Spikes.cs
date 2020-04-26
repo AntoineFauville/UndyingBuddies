@@ -10,9 +10,16 @@ public class Spikes : MonoBehaviour
 
     private int LiveSpellState;
 
+    [SerializeField] private GameObject PrefabSpike;
     [SerializeField] private bool mod_Poison;
+    [SerializeField] private GameObject PrefabPoisonSpike;
     [SerializeField] private bool mod_Physical;
+    [SerializeField] private GameObject PrefabFireSpike;
     [SerializeField] private bool mod_MentalHealth;
+    [SerializeField] private GameObject PrefabHorrorSpike;
+
+    private GameObject prefabSpawned;
+    private bool spawnOncePrefab;
 
     void Start()
     {
@@ -45,6 +52,8 @@ public class Spikes : MonoBehaviour
                 LiveSpellState = 3;
                 break;
             case 3: //check if enemies around & do cycle
+                
+                ApplyVisuals();
 
                 if (allPriestTouched.Count > 0)
                 {
@@ -73,37 +82,6 @@ public class Spikes : MonoBehaviour
        
     }
 
-    void ApplySpikeDamage()
-    {
-        for (int i = 0; i < allPriestTouched.Count; i++)
-        {
-            if (mod_Poison)
-            {
-                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_Poison);
-
-                //change visual effect
-            }
-            else if (mod_Physical)
-            {
-                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_Physical);
-
-                //change visual effect
-            }
-            else if (mod_MentalHealth)
-            {
-                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_MentalHealth);
-
-                //change visual effect
-            }
-            else
-            {
-                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell);
-            }
-            
-            allPriestTouched[i].gameObject.GetComponent<AIPriest>().Stun(1);
-        }
-    }
-
     void CheckAllTouchedEnemies()
     {
         allPriestTouched.Clear();
@@ -122,10 +100,140 @@ public class Spikes : MonoBehaviour
     void SystemicCheck()
     {
         //check if spikes are in Physical Patch (Flammes)
+        if (!mod_Poison && !mod_MentalHealth)
+        {
+            Collider[] HitColliderWithFlammes = Physics.OverlapSphere(this.transform.position, (float)_gameSettings.spikeSpell.Range +
+                ((float)_gameSettings.fireSpell.Range / 2)//we take the sphere of the fire spell and we add half of the explosion spell to see if the two circle collides
+                );
 
+            for (int i = 0; i < HitColliderWithFlammes.Length; i++)
+            {
+                if (HitColliderWithFlammes[i].GetComponent<Flames>() != null)
+                {
+                    mod_Physical = true;
+
+                    Debug.Log("I've hit " + HitColliderWithFlammes[i].name);
+                }
+            }
+        }
         //check if spikes are in Horror Patch (Horror)
+        if (!mod_Physical && !mod_Poison)
+        {
+            Collider[] HitColliderWithHorror = Physics.OverlapSphere(this.transform.position, (float)_gameSettings.spikeSpell.Range +
+            ((float)_gameSettings.tentacleSpell.Range / 2)//we take the sphere of the fire spell and we add half of the explosion spell to see if the two circle collides
+            );
+
+            for (int i = 0; i < HitColliderWithHorror.Length; i++)
+            {
+                if (HitColliderWithHorror[i].GetComponent<Tentacle>() != null)
+                {
+                    mod_MentalHealth = true;
+
+                    Debug.Log("I've hit " + HitColliderWithHorror[i].name);
+                }
+            }
+        }
 
         //check if spikes are in Poison Patch (Poison)
+        if (!mod_Physical && !mod_MentalHealth)
+        {
+            Collider[] HitColliderWithPoison = Physics.OverlapSphere(this.transform.position, (float)_gameSettings.spikeSpell.Range +
+            ((float)_gameSettings.poisonExplosionSpell.Range / 2)//we take the sphere of the fire spell and we add half of the explosion spell to see if the two circle collides
+            );
+
+            for (int i = 0; i < HitColliderWithPoison.Length; i++)
+            {
+                if (HitColliderWithPoison[i].GetComponent<PoisonExplosion>() != null)
+                {
+                    mod_Poison = true;
+
+                    Debug.Log("I've hit " + HitColliderWithPoison[i].name);
+                }
+            }
+        }
+    }
+
+    void ApplyVisuals()
+    {
+        if (mod_MentalHealth)
+        {
+            //change visual effectif (!spawnOncePrefab)
+            {
+                spawnOncePrefab = true;
+                prefabSpawned = Instantiate(PrefabHorrorSpike, this.transform.position, new Quaternion());
+            }
+        }
+        else if (mod_Physical)
+        {
+            //change visual effect
+            if (!spawnOncePrefab)
+            {
+                spawnOncePrefab = true;
+                prefabSpawned = Instantiate(PrefabFireSpike, this.transform.position, new Quaternion());
+            }
+        }
+        else if (mod_Poison)
+        {
+            //change visual effect
+            if (!spawnOncePrefab)
+            {
+                spawnOncePrefab = true;
+                prefabSpawned = Instantiate(PrefabPoisonSpike, this.transform.position, new Quaternion());
+            }
+        }
+        else
+        {
+            if (!spawnOncePrefab)
+            {
+                spawnOncePrefab = true;
+                prefabSpawned = Instantiate(PrefabSpike, this.transform.position, new Quaternion());
+            }
+        }
+    }
+
+    void ApplySpikeDamage()
+    {
+        for (int i = 0; i < allPriestTouched.Count; i++)
+        {
+            if (mod_Poison)
+            {
+                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_Poison);
+
+                List<GameObject> allPriestThatArePoisoned = new List<GameObject>();
+
+                for (int y = 0; y < allPriestTouched.Count; y++)
+                {
+                    int rand = Random.Range(0, 100);
+                    if (rand > _gameSettings.poisonExplosionSpell.chancesOfInfecting)
+                    {
+                        allPriestThatArePoisoned.Add(allPriestTouched[y].gameObject);
+                    }
+                }
+
+                for (int j = 0; j < allPriestThatArePoisoned.Count; j++)
+                {
+                    if (allPriestThatArePoisoned[j].GetComponent<AIPriest>().AmUnderEffect == false)
+                    {
+                        allPriestThatArePoisoned[j].GetComponent<AIPriest>().AmUnderEffect = true;
+                        allPriestThatArePoisoned[j].GetComponent<AIPriest>().currentAiPriestEffects = AiPriestEffects.Poisoned;
+                    }
+                }
+            }
+            else if (mod_Physical)
+            {
+                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_Physical);
+            }
+            else if (mod_MentalHealth)
+            {
+                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_MentalHealth);
+            }
+            else
+            {
+                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell);
+            }
+
+            allPriestTouched[i].gameObject.GetComponent<AIPriest>().Stun(1);
+        }
     }
 
     IEnumerator AnimationSpawning()
@@ -137,8 +245,9 @@ public class Spikes : MonoBehaviour
 
     IEnumerator AnimationEnding()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.4f);
 
+        DestroyImmediate(prefabSpawned);
         DestroyImmediate(this.gameObject);
     }
 }
