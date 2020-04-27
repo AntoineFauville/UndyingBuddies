@@ -37,7 +37,7 @@ public class Grab : MonoBehaviour
     void Update()
     {
         //if you over on top of resource building then you can sacrifice resource for energy
-        if (Input.GetMouseButton(1) && !grabbing && !notUsingSpell && !canSacrificeAgain)
+        if (Input.GetMouseButton(1) && !grabbing && !notUsingSpell && !canSacrificeAgain && !this.GetComponent<BuildingCreator>().creationMode)
         {
             canSacrificeAgain = true;
 
@@ -108,7 +108,7 @@ public class Grab : MonoBehaviour
         }
 
         //this manage is you can click or not on the objects
-        if (Input.GetMouseButtonDown(0) && !grabbing && !notUsingSpell)
+        if (Input.GetMouseButtonDown(0) && !grabbing && !notUsingSpell && !this.GetComponent<BuildingCreator>().creationMode)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -277,36 +277,36 @@ public class Grab : MonoBehaviour
                 AiManager.Buildings[i].GetComponent<Building>().BoudingBoxTag.SetActive(false);
             }
 
-            if (grabbedItem.transform.GetComponent<Building>() != null)
-            {
-                ResourceManager.ManageCostOfPurchaseForBuilding();
+            //if (grabbedItem.transform.GetComponent<Building>() != null)
+            //{
+            //    ResourceManager.ManageCostOfPurchaseForBuilding();
 
-                if (!AiManager.Buildings.Contains(grabbedItem))
-                {
-                    AiManager.Buildings.Add(grabbedItem);
-                }
+            //    if (!AiManager.Buildings.Contains(grabbedItem))
+            //    {
+            //        AiManager.Buildings.Add(grabbedItem);
+            //    }
 
-                if (grabbedItem.transform.GetComponent<Building>().amountOfActiveWorker < grabbedItem.transform.GetComponent<Building>().amountOfWorkerAllowed 
-                    && !AiManager.BuildingWithJobs.Contains(grabbedItem))
-                {
-                    AiManager.BuildingWithJobs.Add(grabbedItem);
-                }
+            //    if (grabbedItem.transform.GetComponent<Building>().amountOfActiveWorker < grabbedItem.transform.GetComponent<Building>().amountOfWorkerAllowed 
+            //        && !AiManager.BuildingWithJobs.Contains(grabbedItem))
+            //    {
+            //        AiManager.BuildingWithJobs.Add(grabbedItem);
+            //    }
 
-                if (grabbedItem.transform.GetComponent<Building>().detectPlacement != null)
-                {
-                    grabbedItem.transform.GetComponent<Building>().detectPlacement.gameObject.SetActive(false);
-                }
+            //    if (grabbedItem.transform.GetComponent<Building>().detectPlacement != null)
+            //    {
+            //        grabbedItem.transform.GetComponent<Building>().detectPlacement.gameObject.SetActive(false);
+            //    }
 
-                if (grabbedItem.transform.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
-                {
-                    AiManager.WhiteSoulStockage.Add(grabbedItem);
-                }
+            //    if (grabbedItem.transform.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
+            //    {
+            //        AiManager.WhiteSoulStockage.Add(grabbedItem);
+            //    }
 
-                if (grabbedItem.transform.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
-                {
-                    AiManager.BlueVioletSoulStockage.Add(grabbedItem);
-                }
-            }
+            //    if (grabbedItem.transform.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
+            //    {
+            //        AiManager.BlueVioletSoulStockage.Add(grabbedItem);
+            //    }
+            //}
 
             handAnim.Play("hand anim holdrelease");
             playAnimOnce = false;

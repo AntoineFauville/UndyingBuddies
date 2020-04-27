@@ -11,47 +11,93 @@ public class BuildingCreator : MonoBehaviour
 
     [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private GameSettings gameSettings;
+
+    public bool creationMode;
     
-    public void CreateBuilding(int building)
+    public void CreateBuilding()
     {
-        if (!GameObject.Find("Main Camera").GetComponent<Grab>().grabbing && !GameObject.Find("Main Camera").GetComponent<Grab>().notUsingSpell)
+        creationMode = !creationMode;
+
+        Debug.Log("Select a place to build it" + " creation mode " + creationMode);
+
+        ManageCreationMode();
+    }
+
+    void ManageCreationMode()
+    {
+        for (int i = 0; i < resourceManager.GetComponent<AiManager>().Buildings.Count; i++)
         {
-            switch (building)
+            for (int y = 0; y < resourceManager.GetComponent<AiManager>().Buildings[i].GetComponent<Building>().buildingCommunicators.Count; y++)
             {
-                case (int)BuildingType.Processor: //0
-                    if (resourceManager.amountOfEnergy >= gameSettings.CostOfNewBuilding)
-                    {
-                        InstantiateBuilding(gameSettings.processorBuilding.PrefabBuilding);
-                    }
-                    else
-                    {
-                        Debug.Log("not enought resources");
-                    }
-                    break;
+                if (creationMode)
+                {
+                    resourceManager.GetComponent<AiManager>().Buildings[i].GetComponent<Building>().buildingCommunicators[y].FindConnection();
+                    resourceManager.GetComponent<AiManager>().Buildings[i].GetComponent<Building>().buildingCommunicators[y].artShow = true;
+                    resourceManager.GetComponent<AiManager>().Buildings[i].GetComponent<Building>().buildingCommunicators[y].ManageArt();
+                }
+                else
+                {
+                    resourceManager.GetComponent<AiManager>().Buildings[i].GetComponent<Building>().buildingCommunicators[y].FindConnection();
+                    resourceManager.GetComponent<AiManager>().Buildings[i].GetComponent<Building>().buildingCommunicators[y].artShow = false;
+                    resourceManager.GetComponent<AiManager>().Buildings[i].GetComponent<Building>().buildingCommunicators[y].ManageArt();
+                }
             }
-        }
-        else
-        {
-            Debug.Log("place what you have in hand first");
         }
     }
 
-    void InstantiateBuilding(GameObject gameObject)
+    void Update()
     {
-        GameObject newObj = Instantiate(gameObject);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            creationMode = false;
+
+            ManageCreationMode();
+        }
+    }
+
+    public void CreateBuildingHere(Transform transformPosition)
+    {
+        if (resourceManager.amountOfEnergy >= gameSettings.CostOfNewBuilding)
+        {
+            InstantiateBuilding(gameSettings.processorBuilding.PrefabBuilding, transformPosition);
+        }
+        else
+        {
+            Debug.Log("not enought resources");
+        }
+
+        ManageCreationMode();
+    }
+
+    void InstantiateBuilding(GameObject gameObject, Transform transformPosition)
+    {
+        GameObject newObj = Instantiate(gameObject, transformPosition.position, new Quaternion());
 
         valueForName++;
 
         newObj.name = valueForName.ToString();
 
-        StartCoroutine(waitForFeedback(newObj));        
-    }
+        resourceManager.ManageCostOfPurchaseForBuilding();
 
-    IEnumerator waitForFeedback(GameObject newObj)
-    {
-        yield return new WaitForSeconds(0.05f);
+        if (!resourceManager.GetComponent<AiManager>().Buildings.Contains(newObj))
+        {
+            resourceManager.GetComponent<AiManager>().Buildings.Add(newObj);
+        }
 
-        GameObject.Find("Main Camera").GetComponent<Grab>().grabbedItem = newObj;
-        GameObject.Find("Main Camera").GetComponent<Grab>().grabbing = true;
+        if (newObj.transform.GetComponent<Building>().amountOfActiveWorker < newObj.transform.GetComponent<Building>().amountOfWorkerAllowed
+            && !resourceManager.GetComponent<AiManager>().BuildingWithJobs.Contains(newObj))
+        {
+            resourceManager.GetComponent<AiManager>().BuildingWithJobs.Add(newObj);
+        }
+
+        if (newObj.transform.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.whiteSoul)
+        {
+            resourceManager.GetComponent<AiManager>().WhiteSoulStockage.Add(newObj);
+        }
+
+        if (newObj.transform.GetComponent<Building>().resourceProducedAtBuilding == ResourceType.blueVioletSoul)
+        {
+            resourceManager.GetComponent<AiManager>().BlueVioletSoulStockage.Add(newObj);
+        }
     }
 }

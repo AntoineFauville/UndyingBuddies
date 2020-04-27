@@ -61,6 +61,8 @@ public class Building : MonoBehaviour
     public GameObject LoadingBarForProcessing;
     public Image imageFillingProcessing;
 
+    public List <BuildingCommunicator> buildingCommunicators = new List<BuildingCommunicator>();
+
     void Start()
     {
         LoadingBarForProcessing.SetActive(false);
@@ -106,6 +108,14 @@ public class Building : MonoBehaviour
 
     void Update()
     {
+        for (int i = 0; i < buildingCommunicators.Count; i++)
+        {
+            if (buildingCommunicators[i] == null)
+            {
+                buildingCommunicators.Remove(buildingCommunicators[i]);
+            }
+        }
+
         if (BuildingLinkedToGenerateFlow_Input01 != null)
         {
             if (BuildingLinkedToGenerateFlow_Input01.GetComponent<Building>().currentStockage <= 0)
