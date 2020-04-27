@@ -115,6 +115,8 @@ public class AIDemons : MonoBehaviour
 
     public void Walk()
     {
+        NavMeshAgent.enabled = true;
+
         //Debug.Log("walk");
         animatorDemon.Play("Walk");
 
@@ -133,13 +135,19 @@ public class AIDemons : MonoBehaviour
 
     public void Process()
     {
-        NavMeshAgent.isStopped = true;
+        if (NavMeshAgent.enabled)
+        {
+            NavMeshAgent.isStopped = true;
+        }
+        
         animatorDemon.Play("Prey");
 
         if (!OnlyProcessOnce)
         {
             OnlyProcessOnce = true;
             StartCoroutine(processing());
+
+            NavMeshAgent.enabled = false;
 
             this.gameObject.transform.position = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.position;
             this.gameObject.transform.rotation = AssignedBuilding.GetComponentInParent<Building>().EmplacementWorker.transform.rotation;
@@ -162,7 +170,7 @@ public class AIDemons : MonoBehaviour
     {   
         //Debug.Log("gather");
         animatorDemon.Play("Gather");
-
+        NavMeshAgent.enabled = true;
         NavMeshAgent.isStopped = true;
 
         if (Wagon != null)
@@ -197,6 +205,7 @@ public class AIDemons : MonoBehaviour
 
     public void Idle()
     {
+        NavMeshAgent.enabled = true;
         //Debug.Log("idle");
         animatorDemon.Play("Idle");
         NavMeshAgent.isStopped = true;
@@ -205,6 +214,7 @@ public class AIDemons : MonoBehaviour
     public void PlaceOnTable()
     {
         animatorDemon.Play("Place");
+        NavMeshAgent.enabled = true;
         NavMeshAgent.isStopped = true;
 
         StartCoroutine(PlaceOnTableWait());
@@ -213,6 +223,7 @@ public class AIDemons : MonoBehaviour
     public void TakeFromTable()
     {
         animatorDemon.Play("Place");
+        NavMeshAgent.enabled = true;
         NavMeshAgent.isStopped = true;
         
         if (Wagon != null)
@@ -233,6 +244,7 @@ public class AIDemons : MonoBehaviour
     {
         //Debug.Log("place");
         animatorDemon.Play("Place");
+        NavMeshAgent.enabled = true;
         NavMeshAgent.isStopped = true;
 
         if(!runCoroutineSoulsOnce)
@@ -242,6 +254,7 @@ public class AIDemons : MonoBehaviour
     public void TakeFromStockpile()
     {
         animatorDemon.Play("Place");
+        NavMeshAgent.enabled = true;
         NavMeshAgent.isStopped = true;
 
         if (!runCoroutineSoulsOnce)
