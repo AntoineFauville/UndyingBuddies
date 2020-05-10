@@ -35,6 +35,8 @@ public class GameSettings : ScriptableObject
 
     public GameObject RatExplosion;
     public GameObject TentacleReplacingFlammes;
+    public GameObject PoisonousTentacles;
+    public GameObject FlamesExplosion;
 
     public GameObject PriestPrefab;
     public GameObject AIFormationPrefab;

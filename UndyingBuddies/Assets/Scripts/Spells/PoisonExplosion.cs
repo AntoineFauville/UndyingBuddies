@@ -184,7 +184,7 @@ public class PoisonExplosion : MonoBehaviour
         if (!DoOnce)
         {
             DoOnce = true;
-            _flammesExplosion = Instantiate(FlamesExplosions, this.transform.position, new Quaternion());
+            _flammesExplosion = Instantiate(_gameSettings.FlamesExplosion, this.transform.position, new Quaternion());
 
             for (int i = 0; i < allPriestTouched.Count; i++)
             {

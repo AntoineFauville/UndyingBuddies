@@ -236,6 +236,26 @@ public class Flames : MonoBehaviour
             }
         }
 
+        //check if we are colliding with poisonous tentacles
+        Collider[] HitColliderPoisonousTentacles = Physics.OverlapSphere(this.transform.position, (float)_gameSettings.fireSpell.Range +
+           ((float)_gameSettings.tentacleSpell.Range / 2)//we take the sphere of the fire spell and we add half of the explosion spell to see if the two circle collides
+           );
+
+        if (HitColliderPoisonousTentacles.Length > 0)
+        {
+            for (int i = 0; i < HitColliderPoisonousTentacles.Length; i++)
+            {
+                if (HitColliderPoisonousTentacles[i].GetComponent<Tentacle>() != null 
+                    && !HitColliderPoisonousTentacles[i].GetComponent<Tentacle>().alreadyCollidedWithFireExplosionAfterPoison 
+                    && HitColliderPoisonousTentacles[i].GetComponent<Tentacle>().turnPoisonousOnce)
+                {
+                    HitColliderPoisonousTentacles[i].GetComponent<Tentacle>().ExplodeOncePoisonous();
+
+                    Debug.Log("I've hit " + HitCollider[i].name);
+                }
+            }
+        }
+
         //creates the zone if nothing interfear with it
 
         if (!hasMidBeenSpawned)
@@ -253,7 +273,7 @@ public class Flames : MonoBehaviour
 
             for (int i = 0; i < HitColliderWithTentacle.Length; i++)
             {
-                if (HitColliderWithTentacle[i].GetComponent<Tentacle>() != null)
+                if (HitColliderWithTentacle[i].GetComponent<Tentacle>() != null && !HitColliderWithTentacle[i].GetComponent<Tentacle>().turnPoisonousOnce)
                 {
                     OnlyTransformOnce = true;
 

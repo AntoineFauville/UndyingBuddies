@@ -21,10 +21,14 @@ public class EyeOfDoom : MonoBehaviour
 
     private int countOfExplosions = 0;
 
+    [SerializeField] private GameObject Rayon;
+
     // Start is called before the first frame update
     void Start()
     {
         LiveSpellState = 0;
+
+        Rayon.SetActive(false);
 
         StartCoroutine(EyeOfDoomRemoval());
     }
@@ -194,6 +198,8 @@ public class EyeOfDoom : MonoBehaviour
                     HitCollider[i].GetComponent<AIPriest>().Stun(3);
                 }
 
+                Rayon.SetActive(true);
+
                 HitCollider[i].GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, gameSettings.eyeSpell);
                 HitCollider[i].GetComponent<AIPriest>().FearAmount += gameSettings.eyeSpell.FearAmount;
             }
@@ -202,6 +208,9 @@ public class EyeOfDoom : MonoBehaviour
         countOfExplosions++;
 
         yield return new WaitForSeconds(0.4f);
+
+        Rayon.SetActive(false);
+
         canDoDamage = false;
     }
 
