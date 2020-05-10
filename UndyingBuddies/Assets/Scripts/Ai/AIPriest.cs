@@ -63,6 +63,7 @@ public class AIPriest : MonoBehaviour
     public bool onlyStopFireOnce;
     public bool onlyFearStopOnce;
     public bool onlyPoisonOnce;
+    public bool onlySlowOnce;
     public GameObject FearIndicator;
     public GameObject Flames;
     public GameObject PoisonIndicator;
@@ -172,6 +173,20 @@ public class AIPriest : MonoBehaviour
             FearIndicator.SetActive(true);
             StartCoroutine(SetFearOff());
         }
+    }
+
+    public void Slow()
+    {
+        if (!onlySlowOnce)
+        {
+            Debug.Log("being slowed");
+
+            NavMeshAgent.isStopped = false;
+            NavMeshAgent.speed = 0.5f;
+            
+            StartCoroutine(SetSlowOff());
+        }
+        
     }
 
     public void Observe()
@@ -371,6 +386,14 @@ public class AIPriest : MonoBehaviour
         Flames.SetActive(false);
         onlyStopFireOnce = false;
         AmUnderEffect = false;
+    }
+
+    IEnumerator SetSlowOff()
+    {
+        onlySlowOnce = true;
+        yield return new WaitForSeconds(2);
+        NavMeshAgent.speed = 1.5f;
+        onlySlowOnce = false;
     }
 
     IEnumerator SetFearOff()

@@ -1,77 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 using UnityEngine;
 
 public class RatSpell : MonoBehaviour
 {
-    [SerializeField] private GameObject Target;
+    [SerializeField] private NavMeshAgent _navMeshAgent;
 
-    [SerializeField] private List<GameObject> Rats = new List<GameObject>();
+    public GameObject Target;
 
-    // Start is called before the first frame update
-    void Start()
+    int distance = 10;
+
+    public GameObject HorrorParts;
+    public GameObject RatExplosionSpawner;
+    public GameObject PoisonRat;
+
+    void Update()
     {
-        StartCoroutine(SlowUpdate());
-    }
-
-    public GameObject CheckIfPriestIsCloseToAttack()
-    {
-        GameObject bestPriest = null;
-
-        float closestDistanceSqr = Mathf.Infinity;
-        Vector3 currentPosition = transform.position;
-
-        List<GameObject> listToCheck;
-
-        listToCheck = GameObject.Find("Main Camera").GetComponent<AiManager>().Priest;
-
-        foreach (GameObject potentialTarget in listToCheck)
+        if (Target != null)
         {
-            Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
-            float dSqrToTarget = directionToTarget.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr)
-            {
-                closestDistanceSqr = dSqrToTarget;
-                bestPriest = potentialTarget;
-            }
+            Vector3 pos = Target.transform.position;
+            _navMeshAgent.destination = new Vector3(Random.Range(pos.x - distance, pos.x + distance), 0, Random.Range(pos.z - distance, pos.z + distance));
+
+            Debug.DrawLine(this.transform.position, Target.transform.position, Color.white);
         }
-
-        return bestPriest;
-    }
-
-    void CleanupRats()
-    {
-        for (int i = 0; i < Rats.Count; i++)
-        {
-            if (Rats[i] == null)
-            {
-                Rats.Remove(Rats[i]);
-            }
-        }
-    }
-
-    // Update is called once per frame
-    IEnumerator SlowUpdate()
-    {
-        yield return new WaitForSeconds(2f);
-
-        CleanupRats();
-
-        if (Rats.Count == 0)
-        {
-            Destroy(this);
-        }
-
-        Target = CheckIfPriestIsCloseToAttack();
-
-        CleanupRats();
-
-        for (int i = 0; i < Rats.Count; i++)
-        {
-            CleanupRats();
-            Rats[i].GetComponent<Rats>().Target = Target;
-        }
-
-        StartCoroutine(SlowUpdate());
     }
 }

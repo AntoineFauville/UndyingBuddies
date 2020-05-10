@@ -29,6 +29,8 @@ public class Flames : MonoBehaviour
 
     private bool doCoroutineOnce;
 
+    public bool OnlyTransformOnce;
+
     void Start()
     {
         LiveSpellState = 0;
@@ -92,6 +94,9 @@ public class Flames : MonoBehaviour
                     FireEnemy(); //fire dot
                     //placed in here to only activate once per tic
 
+                    FirePhysicalDamage();
+                    //this is to add some fire damage since they walk in the fire
+
                     StartCoroutine(WaitToTriggerDamageOrSkip());
                 }
                 break;
@@ -128,30 +133,89 @@ public class Flames : MonoBehaviour
 
     void FireEnemy()
     {
-        for (int i = 0; i < allPriestTouched.Count; i++)
+        if (allPriestTouched.Count > 0)
         {
-            int rand = Random.Range(0, 100);
-            if (rand > _gameSettings.fireSpell.chancesOfInfecting)
+            for (int i = 0; i < allPriestTouched.Count; i++)
             {
-                allPriestThatWillBeOnFire.Add(allPriestTouched[i].gameObject);
+                int rand = Random.Range(0, 100);
+                if (rand > _gameSettings.fireSpell.chancesOfInfecting)
+                {
+                    allPriestThatWillBeOnFire.Add(allPriestTouched[i].gameObject);
+                }
             }
         }
 
-        for (int i = 0; i < allPriestThatWillBeOnFire.Count; i++)
+        if (allPriestThatWillBeOnFire.Count > 0)
         {
-            if (allPriestThatWillBeOnFire[i].GetComponent<AIPriest>().AmUnderEffect == false)
+            for (int i = 0; i < allPriestThatWillBeOnFire.Count; i++)
             {
-                allPriestThatWillBeOnFire[i].GetComponent<AIPriest>().AmUnderEffect = true;
-                allPriestThatWillBeOnFire[i].GetComponent<AIPriest>().currentAiPriestEffects = AiPriestEffects.OnFire;
+                if (allPriestThatWillBeOnFire[i] != null)
+                {
+                    if (allPriestThatWillBeOnFire[i].GetComponent<AIPriest>().AmUnderEffect == false)
+                    {
+                        allPriestThatWillBeOnFire[i].GetComponent<AIPriest>().AmUnderEffect = true;
+                        allPriestThatWillBeOnFire[i].GetComponent<AIPriest>().currentAiPriestEffects = AiPriestEffects.OnFire;
+                    }
+                }
+            }
+        }
+    }
+
+    void FirePhysicalDamage()
+    {
+        if (allPriestTouched.Count > 0)
+        {
+            for (int i = 0; i < allPriestTouched.Count; i++)
+            {
+                if (allPriestTouched[i] != null)
+                {
+                    allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.fireSpell.DamageToEnemy / 4);
+                }
             }
         }
     }
 
     void DamageOfTheExplosion()
     {
-        for (int i = 0; i < allPriestTouched.Count; i++)
+        if (allPriestTouched.Count > 0)
         {
-            allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.poisonExplosionSpell);
+            for (int i = 0; i < allPriestTouched.Count; i++)
+            {
+                if (allPriestTouched[i] != null)
+                {
+                    allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.fireSpell);
+                }
+            }
+        }
+    }
+
+    public void ActivateTentacleEnding()
+    {
+        OnlyTransformOnce = true; // it's twice here to be able to check with next one and make sure I don't create an infinity loop
+        //previously the onlytransform once wasn't turned here true, but due to this, when accessing with an other flames
+        //it will detect the previous and keep on exploding and exploding infinte loop
+        //this is just a safety
+
+        Debug.Log("I've hit a tentacle spell");
+
+        Instantiate(_gameSettings.TentacleReplacingFlammes, this.transform.position, new Quaternion());
+
+        StartCoroutine(delayOnExplosionCheck());
+
+        StartCoroutine(ExpediateEnding());
+    }
+
+    void SanityTentacleDamage()
+    {
+        if (allPriestTouched.Count > 0)
+        {
+            for (int i = 0; i < allPriestTouched.Count; i++)
+            {
+                if (allPriestTouched[i] != null)
+                {
+                    allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, _gameSettings.fireSpell);
+                }
+            }
         }
     }
 
@@ -179,6 +243,50 @@ public class Flames : MonoBehaviour
             _prefab_Mid = Instantiate(PrefabMid, VectorOffset, new Quaternion());
             hasMidBeenSpawned = true;
         }
+
+        //check if we are colliding with the tentacle
+        if (!OnlyTransformOnce)
+        {
+            Collider[] HitColliderWithTentacle = Physics.OverlapSphere(this.transform.position, (float)_gameSettings.fireSpell.Range +
+               ((float)_gameSettings.tentacleSpell.Range / 2) + 1//we take the sphere of the fire spell and we add half of the explosion spell to see if the two circle collides
+               );
+
+            for (int i = 0; i < HitColliderWithTentacle.Length; i++)
+            {
+                if (HitColliderWithTentacle[i].GetComponent<Tentacle>() != null)
+                {
+                    OnlyTransformOnce = true;
+
+                    ActivateTentacleEnding();
+                }
+            }
+        }
+    }
+
+    private void ExplodeNextOne() // checks if we can propagate the fire transformation to other flammes spell, this tells the other flames around me taht they should explode
+    {
+        Collider[] HitCollider = Physics.OverlapSphere(this.transform.position, (float)_gameSettings.fireSpell.Range +
+                    ((float)_gameSettings.fireSpell.Range / 2)//we take the sphere of the fire spell and we add half of the explosion spell to see if the two circle collides
+                    );
+
+        for (int i = 0; i < HitCollider.Length; i++)
+        {
+            //please make sure to not infinite loop by taking ourself into account
+            if (HitCollider[i].GetComponent<Flames>() != null && !HitCollider[i].GetComponent<Flames>().OnlyTransformOnce)
+            {
+                HitCollider[i].GetComponent<Flames>().ActivateTentacleEnding();
+
+                Debug.Log("I've hit " + HitCollider[i].name);
+            }
+        }
+    }
+
+    IEnumerator delayOnExplosionCheck()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        //check if we are colliding with poison
+        ExplodeNextOne();
     }
 
     IEnumerator AnimationSpawning()
@@ -223,5 +331,24 @@ public class Flames : MonoBehaviour
         counterForSpellLongevity++;
 
         doCoroutineOnce = false;
+    }
+
+    IEnumerator ExpediateEnding()
+    {
+        DestroyImmediate(_prefab_Mid);
+
+        yield return new WaitForSeconds(0.03f);
+
+        //clean the existing left overs
+        DestroyImmediate(_prefab_end);
+        DestroyImmediate(_prefab_Entrance);
+
+        yield return new WaitForSeconds(1f);
+
+        SanityTentacleDamage();
+
+        yield return new WaitForSeconds(0.03f);
+
+        DestroyImmediate(this.gameObject);
     }
 }

@@ -31,6 +31,10 @@ public class GameSettings : ScriptableObject
     public int damageModForSpike_Physical = 2;
     public int damageModForSpike_MentalHealth = 2;
     public int damageModForSpike_Poison = 2;
+    public int damageModRat_Physical = 3;
+
+    public GameObject RatExplosion;
+    public GameObject TentacleReplacingFlammes;
 
     public GameObject PriestPrefab;
     public GameObject AIFormationPrefab;

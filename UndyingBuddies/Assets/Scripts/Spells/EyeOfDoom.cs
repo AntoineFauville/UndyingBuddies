@@ -25,6 +25,8 @@ public class EyeOfDoom : MonoBehaviour
     void Start()
     {
         LiveSpellState = 0;
+
+        StartCoroutine(EyeOfDoomRemoval());
     }
     
     void Update()
@@ -201,5 +203,12 @@ public class EyeOfDoom : MonoBehaviour
 
         yield return new WaitForSeconds(0.4f);
         canDoDamage = false;
+    }
+
+    IEnumerator EyeOfDoomRemoval()
+    {
+        yield return new WaitForSeconds(gameSettings.eyeSpell.spellTimer);
+
+        LiveSpellState = 5;
     }
 }

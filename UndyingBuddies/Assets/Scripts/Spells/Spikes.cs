@@ -193,46 +193,73 @@ public class Spikes : MonoBehaviour
 
     void ApplySpikeDamage()
     {
-        for (int i = 0; i < allPriestTouched.Count; i++)
+        if (allPriestTouched.Count > 0)
         {
-            if (mod_Poison)
+            for (int i = 0; i < allPriestTouched.Count; i++)
             {
-                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_Poison);
-
-                List<GameObject> allPriestThatArePoisoned = new List<GameObject>();
-
-                for (int y = 0; y < allPriestTouched.Count; y++)
+                if (mod_Poison)
                 {
-                    int rand = Random.Range(0, 100);
-                    if (rand > _gameSettings.poisonExplosionSpell.chancesOfInfecting)
+                    if (allPriestTouched[i] != null)
                     {
-                        allPriestThatArePoisoned.Add(allPriestTouched[y].gameObject);
+                        allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_Poison);
+                    }
+
+                    List<GameObject> allPriestThatArePoisoned = new List<GameObject>();
+
+                    if (allPriestTouched.Count > 0)
+                    {
+                        for (int y = 0; y < allPriestTouched.Count; y++)
+                        {
+                            int rand = Random.Range(0, 100);
+                            if (rand > _gameSettings.poisonExplosionSpell.chancesOfInfecting)
+                            {
+                                allPriestThatArePoisoned.Add(allPriestTouched[y].gameObject);
+                            }
+                        }
+                    }
+
+                    if (allPriestThatArePoisoned.Count > 0)
+                    {
+                        for (int j = 0; j < allPriestThatArePoisoned.Count; j++)
+                        {
+                            if (allPriestThatArePoisoned[j] != null)
+                            {
+                                if (allPriestThatArePoisoned[j].GetComponent<AIPriest>().AmUnderEffect == false)
+                                {
+                                    allPriestThatArePoisoned[j].GetComponent<AIPriest>().AmUnderEffect = true;
+                                    allPriestThatArePoisoned[j].GetComponent<AIPriest>().currentAiPriestEffects = AiPriestEffects.Poisoned;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (mod_Physical)
+                {
+                    if (allPriestTouched[i] != null)
+                    {
+                        allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_Physical);
+                    }
+                }
+                else if (mod_MentalHealth)
+                {
+                    if (allPriestTouched[i] != null)
+                    {
+                        allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_MentalHealth);
+                    }
+                }
+                else
+                {
+                    if (allPriestTouched[i] != null)
+                    {
+                        allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell);
                     }
                 }
 
-                for (int j = 0; j < allPriestThatArePoisoned.Count; j++)
+                if (allPriestTouched[i] != null)
                 {
-                    if (allPriestThatArePoisoned[j].GetComponent<AIPriest>().AmUnderEffect == false)
-                    {
-                        allPriestThatArePoisoned[j].GetComponent<AIPriest>().AmUnderEffect = true;
-                        allPriestThatArePoisoned[j].GetComponent<AIPriest>().currentAiPriestEffects = AiPriestEffects.Poisoned;
-                    }
+                    allPriestTouched[i].gameObject.GetComponent<AIPriest>().Stun(1);
                 }
             }
-            else if (mod_Physical)
-            {
-                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_Physical);
-            }
-            else if (mod_MentalHealth)
-            {
-                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, _gameSettings.spikeSpell.DamageToEnemy + _gameSettings.damageModForSpike_MentalHealth);
-            }
-            else
-            {
-                allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.spikeSpell);
-            }
-
-            allPriestTouched[i].gameObject.GetComponent<AIPriest>().Stun(1);
         }
     }
 

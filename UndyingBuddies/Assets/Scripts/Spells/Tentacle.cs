@@ -84,10 +84,20 @@ public class Tentacle : MonoBehaviour
 
     void TentacleEffect()
     {
-        for (int i = 0; i < allPriestTouched.Count; i++)
+        if (allPriestTouched.Count > 0)
         {
-            allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, _gameSettings.tentacleSpell);
-            allPriestTouched[i].gameObject.GetComponent<AIPriest>().FearAmount += _gameSettings.tentacleSpell.FearAmount;
+            for (int i = 0; i < allPriestTouched.Count; i++)
+            {
+                if (allPriestTouched[i] != null)
+                {
+                    allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.MentalHealth, _gameSettings.tentacleSpell);
+                    allPriestTouched[i].gameObject.GetComponent<AIPriest>().FearAmount += _gameSettings.tentacleSpell.FearAmount;
+                }
+                else
+                {
+                    allPriestTouched.Remove(allPriestTouched[i]);
+                }
+            }
         }
     }
 

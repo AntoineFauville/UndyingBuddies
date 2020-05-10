@@ -313,13 +313,19 @@ public class AITown : MonoBehaviour
                                 currentAIPriest.Target = currentAIPriest.TargeForRandom;
                             }
 
-                            if (Vector3.Distance(currentAIPriest.transform.position, currentAIPriest.Target.transform.position) < 2)
+                            if (currentAIPriest != null)
                             {
-                                currentAIPriest.CanLookAround = true;
-                            }
-                            else
-                            {
-                                currentAIPriest.Walk();
+                                if (currentAIPriest.Target != null)
+                                {
+                                    if (Vector3.Distance(currentAIPriest.transform.position, currentAIPriest.Target.transform.position) < 2)
+                                    {
+                                        currentAIPriest.CanLookAround = true;
+                                    }
+                                    else
+                                    {
+                                        currentAIPriest.Walk();
+                                    }
+                                }
                             }
                         }
                         else

@@ -79,13 +79,13 @@ public class PoisonExplosion : MonoBehaviour
                 }
                 break;
             case 4: //do spell
-
-                PoisonEnemy();
-
-                DamageEnemy();
-
+                
                 if (!doCoroutineOnce)
                 {
+                    PoisonEnemy();
+
+                    DamageEnemy();
+
                     StartCoroutine(WaitToTriggerDamageOrSkip());
                 }
                 break;
@@ -122,30 +122,53 @@ public class PoisonExplosion : MonoBehaviour
 
     void PoisonEnemy()
     {
-        for (int i = 0; i < allPriestTouched.Count; i++)
+        if (allPriestThatArePoisoned.Count > 0)
         {
-            int rand = Random.Range(0, 100);
-            if (rand > _gameSettings.poisonExplosionSpell.chancesOfInfecting)
+            for (int i = 0; i < allPriestThatArePoisoned.Count; i++)
             {
-                allPriestThatArePoisoned.Add(allPriestTouched[i].gameObject);
+                if (allPriestThatArePoisoned[i] == null)
+                {
+                    allPriestThatArePoisoned.Remove(allPriestThatArePoisoned[i]);
+                }
             }
         }
 
-        for (int i = 0; i < allPriestThatArePoisoned.Count; i++)
+        if (allPriestTouched.Count > 0)
         {
-            if (allPriestThatArePoisoned[i].GetComponent<AIPriest>().AmUnderEffect == false)
+            for (int i = 0; i < allPriestTouched.Count; i++)
             {
-                allPriestThatArePoisoned[i].GetComponent<AIPriest>().AmUnderEffect = true;
-                allPriestThatArePoisoned[i].GetComponent<AIPriest>().currentAiPriestEffects = AiPriestEffects.Poisoned;
+                int rand = Random.Range(0, 100);
+                if (rand > _gameSettings.poisonExplosionSpell.chancesOfInfecting)
+                {
+                    allPriestThatArePoisoned.Add(allPriestTouched[i].gameObject);
+                }
+            }
+        }
+
+        if (allPriestTouched.Count > 0)
+        {
+            for (int i = 0; i < allPriestThatArePoisoned.Count; i++)
+            {
+                if (allPriestThatArePoisoned[i] != null && allPriestThatArePoisoned[i].GetComponent<AIPriest>().AmUnderEffect == false)
+                {
+                    allPriestThatArePoisoned[i].GetComponent<AIPriest>().AmUnderEffect = true;
+                    allPriestThatArePoisoned[i].GetComponent<AIPriest>().currentAiPriestEffects = AiPriestEffects.Poisoned;
+                }
             }
         }
     }
 
     void DamageEnemy()
     {
-        for (int i = 0; i < allPriestTouched.Count; i++)
+        if (allPriestTouched.Count > 0)
         {
-            allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.poisonExplosionSpell);
+            for (int i = 0; i < allPriestTouched.Count; i++)
+            {
+                if (allPriestTouched[i] != null)
+                {
+                    allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.poisonExplosionSpell);
+                }
+            }
         }
     }
 

@@ -6,6 +6,7 @@ public class DestroyParticleAfterSec : MonoBehaviour
 {
     [SerializeField] private float seconds;
     [SerializeField] private GameObject trigger;
+    public bool moduleEnabled;
 
     [SerializeField] private ParticleSystem[] particleSystems;
 
@@ -19,10 +20,12 @@ public class DestroyParticleAfterSec : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
 
-        for (int i = 0; i < particleSystems.Length; i++)
-        {
-            particleSystems[i].enableEmission = false;
-        }
+        //for (int i = 0; i < particleSystems.Length; i++)
+        //{
+        //    var emission = particleSystems[i].emission;
+        //    moduleEnabled = false;
+        //    emission.enabled = moduleEnabled;
+        //}
         trigger.SetActive(false);
 
         yield return new WaitForSeconds(2);
