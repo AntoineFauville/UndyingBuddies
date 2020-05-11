@@ -219,6 +219,11 @@ public class Flames : MonoBehaviour
         }
     }
 
+    public void EyeWalkedInFire()
+    {
+        LiveSpellState = 5;
+    }
+
     void SystemicCheck()
     {
         //check if we are colliding with poison
@@ -257,7 +262,6 @@ public class Flames : MonoBehaviour
         }
 
         //creates the zone if nothing interfear with it
-
         if (!hasMidBeenSpawned)
         {
             _prefab_Mid = Instantiate(PrefabMid, VectorOffset, new Quaternion());
@@ -278,6 +282,20 @@ public class Flames : MonoBehaviour
                     OnlyTransformOnce = true;
 
                     ActivateTentacleEnding();
+                }
+            }
+        }
+
+        //environment burning
+        Collider[] HitEnvironmentBurnables = Physics.OverlapSphere(this.transform.position, (float)_gameSettings.fireSpell.Range);
+
+        if (HitEnvironmentBurnables.Length > 0)
+        {
+            for (int i = 0; i < HitEnvironmentBurnables.Length; i++)
+            {
+                if (HitEnvironmentBurnables[i].GetComponent<Burnable>() != null && !HitEnvironmentBurnables[i].GetComponent<Burnable>().DidIAlreadyBurn)
+                {
+                    HitEnvironmentBurnables[i].GetComponent<Burnable>().Burn();
                 }
             }
         }

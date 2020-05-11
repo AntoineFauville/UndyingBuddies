@@ -20,6 +20,8 @@ public class Resource : MonoBehaviour
         ArtAlive.SetActive(true);
         ArtDed.SetActive(false);
 
+        this.transform.localScale = new Vector3(Random.Range(0.75f, 1.25f), Random.Range(0.75f, 1.25f), Random.Range(0.75f, 1.25f));
+
         if (resourceType == ResourceType.brokenSoul)
         {
             amountOfResourceAvailable = GameObject.Find("Main Camera").GetComponent<AiManager>().GameSettings.BrokenSoulsOnResource;

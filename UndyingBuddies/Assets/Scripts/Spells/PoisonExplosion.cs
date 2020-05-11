@@ -177,6 +177,11 @@ public class PoisonExplosion : MonoBehaviour
 
     }
 
+    public void EyeWalkedInMe()
+    {
+        LiveSpellState = 5;
+    }
+
     public void CollideWithFireSpell()
     {
         alreadyCollidedWithFireExplosion = true;

@@ -149,6 +149,8 @@ public class PlaceSpell : MonoBehaviour
 
         StartCoroutine(waitforFire(hit));
 
+        GameObject.Find("RightHand").GetComponent<Animator>().Play("hand anim fire");
+
         yield return new WaitForSeconds(1f);
 
         ableToSpawnAgain = false;
