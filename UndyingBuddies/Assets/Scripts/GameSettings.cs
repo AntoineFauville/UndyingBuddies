@@ -32,6 +32,7 @@ public class GameSettings : ScriptableObject
     public int damageModForSpike_MentalHealth = 2;
     public int damageModForSpike_Poison = 2;
     public int damageModRat_Physical = 3;
+    public int damageModEyeHorror = 10;
 
     public GameObject RatExplosion;
     public GameObject TentacleReplacingFlammes;
