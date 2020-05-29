@@ -19,6 +19,7 @@ public class AITown : MonoBehaviour
     [SerializeField] private Image CityResistanceMentalImage, CityResistancePhysicalImage;
 
     [SerializeField] private GameObject[] BuildingToWalkTo;
+    [SerializeField] private List<GameObject> paths = new List<GameObject>();
 
     public bool isTheVillageDestroyed;
     bool hasBeenDestroyedOnce;
@@ -137,6 +138,28 @@ public class AITown : MonoBehaviour
     void GenerateARandomBuildingToGoTo(AIPriest aiPriest)
     {
         aiPriest.Target = BuildingToWalkTo[Random.Range(0, BuildingToWalkTo.Length)];
+
+        /*
+        Collider[] Paths = Physics.OverlapSphere(aiPriest.transform.position, 5);
+
+        paths.Clear();
+
+        for (int i = 0; i < Paths.Length; i++)
+        {
+            if (Paths[i].gameObject.tag == "path")
+            {
+                paths.Add(Paths[i].gameObject);
+            }
+        }
+
+        if (paths.Count <= 0)
+        {
+            aiPriest.Target = BuildingToWalkTo[Random.Range(0, BuildingToWalkTo.Length)];
+        }
+        else
+        {
+            aiPriest.Target = paths[Random.Range(0, paths.Count)];
+        }*/
     }
 
     IEnumerator CampUpdate()
@@ -160,9 +183,14 @@ public class AITown : MonoBehaviour
 
             AIPriestType aIPriestType;
             AIPriest currentAIPriest;
-
+            
             currentAIPriest = AllPriestUnit[i];
             aIPriestType = currentAIPriest._myAIPriestType;
+
+            currentAIPriest.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
+            currentAIPriest.gameObject.GetComponent<Rigidbody>().angularVelocity = new Vector3(0f, 0f, 0f);
+
+            currentAIPriest.UiHealth.questionMark.enabled = false;
 
             if (currentAIPriest.myAiTown == null)
             {

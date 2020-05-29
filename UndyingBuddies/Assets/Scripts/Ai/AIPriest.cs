@@ -100,6 +100,13 @@ public class AIPriest : MonoBehaviour
         }
     }
 
+    public void Question()
+    {
+        NavMeshAgent.isStopped = false;
+        animatorPriest.Play("Question");
+    }
+
+
     public void Walk()
     {
         NavMeshAgent.isStopped = false;
@@ -240,6 +247,8 @@ public class AIPriest : MonoBehaviour
 
     public void LookIfFindAnyEnemy()
     {
+        
+
         List<GameObject> demonAroundMe = new List<GameObject>();
 
         Collider[] hitCollider = Physics.OverlapSphere(this.transform.position, MaxPositionCamper);
@@ -253,8 +262,20 @@ public class AIPriest : MonoBehaviour
 
         if (demonAroundMe.Count > 0)
         {
-            preparationForAttack = true;
-            Camp.GetComponent<AITown>().weNeedToPrepare = true;
+            int rand;
+
+            rand = Random.Range(0, 100);
+
+            if (rand > 70)
+            {
+                preparationForAttack = true;
+                Camp.GetComponent<AITown>().weNeedToPrepare = true;
+            }
+            else
+            {
+                Question();
+                UiHealth.questionMark.enabled = true;
+            }
         }
     }
 

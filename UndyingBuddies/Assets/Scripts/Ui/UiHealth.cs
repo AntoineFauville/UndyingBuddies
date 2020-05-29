@@ -16,11 +16,13 @@ public class UiHealth : MonoBehaviour
     public Image backgroundMentalHealth;
     public Image physicalResistance;
     public Image mentalResistance;
+    public Image questionMark;
 
     void Start()
     {
         physicalResistance.enabled = false;
         mentalResistance.enabled = false;
+        questionMark.enabled = false;
 
         StartCoroutine(UiHealthverySlowUpdate());
     }

@@ -21,6 +21,7 @@ public class Resource : MonoBehaviour
         ArtDed.SetActive(false);
 
         this.transform.localScale = new Vector3(Random.Range(0.75f, 1.25f), Random.Range(0.75f, 1.25f), Random.Range(0.75f, 1.25f));
+        this.transform.rotation = Quaternion.Euler(0, Random.Range(180, -180), 0);
 
         if (resourceType == ResourceType.brokenSoul)
         {
