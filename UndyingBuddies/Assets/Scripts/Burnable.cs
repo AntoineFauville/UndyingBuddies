@@ -8,6 +8,9 @@ public class Burnable : MonoBehaviour
 
     [SerializeField] private GameObject BurningEffect;
 
+    [SerializeField] private AudioSource AudioSource;
+    [SerializeField] private AudioClip AudioClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,11 @@ public class Burnable : MonoBehaviour
             {
                 this.GetComponent<Resource>().amountOfResourceAvailable -= Random.Range(1,3);
             }
+
+            if (AudioSource != null && AudioClip != null)
+            {
+                AudioSource.PlayOneShot(AudioClip);
+            }
         }
     }
 
@@ -49,7 +57,7 @@ public class Burnable : MonoBehaviour
 
                 if (HitColliderWithFlammes[i].GetComponent<AIStatController>() != null)
                 {
-                    HitColliderWithFlammes[i].GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, Random.Range(10, 30));
+                    HitColliderWithFlammes[i].GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, Random.Range(4, 15));
                 }
             }
         }

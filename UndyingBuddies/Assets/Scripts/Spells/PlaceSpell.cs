@@ -22,6 +22,9 @@ public class PlaceSpell : MonoBehaviour
     private Grab grab;
     private spellCanvasView currentSpellCanvas;
 
+    [SerializeField] private AudioSource AudioSource;
+    [SerializeField] private AudioClip audioClipFire, audioClipHorror, audioClipPoison;
+
     void Start()
     {
         resourceManager = GameObject.Find("Main Camera").GetComponent<ResourceManager>();
@@ -135,6 +138,21 @@ public class PlaceSpell : MonoBehaviour
     {
         Spell newPrefab = Instantiate(activeSpell.spellPrefab, hit, new Quaternion());
 
+        if (AudioSource != null)
+        {
+            if (activeSpell.aiStatusDamageType == AiStatus.Physical)
+            {
+                AudioSource.PlayOneShot(audioClipFire);
+            }
+            if (activeSpell.aiStatusDamageType == AiStatus.MentalHealth)
+            {
+                AudioSource.PlayOneShot(audioClipHorror);
+            }
+            if (activeSpell.aiStatusDamageType == AiStatus.IntestineStatus)
+            {
+                AudioSource.PlayOneShot(audioClipPoison);
+            }
+        }
         if (activeSpell.spellLeftAfterSpawned != null)
         {
             GameObject stainsBlack = Instantiate(activeSpell.spellLeftAfterSpawned, hit, new Quaternion());

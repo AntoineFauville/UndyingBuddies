@@ -25,7 +25,9 @@ public class SpawnDemons : MonoBehaviour
         {
             resourceManager.ManageCostOfPurchaseDemon();
 
-            GameObject demon = Instantiate(gameSettings.DemonPrefab, spawnPoint.transform.position, new Quaternion());
+            Vector3 SpawnPoint = new Vector3(spawnPoint.transform.position.x + Random.Range(-4, 4), spawnPoint.transform.position.y, spawnPoint.transform.position.z + Random.Range(-4, 4));
+
+            GameObject demon = Instantiate(gameSettings.DemonPrefab, SpawnPoint, new Quaternion());
 
             demon.transform.SetParent(spawnPoint.transform);
 

@@ -13,10 +13,10 @@ public class CameraDrag : MonoBehaviour
     public float MaxNegativeValueZ;
     public float MaxPositiveValueZ;
 
-    private float negX;
-    private float posX;
-    private float negZ;
-    private float posZ;
+    [SerializeField] private float negX;
+    [SerializeField] private float posX;
+    [SerializeField] private float negZ;
+    [SerializeField] private float posZ;
 
 
     void Start()
@@ -30,29 +30,57 @@ public class CameraDrag : MonoBehaviour
     void Update()
     {
         Vector3 currentCamPos = Camera.main.transform.position;
-        Vector3 keymove = new Vector3(Input.GetAxis("Horizontal") * moveSpeed, 0, Input.GetAxis("Vertical") * moveSpeed);
+        //Vector3 keymove = new Vector3(Input.GetAxis("Horizontal") * moveSpeed, 0, Input.GetAxis("Vertical") * moveSpeed);
 
-        if (this.transform.position.x < negX)
+        //if (this.transform.position.x < negX)
+        //{
+        //    this.transform.position = new Vector3(negX, 17, this.transform.position.z);
+        //}
+        //else if (this.transform.position.x > posX)
+        //{
+        //    //this.transform.position =
+        //    this.transform.position = Vector3.Lerp(this.transform.position, new Vector3(posX-2, 17, this.transform.position.z), 0.4f);
+        //}
+        //else if (this.transform.position.z < negZ)
+        //{
+        //    this.transform.position = new Vector3(this.transform.position.x, 17, negZ);
+        //}
+        //else if (this.transform.position.z > posZ)
+        //{
+        //    this.transform.position = new Vector3(this.transform.position.x, 17, posZ);
+        //}
+        //else
+        //{
+        //    transform.Translate(keymove, Space.World);
+        //}
+
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        if (this.transform.position.x <= negX && horizontal < 0)
         {
-            this.transform.position = new Vector3(negX, 20, this.transform.position.z);
+            horizontal = 0;
         }
-        else if (this.transform.position.x > posX)
+        if (this.transform.position.x > posX && horizontal > 0)
         {
-            this.transform.position = new Vector3(posX, 20, this.transform.position.z);
+            horizontal = 0;
         }
-        else if (this.transform.position.z < negZ)
+        if (this.transform.position.z < negZ && vertical < 0)
         {
-            this.transform.position = new Vector3(this.transform.position.x, 20, negZ);
+            vertical = 0;
         }
-        else if (this.transform.position.z > posZ)
+        if (this.transform.position.z > posZ && vertical > 0)
         {
-            this.transform.position = new Vector3(this.transform.position.x, 20, posZ);
+            vertical = 0;
         }
-        else
-        {
-            transform.Translate(keymove, Space.World);
-        }
-        
+
+
+        Vector3 keymove = new Vector3(horizontal * moveSpeed, 0, vertical * moveSpeed);
+        transform.Translate(keymove, Space.World);
+
+        /* drag */
+
+
         if (Input.GetMouseButtonDown(1))
         {
             dragOrigin = Input.mousePosition;

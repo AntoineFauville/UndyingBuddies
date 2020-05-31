@@ -22,6 +22,9 @@ public class Grab : MonoBehaviour
     [SerializeField] private bool canSacrificeAgain;
     private bool playAnimOnce;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -311,6 +314,12 @@ public class Grab : MonoBehaviour
             handAnim.Play("hand anim holdrelease");
             playAnimOnce = false;
 
+            if (audioSource != null && audioClip != null)
+            {
+                audioSource.pitch = Random.Range(1.5f, 3.5f);
+                audioSource.PlayOneShot(audioClip);
+            }
+
             grabbedItem.GetComponent<Grabable>().grabbed = false;
             
             grabbedItem.layer = 0;
@@ -342,6 +351,12 @@ public class Grab : MonoBehaviour
         grabbing = true;
         
         grabbedItem = hit.transform.gameObject;
+
+        if (audioSource != null && audioClip != null)
+        {
+            audioSource.pitch = Random.Range(1.5f, 3.5f);
+            audioSource.PlayOneShot(audioClip);
+        }
 
         if (hit.transform.GetComponent<Rigidbody>() != null)
         {

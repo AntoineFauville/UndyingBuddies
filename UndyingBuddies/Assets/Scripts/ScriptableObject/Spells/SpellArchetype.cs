@@ -28,4 +28,6 @@ public class SpellArchetype : ScriptableObject
     public int spellTimer = 5;
 
     public int chancesOfInfecting = 50;
+
+    public AiStatus aiStatusDamageType;
 }
