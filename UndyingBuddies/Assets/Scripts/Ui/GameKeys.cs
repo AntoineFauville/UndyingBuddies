@@ -45,6 +45,11 @@ public class GameKeys : MonoBehaviour
         }
     }
 
+    public void changeState(int statechanger)
+    {
+        state = statechanger;
+    }
+
     public void exitApplication()
     {
         Application.CancelQuit();
