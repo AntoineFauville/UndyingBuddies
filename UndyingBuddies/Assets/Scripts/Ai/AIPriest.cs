@@ -68,8 +68,12 @@ public class AIPriest : MonoBehaviour
     public GameObject Flames;
     public GameObject PoisonIndicator;
 
+    [SerializeField] private GameObject Hoe;
+
     void Start()
     {
+        Hoe.SetActive(false);
+
         aiManager = GameObject.Find("Main Camera").GetComponent<AiManager>();
         _gameSettings = aiManager.GameSettings;
 
@@ -116,6 +120,8 @@ public class AIPriest : MonoBehaviour
 
         Debug.DrawLine(this.transform.position, Target.transform.position, Color.red, 0.4f);
 
+        animatorPriest.speed = NavMeshAgent.speed;
+
         if (Vector3.Distance(Target.transform.position, this.transform.position) > 2)
         {
             NavMeshAgent.isStopped = false;
@@ -125,6 +131,18 @@ public class AIPriest : MonoBehaviour
         {
             NavMeshAgent.isStopped = true;
         }
+    }
+
+    public void Farm()
+    {
+        NavMeshAgent.isStopped = true;
+        animatorPriest.Play("Farm");
+
+        animatorPriest.speed = Random.Range(0.2f,1.5f);
+
+        //this.transform.rotation = Quaternion.Euler(0,Random.Range(0,100), 0);
+
+        Hoe.SetActive(true);
     }
 
     public void Idle()

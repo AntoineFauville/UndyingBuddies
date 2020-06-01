@@ -72,7 +72,7 @@ public class AITown : MonoBehaviour
         {
             for (int i = 0; i < AllPriestUnit.Count; i++)
             {
-                AllPriestUnit[i].GetComponent<AIPriest>()._myAIPriestType = AIPriestType.TownCitizen;
+                //AllPriestUnit[i].GetComponent<AIPriest>()._myAIPriestType = AIPriestType.TownCitizen;
                 AllPriestUnit[i].GetComponent<AIPriest>().CanAttackBack = true;
             }
         }
@@ -138,28 +138,6 @@ public class AITown : MonoBehaviour
     void GenerateARandomBuildingToGoTo(AIPriest aiPriest)
     {
         aiPriest.Target = BuildingToWalkTo[Random.Range(0, BuildingToWalkTo.Length)];
-
-        /*
-        Collider[] Paths = Physics.OverlapSphere(aiPriest.transform.position, 5);
-
-        paths.Clear();
-
-        for (int i = 0; i < Paths.Length; i++)
-        {
-            if (Paths[i].gameObject.tag == "path")
-            {
-                paths.Add(Paths[i].gameObject);
-            }
-        }
-
-        if (paths.Count <= 0)
-        {
-            aiPriest.Target = BuildingToWalkTo[Random.Range(0, BuildingToWalkTo.Length)];
-        }
-        else
-        {
-            aiPriest.Target = paths[Random.Range(0, paths.Count)];
-        }*/
     }
 
     IEnumerator CampUpdate()
@@ -281,6 +259,10 @@ public class AITown : MonoBehaviour
                     {
                         GenerateARandomBuildingToGoTo(currentAIPriest);
                     }
+                    break;
+
+                case AIPriestType.Farmer:
+                    currentAIPriest.Farm();
                     break;
 
                 case AIPriestType.Rusher:
