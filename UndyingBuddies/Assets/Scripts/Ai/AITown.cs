@@ -361,6 +361,7 @@ public class AITown : MonoBehaviour
             {
                 ui = Instantiate(_gameSettings.UIAttack);
                 ui.GetComponent<AttackFromPriestCamp>().seconds = _gameSettings.timeToPrepareWithACamp;
+                ui.GetComponent<AttackFromPriestCamp>().CameraPos = this.gameObject.transform.position;
                 ui.transform.SetParent(GameObject.Find("AttackContainer").transform);
                 ui.transform.localScale = new Vector3(1, 1, 1);
                 ui.transform.localPosition = new Vector3(0, 0, 0);

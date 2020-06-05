@@ -18,6 +18,11 @@ public class GameKeys : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameObject.Find("Main Camera").transform.position = new Vector3(GameObject.Find("CityRef").transform.position.x, 20, GameObject.Find("CityRef").transform.position.z - 17);
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("ActivateMenu");

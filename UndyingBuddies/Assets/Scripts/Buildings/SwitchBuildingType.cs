@@ -12,8 +12,14 @@ public class SwitchBuildingType : MonoBehaviour
 
     public Building building;
 
+    void Start()
+    {
+        StartCoroutine(waitForCheckRayCastHighlight());
+    }
+
     void Update()
     {
+        /*click*/
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -32,6 +38,33 @@ public class SwitchBuildingType : MonoBehaviour
                     _recipeManager.LoadInfoFromBuilding();
                     _recipeManager.checkIfRecipeChange();
                     UI.SetActive(true);
+                }
+            }
+        }
+    }
+
+    void checkHighlight()
+    {
+        RaycastHit hitHighlight;
+        Ray rayHighlight = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        //hit is the object that i want to grab
+        if (Physics.Raycast(rayHighlight, out hitHighlight))
+        {
+            if (hitHighlight.collider.tag == "whiteSoulsStock"
+                || hitHighlight.collider.tag == "blueVioletSoulsStock"
+                || hitHighlight.collider.tag == "violetSoulsStock"
+                || hitHighlight.collider.tag == "blueSoulsStock"
+                || hitHighlight.collider.tag == "redSoulsStock")
+            {
+                building = hitHighlight.collider.GetComponentInParent<Building>();
+                building.Highlight.SetActive(true);
+            }
+            else
+            {
+                if (building != null)
+                {
+                    building.Highlight.SetActive(false);
                 }
             }
         }
@@ -117,5 +150,14 @@ public class SwitchBuildingType : MonoBehaviour
                 _aiManager.RedSoulStorage.Add(building.gameObject);
                 break;
         }
+    }
+
+    IEnumerator waitForCheckRayCastHighlight()
+    {
+        checkHighlight();
+
+        yield return new WaitForSeconds(0.5f);
+
+        StartCoroutine(waitForCheckRayCastHighlight());
     }
 }

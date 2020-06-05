@@ -72,7 +72,10 @@ public class AIPriest : MonoBehaviour
 
     void Start()
     {
-        Hoe.SetActive(false);
+        if (Hoe != null)
+        {
+            Hoe.SetActive(false);
+        }
 
         aiManager = GameObject.Find("Main Camera").GetComponent<AiManager>();
         _gameSettings = aiManager.GameSettings;
@@ -265,8 +268,6 @@ public class AIPriest : MonoBehaviour
 
     public void LookIfFindAnyEnemy()
     {
-        
-
         List<GameObject> demonAroundMe = new List<GameObject>();
 
         Collider[] hitCollider = Physics.OverlapSphere(this.transform.position, MaxPositionCamper);
@@ -284,7 +285,7 @@ public class AIPriest : MonoBehaviour
 
             rand = Random.Range(0, 100);
 
-            if (rand > 70)
+            if (rand > 80)
             {
                 preparationForAttack = true;
                 Camp.GetComponent<AITown>().weNeedToPrepare = true;

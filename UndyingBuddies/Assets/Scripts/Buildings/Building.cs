@@ -51,6 +51,7 @@ public class Building : MonoBehaviour
     public GameObject BuildingLinkedToGenerateFlow_Input02;
 
     public GameObject StockPileTrigger;
+    public GameObject Highlight;
 
     public GameObject SoulsInWhell_01;
     public GameObject SoulsInWhell_02;
@@ -62,6 +63,8 @@ public class Building : MonoBehaviour
     public Image imageFillingProcessing;
 
     public List <BuildingCommunicator> buildingCommunicators = new List<BuildingCommunicator>();
+
+    [SerializeField] private SoulColor ParticleToKnowWhatWeProduce;
 
     void Start()
     {
@@ -184,6 +187,8 @@ public class Building : MonoBehaviour
 
         if (resourceProducedAtBuilding == ResourceType.whiteSoul)
         {
+            ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.whiteSoulColor);
+
             if (BrokenSoulOnTableExist)
             {
                 SoulsInWhell_01.SetActive(true);
@@ -203,6 +208,8 @@ public class Building : MonoBehaviour
 
         if (resourceProducedAtBuilding == ResourceType.blueVioletSoul)
         {
+            ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.blueVioletColor);
+
             if (WhiteSoulOnTableExist)
             {
                 SoulsInWhell_01.SetActive(true);
@@ -222,6 +229,8 @@ public class Building : MonoBehaviour
 
         if (resourceProducedAtBuilding == ResourceType.violetSoul)
         {
+            ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.violetColor);
+
             if (WhiteSoulOnTableExist)
             {
                 SoulsInWhell_01.SetActive(true);
@@ -250,6 +259,8 @@ public class Building : MonoBehaviour
 
         if (resourceProducedAtBuilding == ResourceType.blueSoul)
         {
+            ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.blueColor);
+
             if (WhiteSoulOnTableExist)
             {
                 SoulsInWhell_01.SetActive(true);
@@ -278,6 +289,8 @@ public class Building : MonoBehaviour
 
         if (resourceProducedAtBuilding == ResourceType.redSoul)
         {
+            ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.redColor);
+
             if (BlueVioletSoulOnTableExist)
             {
                 SoulsInWhell_01.SetActive(true);
