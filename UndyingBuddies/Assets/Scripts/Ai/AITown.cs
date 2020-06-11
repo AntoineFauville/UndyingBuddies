@@ -265,6 +265,14 @@ public class AITown : MonoBehaviour
                     currentAIPriest.Farm();
                     break;
 
+                case AIPriestType.Builder:
+                    currentAIPriest.Build();
+                    break;
+
+                case AIPriestType.Lumberjack:
+                    currentAIPriest.Lumber();
+                    break;
+
                 case AIPriestType.Rusher:
 
                     CleanupUnessesaryEmpty();

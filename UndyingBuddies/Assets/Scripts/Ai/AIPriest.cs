@@ -69,12 +69,24 @@ public class AIPriest : MonoBehaviour
     public GameObject PoisonIndicator;
 
     [SerializeField] private GameObject Hoe;
+    [SerializeField] private GameObject Axe;
+    [SerializeField] private GameObject Hammer;
 
     void Start()
     {
         if (Hoe != null)
         {
             Hoe.SetActive(false);
+        }
+
+        if (Axe != null)
+        {
+            Axe.SetActive(false);
+        }
+
+        if (Hammer != null)
+        {
+            Hammer.SetActive(false);
         }
 
         aiManager = GameObject.Find("Main Camera").GetComponent<AiManager>();
@@ -146,6 +158,30 @@ public class AIPriest : MonoBehaviour
         //this.transform.rotation = Quaternion.Euler(0,Random.Range(0,100), 0);
 
         Hoe.SetActive(true);
+    }
+
+    public void Build()
+    {
+        NavMeshAgent.isStopped = true;
+        animatorPriest.Play("Build");
+
+        animatorPriest.speed = Random.Range(0.2f, 1.5f);
+
+        //this.transform.rotation = Quaternion.Euler(0,Random.Range(0,100), 0);
+
+        Hammer.SetActive(true);
+    }
+
+    public void Lumber()
+    {
+        NavMeshAgent.isStopped = true;
+        animatorPriest.Play("Lumber");
+
+        animatorPriest.speed = Random.Range(0.2f, 1.5f);
+
+        //this.transform.rotation = Quaternion.Euler(0,Random.Range(0,100), 0);
+
+        Axe.SetActive(true);
     }
 
     public void Idle()

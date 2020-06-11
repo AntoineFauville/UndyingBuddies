@@ -4,5 +4,6 @@
    Rusher = 1,
    Camper = 2,
    Farmer = 3,
-   Lumberjack = 4
+   Lumberjack = 4,
+   Builder = 5
 }

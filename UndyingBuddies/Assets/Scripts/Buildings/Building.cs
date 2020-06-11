@@ -66,6 +66,12 @@ public class Building : MonoBehaviour
 
     [SerializeField] private SoulColor ParticleToKnowWhatWeProduce;
 
+    [SerializeField] private GameObject WhiteObjectVisuals;
+    [SerializeField] private GameObject BlueVioletObjectVisuals;
+    [SerializeField] private GameObject VioletObjectVisuals;
+    [SerializeField] private GameObject RedObjectVisuals;
+    [SerializeField] private GameObject BlueObjectVisuals;
+
     void Start()
     {
         LoadingBarForProcessing.SetActive(false);
@@ -189,6 +195,12 @@ public class Building : MonoBehaviour
         {
             ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.whiteSoulColor);
 
+            WhiteObjectVisuals.SetActive(true);
+            BlueVioletObjectVisuals.SetActive(false);
+            VioletObjectVisuals.SetActive(false);
+            RedObjectVisuals.SetActive(false);
+            BlueObjectVisuals.SetActive(false);
+
             if (BrokenSoulOnTableExist)
             {
                 SoulsInWhell_01.SetActive(true);
@@ -210,6 +222,12 @@ public class Building : MonoBehaviour
         {
             ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.blueVioletColor);
 
+            WhiteObjectVisuals.SetActive(false);
+            BlueVioletObjectVisuals.SetActive(true);
+            VioletObjectVisuals.SetActive(false);
+            RedObjectVisuals.SetActive(false);
+            BlueObjectVisuals.SetActive(false);
+
             if (WhiteSoulOnTableExist)
             {
                 SoulsInWhell_01.SetActive(true);
@@ -230,6 +248,12 @@ public class Building : MonoBehaviour
         if (resourceProducedAtBuilding == ResourceType.violetSoul)
         {
             ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.violetColor);
+
+            WhiteObjectVisuals.SetActive(false);
+            BlueVioletObjectVisuals.SetActive(false);
+            VioletObjectVisuals.SetActive(true);
+            RedObjectVisuals.SetActive(false);
+            BlueObjectVisuals.SetActive(false);
 
             if (WhiteSoulOnTableExist)
             {
@@ -261,6 +285,12 @@ public class Building : MonoBehaviour
         {
             ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.blueColor);
 
+            WhiteObjectVisuals.SetActive(false);
+            BlueVioletObjectVisuals.SetActive(false);
+            VioletObjectVisuals.SetActive(false);
+            RedObjectVisuals.SetActive(false);
+            BlueObjectVisuals.SetActive(true);
+
             if (WhiteSoulOnTableExist)
             {
                 SoulsInWhell_01.SetActive(true);
@@ -290,6 +320,12 @@ public class Building : MonoBehaviour
         if (resourceProducedAtBuilding == ResourceType.redSoul)
         {
             ParticleToKnowWhatWeProduce.ChangeColor(_aiManager.GameSettings.redColor);
+
+            WhiteObjectVisuals.SetActive(false);
+            BlueVioletObjectVisuals.SetActive(false);
+            VioletObjectVisuals.SetActive(false);
+            RedObjectVisuals.SetActive(true);
+            BlueObjectVisuals.SetActive(false);
 
             if (BlueVioletSoulOnTableExist)
             {
