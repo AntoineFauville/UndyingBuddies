@@ -15182,6 +15182,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2001052688901742725, guid: e29456cb3fcc3c54991286ffeeb1ccf7,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 3731019725357610314, guid: e29456cb3fcc3c54991286ffeeb1ccf7,
         type: 3}
       propertyPath: AllRelatedAIOfThisTown.Array.size

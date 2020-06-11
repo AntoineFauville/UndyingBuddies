@@ -25,9 +25,14 @@ public class CanvasDamage : MonoBehaviour
             Sanity.SetActive(true);
             text.text = "+" + DamageAmount;
         }
-        else if(aiStatus == AiStatus.Physical)
+        else if (aiStatus == AiStatus.Physical)
         {
             Physical.SetActive(true);
+            text.text = "-" + DamageAmount;
+        }
+        else if (aiStatus == AiStatus.Lonelyness)
+        {
+            Energy.SetActive(true);
             text.text = "-" + DamageAmount;
         }
 

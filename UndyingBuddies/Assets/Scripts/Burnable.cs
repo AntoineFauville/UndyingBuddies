@@ -45,7 +45,7 @@ public class Burnable : MonoBehaviour
 
     void CheckOnOtherBurnableNeighbourghs()
     {
-        Collider[] HitColliderWithFlammes = Physics.OverlapSphere(this.transform.position, 2);
+        Collider[] HitColliderWithFlammes = Physics.OverlapSphere(this.transform.position, 1.5f);
 
         if (HitColliderWithFlammes.Length > 0) {
             for (int i = 0; i < HitColliderWithFlammes.Length; i++)
@@ -80,7 +80,7 @@ public class Burnable : MonoBehaviour
 
     IEnumerator waitRandSecToCheckNeighbourgs()
     {
-        yield return new WaitForSeconds(Random.Range(1, 4));
+        yield return new WaitForSeconds(Random.Range(5, 10));
 
         CheckOnOtherBurnableNeighbourghs();
 

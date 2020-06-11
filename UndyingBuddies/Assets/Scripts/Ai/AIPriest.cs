@@ -410,6 +410,10 @@ public class AIPriest : MonoBehaviour
                 break;
         }
 
+        GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfEnergy += 20;
+        CanvasDamage canvasDamage = Instantiate(_gameSettings.CanvasDamagePrefab, this.transform.position, new Quaternion());
+        canvasDamage.SetupCanvasDamage(AiStatus.Lonelyness, 20, 0);
+
         DestroyImmediate(this.gameObject);
     }
 
