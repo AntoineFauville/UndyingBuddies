@@ -66,6 +66,8 @@ public class Grab : MonoBehaviour
                 else if (hit.collider.tag == "blueSoulsStock")
                 {
                     Sacrifice.TransformIntoEnergy(ResourceType.blueSoul, hit, handAnim);
+
+                    this.GetComponent<BuffManager>().CreateBuff(BuffType.SanityBuff);
                 }
                 else if (hit.collider.tag == "redSoulsStock")
                 {

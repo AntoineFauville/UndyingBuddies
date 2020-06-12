@@ -34,12 +34,23 @@ public class AIStatController : MonoBehaviour
     {
         int finalDamage = 0;
         int resistance = 0;
+
+        int buffPhysicalDamage = 0;
+        int buffSanityDamage = 0;
+        int buffPoisonDamage = 0;
+
+        //i'm noot checking all the buffs but this is to test since I know i will only have 1 buff active to test 
+        if (GameObject.Find("Main Camera").GetComponent<BuffManager>().activeBuffs.Count > 0)
+        {
+            buffSanityDamage = GameObject.Find("Main Camera").GetComponent<BuffManager>().activeBuffs[0].BuffDamage;
+        }
+
         //
         switch (aiStatus)
         {
             case AiStatus.Physical:
                 resistance = PhysicalResistance;
-                finalDamage = spellArchetype.DamageToEnemy - PhysicalResistance;
+                finalDamage = spellArchetype.DamageToEnemy + buffPhysicalDamage + buffPoisonDamage - PhysicalResistance;
                 _aIPriest.healthAmount -= finalDamage;
                 break;
             case AiStatus.Fear:
@@ -47,7 +58,7 @@ public class AIStatController : MonoBehaviour
                 break;
             case AiStatus.MentalHealth:
                 resistance = MentalHealthResistance;
-                finalDamage = spellArchetype.DamageToEnemy - MentalHealthResistance;
+                finalDamage = spellArchetype.DamageToEnemy + buffSanityDamage - MentalHealthResistance;
                 _aIPriest.MentalHealthAmount += finalDamage;
                 break;
             case AiStatus.Lonelyness:

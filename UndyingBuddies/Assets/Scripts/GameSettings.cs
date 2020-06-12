@@ -77,4 +77,6 @@ public class GameSettings : ScriptableObject
     public int CampSightIncrease = 4;
 
     public GameObject DeathPriest;
+
+    public Buff BuffPrefab;
 }
