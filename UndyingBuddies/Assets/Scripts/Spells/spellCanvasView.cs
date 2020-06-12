@@ -13,6 +13,8 @@ public class spellCanvasView : MonoBehaviour
 
     public Image backGroundImage;
 
+    public Image LoadingTime;
+
     void Start()
     {
         _spellManager = GameObject.Find("Main Camera").GetComponent<SpellManager>();

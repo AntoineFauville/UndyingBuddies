@@ -163,13 +163,39 @@ public class PlaceSpell : MonoBehaviour
 
     IEnumerator CreateSpellThanWait(Vector3 hit)
     {
+        List<spellCanvasView> spellCanvase = GameObject.Find("Main Camera").GetComponent<SpellManager>().spellCanvases;
+
         ableToSpawnAgain = true;
 
         StartCoroutine(waitforFire(hit));
 
         GameObject.Find("RightHand").GetComponent<Animator>().Play("hand anim fire");
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.1f);
+
+        for (int i = 0; i < spellCanvase.Count; i++)
+        {
+            spellCanvase[i].LoadingTime.gameObject.SetActive(true);
+            spellCanvase[i].LoadingTime.fillAmount = 0.9f;
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+
+            for (int j = 0; j < spellCanvase.Count; j++)
+            {
+                spellCanvase[j].LoadingTime.fillAmount -= 0.1f;
+            }
+        }
+        
+        yield return new WaitForSeconds(0.1f);
+
+        for (int i = 0; i < spellCanvase.Count; i++)
+        {
+            spellCanvase[i].LoadingTime.gameObject.SetActive(false);
+            spellCanvase[i].LoadingTime.fillAmount = 1f;
+        }
 
         ableToSpawnAgain = false;
     }
