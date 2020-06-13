@@ -45,6 +45,8 @@ public class AIStatController : MonoBehaviour
             buffSanityDamage = GameObject.Find("Main Camera").GetComponent<BuffManager>().activeBuffs[0].BuffDamage;
         }
 
+        Debug.Log("PhysicalResistance " + PhysicalResistance + "   MentalHealthResistance " + MentalHealthResistance);
+
         //
         switch (aiStatus)
         {
@@ -72,6 +74,8 @@ public class AIStatController : MonoBehaviour
         CanvasDamage canvasDamage = Instantiate(_gameSettings.CanvasDamagePrefab, spawnPointCanvas.transform.position, new Quaternion());
         canvasDamage.SetupCanvasDamage(aiStatus, finalDamage, resistance);
 
+        Debug.Log("finalDamage " + finalDamage);
+
         UpdateLifeBars();
     }
 
@@ -79,12 +83,25 @@ public class AIStatController : MonoBehaviour
     {
         int finalDamage = 0;
         int resistance = 0;
+
+        int buffPhysicalDamage = 0;
+        int buffSanityDamage = 0;
+        int buffPoisonDamage = 0;
+
+        //i'm noot checking all the buffs but this is to test since I know i will only have 1 buff active to test 
+        if (GameObject.Find("Main Camera").GetComponent<BuffManager>().activeBuffs.Count > 0)
+        {
+            buffSanityDamage = GameObject.Find("Main Camera").GetComponent<BuffManager>().activeBuffs[0].BuffDamage;
+        }
+
+        Debug.Log("PhysicalResistance " + PhysicalResistance + "   MentalHealthResistance " + MentalHealthResistance);
+
         //
         switch (aiStatus)
         {
             case AiStatus.Physical:
                 resistance = PhysicalResistance;
-                finalDamage = damage - PhysicalResistance;
+                finalDamage = damage + buffPhysicalDamage + buffPoisonDamage - PhysicalResistance;
                 _aIPriest.healthAmount -= finalDamage;
                 break;
             case AiStatus.Fear:
@@ -92,7 +109,7 @@ public class AIStatController : MonoBehaviour
                 break;
             case AiStatus.MentalHealth:
                 resistance = MentalHealthResistance;
-                finalDamage = damage - MentalHealthResistance;
+                finalDamage = damage + buffSanityDamage - MentalHealthResistance;
                 _aIPriest.MentalHealthAmount += finalDamage;
                 break;
             case AiStatus.Lonelyness:
@@ -105,6 +122,8 @@ public class AIStatController : MonoBehaviour
 
         CanvasDamage canvasDamage = Instantiate(_gameSettings.CanvasDamagePrefab, spawnPointCanvas.transform.position, new Quaternion());
         canvasDamage.SetupCanvasDamage(aiStatus, finalDamage, resistance);
+
+        Debug.Log("finalDamage " + finalDamage);
 
         UpdateLifeBars();
     }

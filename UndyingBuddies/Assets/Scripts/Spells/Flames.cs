@@ -169,7 +169,7 @@ public class Flames : MonoBehaviour
             {
                 if (allPriestTouched[i] != null)
                 {
-                    allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.fireSpell.DamageToEnemy / 4);
+                    allPriestTouched[i].gameObject.GetComponent<AIStatController>().TakeDamage(AiStatus.Physical, _gameSettings.fireSpell.DamageToEnemy / 3);
                 }
             }
         }

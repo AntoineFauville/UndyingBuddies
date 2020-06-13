@@ -9,9 +9,14 @@ public class SceneLoadLocal : MonoBehaviour
 
     [SerializeField] private Animator animator;
 
+    [SerializeField] private GameObject LoadingScreen;
+
     void Start()
     {
+        LoadingScreen.SetActive(false);
+
         animator.enabled = false;
+
         SceneManagerDontDestroy = GameObject.Find("SceneManager").GetComponent<SceneManagerDontDestroy>();
     }
 
@@ -22,8 +27,7 @@ public class SceneLoadLocal : MonoBehaviour
 
     IEnumerator waitforSec()
     {
-        animator.enabled = true;
-        animator.Play("launchGame");
+        LoadingScreen.SetActive(true);
 
         yield return new WaitForSeconds(0.45f);
         SceneManagerDontDestroy.LoadScene();

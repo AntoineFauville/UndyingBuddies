@@ -48,5 +48,6 @@ public class BuffManager : MonoBehaviour
     void RemoveBuff(Buff buff)
     {
         activeBuffs.Remove(buff);
+        DestroyImmediate(buff.gameObject);
     }
 }
