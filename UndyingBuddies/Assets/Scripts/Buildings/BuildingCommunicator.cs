@@ -32,11 +32,14 @@ public class BuildingCommunicator : MonoBehaviour
 
     public void CreateHereBuilding()
     {
-        if (!hasBeenAssigned)
+        if (GameObject.Find("Main Camera").GetComponent<ResourceManager>().amountOfEnergy >= 10)
         {
-            GameObject.Find("Main Camera").GetComponent<BuildingCreator>().CreateBuildingHere(RefToSpawn);
-            AssignBuildingHere();
-            ManageArt();
+            if (!hasBeenAssigned)
+            {
+                GameObject.Find("Main Camera").GetComponent<BuildingCreator>().CreateBuildingHere(RefToSpawn);
+                AssignBuildingHere();
+                ManageArt();
+            }
         }
     }
 

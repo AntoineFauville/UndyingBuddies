@@ -213,11 +213,14 @@ public class SpellManager : MonoBehaviour
 
     public void UnlockFireSpell(int index)
     {
-        unlockedFireSpell = index;
-
-        if (spellPanelSection.activeSelf == false)
+        if (resourceManager.amountOfEnergy >= _gameSettings.CostSpell[indexOfCostSpells])
         {
-            spellPanelSection.SetActive(true);
+            unlockedFireSpell = index;
+
+            if (spellPanelSection.activeSelf == false)
+            {
+                spellPanelSection.SetActive(true);
+            }
         }
     }
 }

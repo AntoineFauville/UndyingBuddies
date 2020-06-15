@@ -13,6 +13,7 @@ public class GameKeys : MonoBehaviour
     void Start()
     {
         state = 1;
+        Debug.Log("GameKey State Start " + state);
     }
 
     // Update is called once per frame
@@ -27,6 +28,8 @@ public class GameKeys : MonoBehaviour
         {
             Debug.Log("ActivateMenu");
 
+            Debug.Log("GameKey State Escape " + state);
+
             if (state == 1)
             {
                 for (int i = 0; i < ObjectToActivate.Length; i++)
@@ -36,7 +39,7 @@ public class GameKeys : MonoBehaviour
 
                 state = 0;
             }
-            if (state == 0)
+            else if (state == 0)
             {
                 if (Menu.activeSelf == true)
                 {
@@ -53,6 +56,8 @@ public class GameKeys : MonoBehaviour
     public void changeState(int statechanger)
     {
         state = statechanger;
+
+        Debug.Log("GameKey State statechanger " + state);
     }
 
     public void exitApplication()

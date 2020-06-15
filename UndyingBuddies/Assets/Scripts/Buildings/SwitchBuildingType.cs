@@ -38,6 +38,7 @@ public class SwitchBuildingType : MonoBehaviour
                     _recipeManager.LoadInfoFromBuilding();
                     _recipeManager.checkIfRecipeChange();
                     UI.SetActive(true);
+                    GameObject.Find("CanvasMainCam").GetComponent<GameKeys>().state = 1;
                 }
             }
         }
